@@ -1,1 +1,309 @@
-{"description":"\u003Cp\u003EThis activity is meant to be used for testing the glossary prior to the V3 Plugin integration with the glossary, teacher edition, and the lara sharing feature.\u003C/p\u003E","editor_mode":0,"external_report_url":"","layout":0,"name":"Scotts All Plugin Test","notes":"","project_id":2,"related":"","student_report_enabled":true,"thumbnail_url":"","time_to_complete":null,"version":1,"theme_name":"HAS Astro Dark","pages":[{"additional_sections":{},"embeddable_display_mode":"stacked","is_completion":false,"is_hidden":false,"layout":"l-full-width","name":"V2 Plugin Testing","position":1,"show_info_assessment":true,"show_interactive":true,"show_introduction":true,"show_sidebar":false,"sidebar":null,"sidebar_title":"Did you know?","text":"\u003Cp\u003EGlossary Test Page + Teacher Edition\u003C/p\u003E","embeddables":[{"embeddable":{"plugin":{"description":"","author_data":"{\r\n  \"tipType\": \"questionWrapper\",\r\n  \"questionWrapper\": {\r\n    \"correctExplanation\": \"correct\",\r\n    \"distractorsExplanation\": \"distractor\",\r\n    \"exemplar\": \"exemplar\",\r\n    \"teacherTip\": \"teacherTip\",\r\n    \"teacherTipImageOverlay\": \"\"\r\n  },\r\n  \"windowShade\": {\r\n    \"windowShadeType\": \"teacherTip\",\r\n    \"layout\": \"mediaLeft\",\r\n    \"content\": \"This is something\",\r\n    \"content2\": \"\",\r\n    \"mediaType\": \"none\",\r\n    \"mediaCaption\": \"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\r\n    \"mediaURL\": \"\"\r\n  }\r\n}","approved_script_label":"teacherEditionTips"},"is_hidden":false,"is_full_width":false,"type":"Embeddable::EmbeddablePlugin","ref_id":"393-Embeddable::EmbeddablePlugin","embeddable_ref_id":"11946-Embeddable::MultipleChoice"},"section":null},{"embeddable":{"custom":false,"enable_check_answer":true,"give_prediction_feedback":false,"hint":"","is_full_width":false,"is_hidden":false,"is_prediction":false,"layout":"vertical","multi_answer":false,"name":"Multiple Choice Question element","prediction_feedback":"","prompt":"\u003Cp\u003ETest to make sure MC teacher edition is behaving as expected (word)\u003C/p\u003E","show_as_menu":false,"show_in_featured_question_report":true,"choices":[{"choice":"a","is_correct":false,"prompt":""},{"choice":"b","is_correct":false,"prompt":""},{"choice":"c","is_correct":false,"prompt":""}],"type":"Embeddable::MultipleChoice","ref_id":"11946-Embeddable::MultipleChoice"},"section":null},{"embeddable":{"plugin":{"description":"","author_data":"{\r\n  \"tipType\": \"questionWrapper\",\r\n  \"questionWrapper\": {\r\n    \"correctExplanation\": \"correct\",\r\n    \"distractorsExplanation\": \"\",\r\n    \"exemplar\": \"\",\r\n    \"teacherTip\": \"teacher tip\",\r\n    \"teacherTipImageOverlay\": \"\"\r\n  },\r\n  \"windowShade\": {\r\n    \"windowShadeType\": \"teacherTip\",\r\n    \"layout\": \"mediaLeft\",\r\n    \"content\": \"This is something\",\r\n    \"content2\": \"\",\r\n    \"mediaType\": \"none\",\r\n    \"mediaCaption\": \"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\r\n    \"mediaURL\": \"\"\r\n  }\r\n}","approved_script_label":"teacherEditionTips"},"is_hidden":false,"is_full_width":false,"type":"Embeddable::EmbeddablePlugin","ref_id":"394-Embeddable::EmbeddablePlugin","embeddable_ref_id":"444540-Embeddable::OpenResponse"},"section":null},{"embeddable":{"default_text":"","give_prediction_feedback":false,"hint":"\u003Cp\u003EHere is a hint\u003C/p\u003E","is_full_width":false,"is_hidden":false,"is_prediction":false,"name":"","prediction_feedback":"","prompt":"\u003Cp\u003ETest to make sure open response teacher edition is behaving as expected (word)\u003C/p\u003E","show_in_featured_question_report":true,"type":"Embeddable::OpenResponse","ref_id":"444540-Embeddable::OpenResponse"},"section":null},{"embeddable":{"plugin":{"description":"Window Shade Test","author_data":"{\r\n  \"tipType\": \"windowShade\",\r\n  \"windowShade\": {\r\n    \"windowShadeType\": \"theoryAndBackground\",\r\n    \"initialOpenState\": true,\r\n    \"content\": \"This is something\",\r\n    \"mediaCaption\": \"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\"\r\n  }\r\n}","approved_script_label":"teacherEditionTips"},"is_hidden":false,"is_full_width":false,"type":"Embeddable::EmbeddablePlugin","ref_id":"402-Embeddable::EmbeddablePlugin"},"section":null},{"embeddable":{"plugin":{"description":"Interactive Wrapping tet","author_data":"{\r\n  \"tipType\": \"questionWrapper\",\r\n  \"questionWrapper\": {\r\n    \"correctExplanation\": \"\",\r\n    \"distractorsExplanation\": \"\",\r\n    \"exemplar\": \"\",\r\n    \"teacherTip\": \"Text below the interactive.\",\r\n    \"teacherTipImageOverlay\": \"https://placekitten.com/200/300\"\r\n  },\r\n  \"windowShade\": {\r\n    \"windowShadeType\": \"theoryAndBackground\",\r\n    \"initialOpenState\": true,\r\n    \"content\": \"This is something\",\r\n    \"mediaCaption\": \"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\"\r\n  }\r\n}","approved_script_label":"teacherEditionTips"},"is_hidden":false,"is_full_width":false,"type":"Embeddable::EmbeddablePlugin","ref_id":"579-Embeddable::EmbeddablePlugin","embeddable_ref_id":"209014-MwInteractive"},"section":null},{"embeddable":{"aspect_ratio_method":"DEFAULT","authored_state":null,"click_to_play":false,"click_to_play_prompt":null,"enable_learner_state":false,"full_window":false,"has_report_url":false,"image_url":"","is_full_width":true,"is_hidden":false,"model_library_url":null,"name":"","native_height":435,"native_width":576,"show_delete_data_button":false,"show_in_featured_question_report":true,"url":"https://concord.org","type":"MwInteractive","ref_id":"209014-MwInteractive"},"section":"interactive_box"}]},{"additional_sections":{},"embeddable_display_mode":"stacked","is_completion":false,"is_hidden":false,"layout":"l-6040","name":null,"position":2,"show_info_assessment":true,"show_interactive":true,"show_introduction":true,"show_sidebar":false,"sidebar":null,"sidebar_title":"Did you know?","text":"\u003Cp\u003ESecond page\u003C/p\u003E","embeddables":[{"embeddable":{"custom":false,"enable_check_answer":true,"give_prediction_feedback":false,"hint":"","is_full_width":false,"is_hidden":false,"is_prediction":false,"layout":"vertical","multi_answer":false,"name":"Multiple Choice Question element","prediction_feedback":"","prompt":"\u003Cp\u003Eword\u003C/p\u003E","show_as_menu":false,"show_in_featured_question_report":true,"choices":[{"choice":"a","is_correct":false,"prompt":""},{"choice":"b","is_correct":false,"prompt":""},{"choice":"c","is_correct":false,"prompt":""}],"type":"Embeddable::MultipleChoice","ref_id":"11947-Embeddable::MultipleChoice"},"section":null},{"embeddable":{"plugin":{"description":"","author_data":"{ }","approved_script_label":"LaraSharingPlugin"},"is_hidden":false,"is_full_width":false,"type":"Embeddable::EmbeddablePlugin","ref_id":"395-Embeddable::EmbeddablePlugin","embeddable_ref_id":"208979-MwInteractive"},"section":null},{"embeddable":{"aspect_ratio_method":"DEFAULT","authored_state":null,"click_to_play":true,"click_to_play_prompt":"","enable_learner_state":true,"full_window":false,"has_report_url":false,"image_url":"https://picsum.photos/200/300","is_full_width":true,"is_hidden":false,"model_library_url":null,"name":"","native_height":435,"native_width":576,"show_delete_data_button":true,"show_in_featured_question_report":true,"url":"https://document-store.concord.org/v2/documents/102456/autolaunch?server=https%3A%2F%2Fcodap.concord.org%2Freleases%2Flatest%2F\u0026scaling","type":"MwInteractive","ref_id":"208979-MwInteractive"},"section":"interactive_box"}]},{"additional_sections":{},"embeddable_display_mode":"stacked","is_completion":false,"is_hidden":false,"layout":"l-6040","name":null,"position":3,"show_info_assessment":true,"show_interactive":false,"show_introduction":true,"show_sidebar":false,"sidebar":null,"sidebar_title":"Did you know?","text":"\u003Cp\u003EWord\u003C/p\u003E","embeddables":[{"embeddable":{"plugin":{"description":null,"author_data":null,"approved_script_label":null},"is_hidden":false,"is_full_width":false,"type":"Embeddable::EmbeddablePlugin","ref_id":"396-Embeddable::EmbeddablePlugin"},"section":null}]}],"plugins":[{"description":"","author_data":"{ \"url\": \"https://models-resources.concord.org/glossary-resources/precipitating_change_glossary/V2PluginTestGlossary.json\" }","approved_script_label":"glossary"}],"type":"LightweightActivity","export_site":"Lightweight Activities Runtime and Authoring"}
+{
+  "description": "<p>This activity is meant to be used for testing the glossary prior to the V3 Plugin integration with the glossary, teacher edition, and the lara sharing feature.</p>",
+  "editor_mode": 0,
+  "external_report_url": "",
+  "layout": 0,
+  "name": "Scotts All Plugin Test",
+  "notes": "",
+  "project_id": 2,
+  "related": "",
+  "student_report_enabled": true,
+  "thumbnail_url": "",
+  "time_to_complete": null,
+  "version": 1,
+  "theme_name": "HAS Astro Dark",
+  "pages": [
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-full-width",
+      "name": "V2 Plugin Testing",
+      "position": 1,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_introduction": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "text": "<p>Glossary Test Page + Teacher Edition</p>",
+      "embeddables": [
+        {
+          "embeddable": {
+            "plugin": {
+              "description": "",
+              "author_data": "{\r\n  \"tipType\": \"questionWrapper\",\r\n  \"questionWrapper\": {\r\n    \"correctExplanation\": \"correct\",\r\n    \"distractorsExplanation\": \"distractor\",\r\n    \"exemplar\": \"exemplar\",\r\n    \"teacherTip\": \"teacherTip\",\r\n    \"teacherTipImageOverlay\": \"\"\r\n  },\r\n  \"windowShade\": {\r\n    \"windowShadeType\": \"teacherTip\",\r\n    \"layout\": \"mediaLeft\",\r\n    \"content\": \"This is something\",\r\n    \"content2\": \"\",\r\n    \"mediaType\": \"none\",\r\n    \"mediaCaption\": \"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\r\n    \"mediaURL\": \"\"\r\n  }\r\n}",
+              "approved_script_label": "teacherEditionTips"
+            },
+            "is_hidden": false,
+            "is_full_width": false,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "393-Embeddable::EmbeddablePlugin",
+            "embeddable_ref_id": "11946-Embeddable::MultipleChoice"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "custom": false,
+            "enable_check_answer": true,
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "layout": "vertical",
+            "multi_answer": false,
+            "name": "Multiple Choice Question element",
+            "prediction_feedback": "",
+            "prompt": "<p>Test to make sure MC teacher edition is behaving as expected (word)</p>",
+            "show_as_menu": false,
+            "show_in_featured_question_report": true,
+            "choices": [
+              {
+                "choice": "a",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "b",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "c",
+                "is_correct": false,
+                "prompt": ""
+              }
+            ],
+            "type": "Embeddable::MultipleChoice",
+            "ref_id": "11946-Embeddable::MultipleChoice"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "description": "",
+              "author_data": "{\r\n  \"tipType\": \"questionWrapper\",\r\n  \"questionWrapper\": {\r\n    \"correctExplanation\": \"correct\",\r\n    \"distractorsExplanation\": \"\",\r\n    \"exemplar\": \"\",\r\n    \"teacherTip\": \"teacher tip\",\r\n    \"teacherTipImageOverlay\": \"\"\r\n  },\r\n  \"windowShade\": {\r\n    \"windowShadeType\": \"teacherTip\",\r\n    \"layout\": \"mediaLeft\",\r\n    \"content\": \"This is something\",\r\n    \"content2\": \"\",\r\n    \"mediaType\": \"none\",\r\n    \"mediaCaption\": \"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\r\n    \"mediaURL\": \"\"\r\n  }\r\n}",
+              "approved_script_label": "teacherEditionTips"
+            },
+            "is_hidden": false,
+            "is_full_width": false,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "394-Embeddable::EmbeddablePlugin",
+            "embeddable_ref_id": "444540-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": "<p>Here is a hint</p>",
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "",
+            "prediction_feedback": "",
+            "prompt": "<p>Test to make sure open response teacher edition is behaving as expected (word)</p>",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "444540-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "description": "Window Shade Test",
+              "author_data": "{\r\n  \"tipType\": \"windowShade\",\r\n  \"windowShade\": {\r\n    \"windowShadeType\": \"theoryAndBackground\",\r\n    \"initialOpenState\": true,\r\n    \"content\": \"This is something\",\r\n    \"mediaCaption\": \"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\"\r\n  }\r\n}",
+              "approved_script_label": "teacherEditionTips"
+            },
+            "is_hidden": false,
+            "is_full_width": false,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "402-Embeddable::EmbeddablePlugin"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "description": "Interactive Wrapping tet",
+              "author_data": "{\r\n  \"tipType\": \"questionWrapper\",\r\n  \"questionWrapper\": {\r\n    \"correctExplanation\": \"\",\r\n    \"distractorsExplanation\": \"\",\r\n    \"exemplar\": \"\",\r\n    \"teacherTip\": \"Text below the interactive.\",\r\n    \"teacherTipImageOverlay\": \"https://placekitten.com/200/300\"\r\n  },\r\n  \"windowShade\": {\r\n    \"windowShadeType\": \"theoryAndBackground\",\r\n    \"initialOpenState\": true,\r\n    \"content\": \"This is something\",\r\n    \"mediaCaption\": \"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\"\r\n  }\r\n}",
+              "approved_script_label": "teacherEditionTips"
+            },
+            "is_hidden": false,
+            "is_full_width": false,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "579-Embeddable::EmbeddablePlugin",
+            "embeddable_ref_id": "209014-MwInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "DEFAULT",
+            "authored_state": null,
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "show_delete_data_button": false,
+            "show_in_featured_question_report": true,
+            "url": "https://concord.org",
+            "type": "MwInteractive",
+            "ref_id": "209014-MwInteractive"
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 2,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_introduction": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "text": "<p>Second page</p>",
+      "embeddables": [
+        {
+          "embeddable": {
+            "custom": false,
+            "enable_check_answer": true,
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "layout": "vertical",
+            "multi_answer": false,
+            "name": "Multiple Choice Question element",
+            "prediction_feedback": "",
+            "prompt": "<p>word</p>",
+            "show_as_menu": false,
+            "show_in_featured_question_report": true,
+            "choices": [
+              {
+                "choice": "a",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "b",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "c",
+                "is_correct": false,
+                "prompt": ""
+              }
+            ],
+            "type": "Embeddable::MultipleChoice",
+            "ref_id": "11947-Embeddable::MultipleChoice"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "description": "",
+              "author_data": "{ }",
+              "approved_script_label": "LaraSharingPlugin"
+            },
+            "is_hidden": false,
+            "is_full_width": false,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "395-Embeddable::EmbeddablePlugin",
+            "embeddable_ref_id": "208979-MwInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "DEFAULT",
+            "authored_state": null,
+            "click_to_play": true,
+            "click_to_play_prompt": "",
+            "enable_learner_state": true,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": "https://picsum.photos/200/300",
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "show_delete_data_button": true,
+            "show_in_featured_question_report": true,
+            "url": "https://document-store.concord.org/v2/documents/102456/autolaunch?server=https%3A%2F%2Fcodap.concord.org%2Freleases%2Flatest%2F&scaling",
+            "type": "MwInteractive",
+            "ref_id": "208979-MwInteractive"
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 3,
+      "show_info_assessment": true,
+      "show_interactive": false,
+      "show_introduction": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "text": "<p>Word</p>",
+      "embeddables": [
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": null,
+              "approved_script_label": null
+            },
+            "is_hidden": false,
+            "is_full_width": false,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "396-Embeddable::EmbeddablePlugin"
+          },
+          "section": null
+        }
+      ]
+    }
+  ],
+  "plugins": [
+    {
+      "description": "",
+      "author_data": "{ \"url\": \"https://models-resources.concord.org/glossary-resources/precipitating_change_glossary/V2PluginTestGlossary.json\" }",
+      "approved_script_label": "glossary"
+    }
+  ],
+  "type": "LightweightActivity",
+  "export_site": "Lightweight Activities Runtime and Authoring"
+}
