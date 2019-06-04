@@ -233,22 +233,22 @@ teachers.forEach((teacher) => {
     "Teacher Name",
     "TE Module Name",
     "Mode - TE or Preview",
-    "Sessions Launches",
+    "Sessions Launched",
     "Last Launch",
     "Activities Used",
     "Total Duration for Module"
   ];
 
   const teacherEditionPluginTypes: string[] = [
-    "QW-Correct",          // "Question Wrapper - Correct Tab",
-    "QW-Distractors",      // "Question Wrapper - Distractors Tab",
+    // "QW-Correct",          // "Question Wrapper - Correct Tab",
+    // "QW-Distractors",      // "Question Wrapper - Distractors Tab",
     "QW-Tip",              // "Question Wrapper - Teacher Tip Tab",
-    "QW-Exemplar",         // "Question Wrapper - Exemplar Tab",
-    "WS-Tip",              // "Window Shade - Teacher Tip",
-    "WS-Theory",           // "Window Shade - Theory & Background",
-    "WS-Discussion",       // "Window Shade - Discussion Points",
-    "WS-Deeper",           // "Window Shade - Digging Deeper",
-    "ST",                  // "Side Tip"
+    // "QW-Exemplar",         // "Question Wrapper - Exemplar Tab",
+    // "WS-Tip",              // "Window Shade - Teacher Tip",
+    // "WS-Theory",           // "Window Shade - Theory & Background",
+    // "WS-Discussion",       // "Window Shade - Discussion Points",
+    // "WS-Deeper",           // "Window Shade - Digging Deeper",
+    // "ST",                  // "Side Tip"
   ];
 
   const eventDescriptions: string[] = [
@@ -305,12 +305,38 @@ teachers.forEach((teacher) => {
          `,"tbd"`
          );
       if (_.uniq(teacherEditionSessions).length > 0)
-        report.push(line + ",\"TeacherEdition\"" +
+      {
+        // report.push(line + ",\"TeacherEdition\"" +
+        //  `,"${_.uniq(teacherEditionSessions).length.toString()}"` +
+        //  `,"${earliestTeacherEditionSessionEvent}"` +
+        //  `,"${activitiesUsedTeacherEdition.length.toString()}"` +
+        //  `,"bad time calculation"`
+        //  // Right here, need to append the rest of the fields,
+        //  // broken down by te widget and each column needed.
+
+        //  );
+         let qwTip: number[] = [ 8, 3, 3, 100 ];
+         // Can we count the number of QW-Tip tabs in this module?
+         module.activities.forEach((a) => {
+           console.log("\n" + module.name + ": " + a.name);
+           console.log(a.originalData.name);
+         });
+         //
+         relevantEvents.forEach((e) => {
+          const parsedEventType = /TeacherEdition\-(.+)\-(.+) (.+)/.exec(e.eventType);
+          if (parsedEventType !== null) 
+           console.log(e.moduleTypeID + JSON.stringify(parsedEventType))
+         })
+         report.push(line + ",\"TeacherEdition\"" +
          `,"${_.uniq(teacherEditionSessions).length.toString()}"` +
          `,"${earliestTeacherEditionSessionEvent}"` +
          `,"${activitiesUsedTeacherEdition.length.toString()}"` +
-         `,"tbd"`
+         `,"tbd"` +
+         // Right here, need to append the rest of the fields,
+         // broken down by te widget and each column needed.
+         `,"${qwTip.map(n => n.toString()).join("\",\"")}"`
          );
+        }
     });
   });
 
