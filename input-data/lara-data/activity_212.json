@@ -1,0 +1,177 @@
+{
+  "description": "",
+  "editor_mode": 0,
+  "external_report_url": null,
+  "layout": 1,
+  "name": "Scott Test",
+  "notes": "",
+  "project_id": null,
+  "related": "",
+  "student_report_enabled": true,
+  "thumbnail_url": "",
+  "time_to_complete": null,
+  "version": 1,
+  "theme_name": "RITES",
+  "pages": [
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 1,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_introduction": true,
+      "show_sidebar": true,
+      "sidebar": "",
+      "sidebar_title": "No I didn't",
+      "text": null,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "Blah Blah",
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "Text Stuff",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "1717-Embeddable::Xhtml"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "MANUAL",
+            "authored_state": null,
+            "click_to_play": true,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": "https://learn.staging.concord.org/images/37/view",
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "Test interactive",
+            "native_height": 435,
+            "native_width": 576,
+            "show_delete_data_button": true,
+            "show_in_featured_question_report": true,
+            "url": "https://models-resources.concord.org/dataset-sync-wrapper/index.html?globalStateKey=prediction-II&interactive=https%3A%2F%2Flab.concord.org%2Fembeddable-dev.html%23interactives%2Fitsi%2Fsensor%2Fprediction-prediction.json",
+            "type": "MwInteractive",
+            "ref_id": "1275-MwInteractive"
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": null,
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 2,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_introduction": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "text": null,
+      "embeddables": [
+        {
+          "embeddable": {
+            "bg_source": "Shutterbug",
+            "bg_url": "",
+            "drawing_prompt": "this is the drawing prompt",
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "",
+            "prediction_feedback": "",
+            "prompt": "this is the question prompt",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::ImageQuestion",
+            "ref_id": "593-Embeddable::ImageQuestion",
+            "interactive_ref_id": "751-MwInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "MANUAL",
+            "authored_state": null,
+            "click_to_play": true,
+            "click_to_play_prompt": null,
+            "enable_learner_state": true,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": "https://learn.staging.concord.org/images/37/view",
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "show_delete_data_button": true,
+            "show_in_featured_question_report": true,
+            "url": "https://models-resources.concord.org/dataset-sync-wrapper/index.html?globalStateKey=prediction-II&loadOnly=true&datasetName=sensor-dataset&interactive=https%3A%2F%2Flab.concord.org%2Fembeddable-dev.html%23interactives%2Fitsi%2Fsensor%2Fsensor-connector.json",
+            "type": "MwInteractive",
+            "ref_id": "751-MwInteractive"
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 3,
+      "show_info_assessment": false,
+      "show_interactive": true,
+      "show_introduction": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "text": null,
+      "embeddables": [
+        {
+          "embeddable": {
+            "aspect_ratio_method": "MANUAL",
+            "authored_state": null,
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "show_delete_data_button": true,
+            "show_in_featured_question_report": true,
+            "url": "http://concord-consortium.github.io/lara-interactive-api/iframe.html",
+            "type": "MwInteractive",
+            "ref_id": "1276-MwInteractive"
+          },
+          "section": "interactive_box"
+        }
+      ]
+    }
+  ],
+  "plugins": [],
+  "type": "LightweightActivity",
+  "export_site": "Lightweight Activities Runtime and Authoring"
+}

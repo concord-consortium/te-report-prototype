@@ -1,0 +1,1461 @@
+{
+  "description": "Design, build, and test a solar oven.",
+  "editor_mode": 1,
+  "external_report_url": null,
+  "layout": 1,
+  "name": "Import of Solar Oven (149)",
+  "notes": null,
+  "project_id": null,
+  "related": null,
+  "student_report_enabled": true,
+  "thumbnail_url": null,
+  "time_to_complete": null,
+  "version": 1,
+  "theme_name": "ITSI",
+  "pages": [
+    {
+      "additional_sections": null,
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 1,
+      "show_info_assessment": false,
+      "show_interactive": false,
+      "show_introduction": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "text": null,
+      "embeddables": [
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "Explain how you think a solar ...",
+            "prediction_feedback": null,
+            "prompt": "<p>Explain how you think a solar cooker could help change people's lives.</p>",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "60044-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": true,
+            "is_prediction": false,
+            "name": "You can use HTML content ...",
+            "prediction_feedback": null,
+            "prompt": "  <p>You can use HTML content to <b>write</b> the prompt of the question ...</p>\n",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "60045-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "bg_source": "Drawing",
+            "bg_url": null,
+            "drawing_prompt": null,
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": true,
+            "is_prediction": false,
+            "name": "drawing response",
+            "prediction_feedback": null,
+            "prompt": "",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::ImageQuestion",
+            "ref_id": "27759-Embeddable::ImageQuestion"
+          },
+          "section": null
+        }
+      ]
+    },
+    {
+      "additional_sections": null,
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 2,
+      "show_info_assessment": false,
+      "show_interactive": false,
+      "show_introduction": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "text": null,
+      "embeddables": []
+    },
+    {
+      "additional_sections": null,
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 3,
+      "show_info_assessment": false,
+      "show_interactive": false,
+      "show_introduction": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "text": null,
+      "embeddables": [
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": true,
+            "is_prediction": false,
+            "name": "You can use HTML content ...",
+            "prediction_feedback": null,
+            "prompt": "  <p>You can use HTML content to <b>write</b> the prompt of the question ...</p>\n",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "60046-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": true,
+            "is_prediction": false,
+            "name": "You can use HTML content ...",
+            "prediction_feedback": null,
+            "prompt": "  <p>You can use HTML content to <b>write</b> the prompt of the question ...</p>\n",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "60047-Embeddable::OpenResponse"
+          },
+          "section": null
+        }
+      ]
+    },
+    {
+      "additional_sections": null,
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 4,
+      "show_info_assessment": false,
+      "show_interactive": false,
+      "show_introduction": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "text": null,
+      "embeddables": []
+    },
+    {
+      "additional_sections": null,
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 5,
+      "show_info_assessment": false,
+      "show_interactive": false,
+      "show_introduction": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "text": null,
+      "embeddables": []
+    },
+    {
+      "additional_sections": null,
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 6,
+      "show_info_assessment": false,
+      "show_interactive": false,
+      "show_introduction": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "text": null,
+      "embeddables": [
+        {
+          "embeddable": {
+            "bg_source": "Drawing",
+            "bg_url": null,
+            "drawing_prompt": null,
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": true,
+            "is_prediction": false,
+            "name": "drawing response",
+            "prediction_feedback": null,
+            "prompt": "",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::ImageQuestion",
+            "ref_id": "27760-Embeddable::ImageQuestion"
+          },
+          "section": null
+        }
+      ]
+    },
+    {
+      "additional_sections": null,
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 7,
+      "show_info_assessment": false,
+      "show_interactive": true,
+      "show_introduction": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "text": null,
+      "embeddables": [
+        {
+          "embeddable": {
+            "action_type": 1,
+            "custom_action_label": null,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "Labbook album",
+            "prompt": "<p>Take a snapshot and upload it to your Snapshot Album by clicking the \"<em>Take a Snapshot</em>\" button.\n&nbsp;To browse your Snapshot Album, click the album icon.\nA snapshot must be included for the activity to show as completed.</p>\n",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::Labbook",
+            "ref_id": "26827-Embeddable::Labbook",
+            "interactive_ref_id": "27584-MwInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "bg_source": "Drawing",
+            "bg_url": null,
+            "drawing_prompt": null,
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": true,
+            "is_prediction": false,
+            "name": "drawn prediction",
+            "prediction_feedback": null,
+            "prompt": "",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::ImageQuestion",
+            "ref_id": "27761-Embeddable::ImageQuestion",
+            "interactive_ref_id": "27584-MwInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "How warm do you think you ...",
+            "prediction_feedback": null,
+            "prompt": "<p>How warm do you think you can make your solar cooker? Hot enough to warm  up a cookie (60 &deg;C)? Hot enough to boil water (100 &deg;C)? Hot enough to  cook an egg (150 &deg;C)? Guess what you think the maximum temperature  will be.</p>",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "60048-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "MANUAL",
+            "authored_state": null,
+            "click_to_play": true,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": "http://itsisu.concord.org/share/model_images/prediction_graph.png",
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "Temperature Data Collector",
+            "native_height": 435,
+            "native_width": 576,
+            "show_delete_data_button": true,
+            "show_in_featured_question_report": true,
+            "url": "//models-resources.concord.org/dataset-sync-wrapper/index.html?globalStateKey=Prediction+I&interactive=%2F%2Flab.concord.org%2Fembeddable-dev.html%23interactives%2Fitsi%2Fsensor%2Fprediction-temperature.json",
+            "type": "MwInteractive",
+            "ref_id": "27584-MwInteractive"
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": null,
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 8,
+      "show_info_assessment": false,
+      "show_interactive": true,
+      "show_introduction": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "text": null,
+      "embeddables": [
+        {
+          "embeddable": {
+            "action_type": 1,
+            "custom_action_label": null,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "Labbook album",
+            "prompt": "<p>Take a snapshot and upload it to your Snapshot Album by clicking the \"<em>Take a Snapshot</em>\" button.\n&nbsp;To browse your Snapshot Album, click the album icon.\nA snapshot must be included for the activity to show as completed.</p>\n",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::Labbook",
+            "ref_id": "26828-Embeddable::Labbook",
+            "interactive_ref_id": "27585-MwInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "action_type": 1,
+            "custom_action_label": null,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": true,
+            "name": "Labbook album",
+            "prompt": "<p>Take a snapshot and upload it to your Snapshot Album by clicking the \"<em>Take a Snapshot</em>\" button.\n&nbsp;To browse your Snapshot Album, click the album icon.\nA snapshot must be included for the activity to show as completed.</p>\n",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::Labbook",
+            "ref_id": "26829-Embeddable::Labbook",
+            "interactive_ref_id": "27586-MwInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "Describe your graph. What ...",
+            "prediction_feedback": null,
+            "prompt": "<p>Describe your graph. What was its shape? What was the maximum temperature of your oven?</p>",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "60049-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": true,
+            "is_prediction": false,
+            "name": "You can use HTML content ...",
+            "prediction_feedback": null,
+            "prompt": "  <p>You can use HTML content to <b>write</b> the prompt of the question ...</p>\n",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "60050-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "bg_source": "Drawing",
+            "bg_url": null,
+            "drawing_prompt": null,
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": true,
+            "is_prediction": false,
+            "name": "drawing response",
+            "prediction_feedback": null,
+            "prompt": "",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::ImageQuestion",
+            "ref_id": "27762-Embeddable::ImageQuestion",
+            "interactive_ref_id": "27585-MwInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "MANUAL",
+            "authored_state": null,
+            "click_to_play": true,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": "http://itsisu.concord.org/share/model_images/sensor_graph.png",
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "Temperature Data Collector",
+            "native_height": 435,
+            "native_width": 576,
+            "show_delete_data_button": true,
+            "show_in_featured_question_report": true,
+            "url": "//models-resources.concord.org/dataset-sync-wrapper/index.html?datasetName=sensor-dataset&globalStateKey=Prediction+I&interactive=%2F%2Flab.concord.org%2Fembeddable-dev.html%23interactives%2Fitsi%2Fsensor%2Fsensor-connector.json&loadOnly=true",
+            "type": "MwInteractive",
+            "ref_id": "27585-MwInteractive"
+          },
+          "section": "interactive_box"
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "MANUAL",
+            "authored_state": null,
+            "click_to_play": true,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": "",
+            "is_full_width": true,
+            "is_hidden": true,
+            "model_library_url": null,
+            "name": "(no model)",
+            "native_height": 400,
+            "native_width": 690,
+            "show_delete_data_button": true,
+            "show_in_featured_question_report": true,
+            "url": null,
+            "type": "MwInteractive",
+            "ref_id": "27586-MwInteractive"
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": null,
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 9,
+      "show_info_assessment": false,
+      "show_interactive": true,
+      "show_introduction": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "text": null,
+      "embeddables": [
+        {
+          "embeddable": {
+            "action_type": 1,
+            "custom_action_label": null,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": true,
+            "name": "Labbook album",
+            "prompt": "<p>Take a snapshot and upload it to your Snapshot Album by clicking the \"<em>Take a Snapshot</em>\" button.\n&nbsp;To browse your Snapshot Album, click the album icon.\nA snapshot must be included for the activity to show as completed.</p>\n",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::Labbook",
+            "ref_id": "26830-Embeddable::Labbook",
+            "interactive_ref_id": "27587-MwInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "bg_source": "Drawing",
+            "bg_url": null,
+            "drawing_prompt": null,
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": true,
+            "is_prediction": false,
+            "name": "drawn prediction",
+            "prediction_feedback": null,
+            "prompt": "",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::ImageQuestion",
+            "ref_id": "27763-Embeddable::ImageQuestion"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": true,
+            "is_prediction": false,
+            "name": "You can use HTML content ...",
+            "prediction_feedback": null,
+            "prompt": "  <p>You can use HTML content to <b>write</b> the prompt of the question ...</p>\n",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "60051-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "MANUAL",
+            "authored_state": null,
+            "click_to_play": true,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": "http://itsisu.concord.org/share/model_images/prediction_graph.png",
+            "is_full_width": true,
+            "is_hidden": true,
+            "model_library_url": null,
+            "name": "Temperature Data Collector",
+            "native_height": 435,
+            "native_width": 576,
+            "show_delete_data_button": true,
+            "show_in_featured_question_report": true,
+            "url": "//models-resources.concord.org/dataset-sync-wrapper/index.html?globalStateKey=Prediction+II&interactive=%2F%2Flab.concord.org%2Fembeddable-dev.html%23interactives%2Fitsi%2Fsensor%2Fprediction-temperature.json",
+            "type": "MwInteractive",
+            "ref_id": "27587-MwInteractive"
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": null,
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 10,
+      "show_info_assessment": false,
+      "show_interactive": true,
+      "show_introduction": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "text": null,
+      "embeddables": [
+        {
+          "embeddable": {
+            "action_type": 1,
+            "custom_action_label": null,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "Labbook album",
+            "prompt": "<p>Take a snapshot and upload it to your Snapshot Album by clicking the \"<em>Take a Snapshot</em>\" button.\n&nbsp;To browse your Snapshot Album, click the album icon.\nA snapshot must be included for the activity to show as completed.</p>\n",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::Labbook",
+            "ref_id": "26831-Embeddable::Labbook",
+            "interactive_ref_id": "27588-MwInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "action_type": 1,
+            "custom_action_label": null,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": true,
+            "name": "Labbook album",
+            "prompt": "<p>Take a snapshot and upload it to your Snapshot Album by clicking the \"<em>Take a Snapshot</em>\" button.\n&nbsp;To browse your Snapshot Album, click the album icon.\nA snapshot must be included for the activity to show as completed.</p>\n",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::Labbook",
+            "ref_id": "26832-Embeddable::Labbook",
+            "interactive_ref_id": "27589-MwInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "What was the maximum temperature ...",
+            "prediction_feedback": null,
+            "prompt": "<p>What was the maximum temperature of your oven?</p>",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "60052-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": true,
+            "is_prediction": false,
+            "name": "You can use HTML content ...",
+            "prediction_feedback": null,
+            "prompt": "  <p>You can use HTML content to <b>write</b> the prompt of the question ...</p>\n",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "60053-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "bg_source": "Drawing",
+            "bg_url": null,
+            "drawing_prompt": null,
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": true,
+            "is_prediction": false,
+            "name": "drawing response",
+            "prediction_feedback": null,
+            "prompt": "",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::ImageQuestion",
+            "ref_id": "27764-Embeddable::ImageQuestion",
+            "interactive_ref_id": "27588-MwInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "MANUAL",
+            "authored_state": null,
+            "click_to_play": true,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": "http://itsisu.concord.org/share/model_images/sensor_graph.png",
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "Temperature Data Collector",
+            "native_height": 435,
+            "native_width": 576,
+            "show_delete_data_button": true,
+            "show_in_featured_question_report": true,
+            "url": "//models-resources.concord.org/dataset-sync-wrapper/index.html?datasetName=sensor-dataset&globalStateKey=Prediction+II&interactive=%2F%2Flab.concord.org%2Fembeddable-dev.html%23interactives%2Fitsi%2Fsensor%2Fsensor-connector.json&loadOnly=true",
+            "type": "MwInteractive",
+            "ref_id": "27588-MwInteractive"
+          },
+          "section": "interactive_box"
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "MANUAL",
+            "authored_state": null,
+            "click_to_play": true,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": "",
+            "is_full_width": true,
+            "is_hidden": true,
+            "model_library_url": null,
+            "name": "(no model)",
+            "native_height": 400,
+            "native_width": 690,
+            "show_delete_data_button": true,
+            "show_in_featured_question_report": true,
+            "url": null,
+            "type": "MwInteractive",
+            "ref_id": "27589-MwInteractive"
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": null,
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 11,
+      "show_info_assessment": false,
+      "show_interactive": true,
+      "show_introduction": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "text": null,
+      "embeddables": [
+        {
+          "embeddable": {
+            "action_type": 1,
+            "custom_action_label": null,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": true,
+            "name": "Labbook album",
+            "prompt": "<p>Take a snapshot and upload it to your Snapshot Album by clicking the \"<em>Take a Snapshot</em>\" button.\n&nbsp;To browse your Snapshot Album, click the album icon.\nA snapshot must be included for the activity to show as completed.</p>\n",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::Labbook",
+            "ref_id": "26833-Embeddable::Labbook",
+            "interactive_ref_id": "27590-MwInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "bg_source": "Drawing",
+            "bg_url": null,
+            "drawing_prompt": null,
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": true,
+            "is_prediction": false,
+            "name": "drawn prediction",
+            "prediction_feedback": null,
+            "prompt": "",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::ImageQuestion",
+            "ref_id": "27765-Embeddable::ImageQuestion"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": true,
+            "is_prediction": false,
+            "name": "How could you use insulation ...",
+            "prediction_feedback": null,
+            "prompt": "<p>How could you use insulation to increase the temperature of your cooker? What could you use as insulation?</p>",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "60054-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "MANUAL",
+            "authored_state": null,
+            "click_to_play": true,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": "http://itsisu.concord.org/share/model_images/prediction_graph.png",
+            "is_full_width": true,
+            "is_hidden": true,
+            "model_library_url": null,
+            "name": "Temperature Data Collector",
+            "native_height": 435,
+            "native_width": 576,
+            "show_delete_data_button": true,
+            "show_in_featured_question_report": true,
+            "url": "//models-resources.concord.org/dataset-sync-wrapper/index.html?globalStateKey=Prediction+III&interactive=%2F%2Flab.concord.org%2Fembeddable-dev.html%23interactives%2Fitsi%2Fsensor%2Fprediction-temperature.json",
+            "type": "MwInteractive",
+            "ref_id": "27590-MwInteractive"
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": null,
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 12,
+      "show_info_assessment": false,
+      "show_interactive": true,
+      "show_introduction": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "text": null,
+      "embeddables": [
+        {
+          "embeddable": {
+            "action_type": 1,
+            "custom_action_label": null,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "Labbook album",
+            "prompt": "<p>Take a snapshot and upload it to your Snapshot Album by clicking the \"<em>Take a Snapshot</em>\" button.\n&nbsp;To browse your Snapshot Album, click the album icon.\nA snapshot must be included for the activity to show as completed.</p>\n",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::Labbook",
+            "ref_id": "26834-Embeddable::Labbook",
+            "interactive_ref_id": "27591-MwInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "action_type": 1,
+            "custom_action_label": null,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": true,
+            "name": "Labbook album",
+            "prompt": "<p>Take a snapshot and upload it to your Snapshot Album by clicking the \"<em>Take a Snapshot</em>\" button.\n&nbsp;To browse your Snapshot Album, click the album icon.\nA snapshot must be included for the activity to show as completed.</p>\n",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::Labbook",
+            "ref_id": "26835-Embeddable::Labbook",
+            "interactive_ref_id": "27592-MwInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "Was your oven hot enough ...",
+            "prediction_feedback": null,
+            "prompt": "<p>Was your oven hot enough to melt the chocolate chips?</p>",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "60055-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": true,
+            "is_prediction": false,
+            "name": "You can use HTML content ...",
+            "prediction_feedback": null,
+            "prompt": "  <p>You can use HTML content to <b>write</b> the prompt of the question ...</p>\n",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "60056-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "bg_source": "Drawing",
+            "bg_url": null,
+            "drawing_prompt": null,
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": true,
+            "is_prediction": false,
+            "name": "drawing response",
+            "prediction_feedback": null,
+            "prompt": "",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::ImageQuestion",
+            "ref_id": "27766-Embeddable::ImageQuestion",
+            "interactive_ref_id": "27591-MwInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "MANUAL",
+            "authored_state": null,
+            "click_to_play": true,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": "http://itsisu.concord.org/share/model_images/sensor_graph.png",
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "Temperature Data Collector",
+            "native_height": 435,
+            "native_width": 576,
+            "show_delete_data_button": true,
+            "show_in_featured_question_report": true,
+            "url": "//models-resources.concord.org/dataset-sync-wrapper/index.html?datasetName=sensor-dataset&globalStateKey=Prediction+III&interactive=%2F%2Flab.concord.org%2Fembeddable-dev.html%23interactives%2Fitsi%2Fsensor%2Fsensor-connector.json&loadOnly=true",
+            "type": "MwInteractive",
+            "ref_id": "27591-MwInteractive"
+          },
+          "section": "interactive_box"
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "MANUAL",
+            "authored_state": null,
+            "click_to_play": true,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": "",
+            "is_full_width": true,
+            "is_hidden": true,
+            "model_library_url": null,
+            "name": "(no model)",
+            "native_height": 400,
+            "native_width": 690,
+            "show_delete_data_button": true,
+            "show_in_featured_question_report": true,
+            "url": null,
+            "type": "MwInteractive",
+            "ref_id": "27592-MwInteractive"
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": null,
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 13,
+      "show_info_assessment": false,
+      "show_interactive": false,
+      "show_introduction": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "text": null,
+      "embeddables": [
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "1.",
+            "prediction_feedback": null,
+            "prompt": "<p>1.\t<span>What would you do next to improve your solar oven? Make a drawing of your best idea for a solar oven design.</span></p>",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "60057-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "bg_source": "Drawing",
+            "bg_url": null,
+            "drawing_prompt": null,
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "drawing response",
+            "prediction_feedback": null,
+            "prompt": "",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::ImageQuestion",
+            "ref_id": "27767-Embeddable::ImageQuestion"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "2.\tWhat was the maximum temperat ...",
+            "prediction_feedback": null,
+            "prompt": "<p>2.\tWhat was the maximum temperature of your oven? Explain what features worked well to increase the temperature.</p>",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "60058-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "3.\t Explain what features ...",
+            "prediction_feedback": null,
+            "prompt": "<p>3.\t Explain what features worked well to increase the temperature.</p>",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "60059-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "4. Which meals would work ...",
+            "prediction_feedback": null,
+            "prompt": "<p>4. Which meals would work the best in a solar oven?</p>",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "60060-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": true,
+            "is_prediction": false,
+            "name": "You can use HTML content ...",
+            "prediction_feedback": null,
+            "prompt": "  <p>You can use HTML content to <b>write</b> the prompt of the question ...</p>\n",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "60061-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": true,
+            "is_prediction": false,
+            "name": "You can use HTML content ...",
+            "prediction_feedback": null,
+            "prompt": "  <p>You can use HTML content to <b>write</b> the prompt of the question ...</p>\n",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "60062-Embeddable::OpenResponse"
+          },
+          "section": null
+        }
+      ]
+    },
+    {
+      "additional_sections": null,
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 14,
+      "show_info_assessment": false,
+      "show_interactive": false,
+      "show_introduction": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "text": null,
+      "embeddables": [
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "Is sunshine a good choice ...",
+            "prediction_feedback": null,
+            "prompt": "<p>Is sunshine a good choice for cooking foods?</p>",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "60063-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "bg_source": "Drawing",
+            "bg_url": null,
+            "drawing_prompt": null,
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": true,
+            "is_prediction": false,
+            "name": "drawing response",
+            "prediction_feedback": null,
+            "prompt": "",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::ImageQuestion",
+            "ref_id": "27768-Embeddable::ImageQuestion"
+          },
+          "section": null
+        }
+      ]
+    },
+    {
+      "additional_sections": null,
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 15,
+      "show_info_assessment": false,
+      "show_interactive": false,
+      "show_introduction": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "text": null,
+      "embeddables": [
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "What is another way you could ...",
+            "prediction_feedback": null,
+            "prompt": "<p>What is another way you could cook without polluting the Earth?</p>",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "60064-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "What kind of food would you ...",
+            "prediction_feedback": null,
+            "prompt": "<p>What kind of food would you want to work with if you were a food scientist?</p>",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "60065-Embeddable::OpenResponse"
+          },
+          "section": null
+        }
+      ]
+    },
+    {
+      "additional_sections": null,
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 16,
+      "show_info_assessment": false,
+      "show_interactive": true,
+      "show_introduction": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "text": null,
+      "embeddables": [
+        {
+          "embeddable": {
+            "action_type": 1,
+            "custom_action_label": null,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": true,
+            "name": "Labbook album",
+            "prompt": "<p>Take a snapshot and upload it to your Snapshot Album by clicking the \"<em>Take a Snapshot</em>\" button.\n&nbsp;To browse your Snapshot Album, click the album icon.\nA snapshot must be included for the activity to show as completed.</p>\n",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::Labbook",
+            "ref_id": "26836-Embeddable::Labbook",
+            "interactive_ref_id": "27593-MwInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "bg_source": "Drawing",
+            "bg_url": null,
+            "drawing_prompt": null,
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": true,
+            "is_prediction": false,
+            "name": "drawn prediction",
+            "prediction_feedback": null,
+            "prompt": "",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::ImageQuestion",
+            "ref_id": "27769-Embeddable::ImageQuestion"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": true,
+            "is_prediction": false,
+            "name": "You can use HTML content ...",
+            "prediction_feedback": null,
+            "prompt": "  <p>You can use HTML content to <b>write</b> the prompt of the question ...</p>\n",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "60066-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "MANUAL",
+            "authored_state": null,
+            "click_to_play": true,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": "http://itsisu.concord.org/share/model_images/prediction_graph.png",
+            "is_full_width": true,
+            "is_hidden": true,
+            "model_library_url": null,
+            "name": "Temperature Data Collector",
+            "native_height": 435,
+            "native_width": 576,
+            "show_delete_data_button": true,
+            "show_in_featured_question_report": true,
+            "url": "//models-resources.concord.org/dataset-sync-wrapper/index.html?globalStateKey=Prediction+IV&interactive=%2F%2Flab.concord.org%2Fembeddable-dev.html%23interactives%2Fitsi%2Fsensor%2Fprediction-temperature.json",
+            "type": "MwInteractive",
+            "ref_id": "27593-MwInteractive"
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": null,
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 17,
+      "show_info_assessment": false,
+      "show_interactive": true,
+      "show_introduction": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "text": null,
+      "embeddables": [
+        {
+          "embeddable": {
+            "action_type": 1,
+            "custom_action_label": null,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "Labbook album",
+            "prompt": "<p>Take a snapshot and upload it to your Snapshot Album by clicking the \"<em>Take a Snapshot</em>\" button.\n&nbsp;To browse your Snapshot Album, click the album icon.\nA snapshot must be included for the activity to show as completed.</p>\n",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::Labbook",
+            "ref_id": "26837-Embeddable::Labbook",
+            "interactive_ref_id": "27594-MwInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "action_type": 1,
+            "custom_action_label": null,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": true,
+            "name": "Labbook album",
+            "prompt": "<p>Take a snapshot and upload it to your Snapshot Album by clicking the \"<em>Take a Snapshot</em>\" button.\n&nbsp;To browse your Snapshot Album, click the album icon.\nA snapshot must be included for the activity to show as completed.</p>\n",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::Labbook",
+            "ref_id": "26838-Embeddable::Labbook",
+            "interactive_ref_id": "27595-MwInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "Report on your results.",
+            "prediction_feedback": null,
+            "prompt": "<p>Report on your results.</p>\n<p>Make a drawing of your design.</p>",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "60067-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": true,
+            "is_prediction": false,
+            "name": "You can use HTML content ...",
+            "prediction_feedback": null,
+            "prompt": "  <p>You can use HTML content to <b>write</b> the prompt of the question ...</p>\n",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "60068-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "bg_source": "Drawing",
+            "bg_url": "",
+            "drawing_prompt": null,
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "drawing response",
+            "prediction_feedback": null,
+            "prompt": "",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::ImageQuestion",
+            "ref_id": "27770-Embeddable::ImageQuestion",
+            "interactive_ref_id": "27594-MwInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "MANUAL",
+            "authored_state": null,
+            "click_to_play": true,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": "http://itsisu.concord.org/share/model_images/sensor_graph.png",
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "Temperature Data Collector",
+            "native_height": 435,
+            "native_width": 576,
+            "show_delete_data_button": true,
+            "show_in_featured_question_report": true,
+            "url": "//models-resources.concord.org/dataset-sync-wrapper/index.html?datasetName=sensor-dataset&globalStateKey=Prediction+IV&interactive=%2F%2Flab.concord.org%2Fembeddable-dev.html%23interactives%2Fitsi%2Fsensor%2Fsensor-connector.json&loadOnly=true",
+            "type": "MwInteractive",
+            "ref_id": "27594-MwInteractive"
+          },
+          "section": "interactive_box"
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "MANUAL",
+            "authored_state": null,
+            "click_to_play": true,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": "",
+            "is_full_width": true,
+            "is_hidden": true,
+            "model_library_url": null,
+            "name": "(no model)",
+            "native_height": 400,
+            "native_width": 690,
+            "show_delete_data_button": true,
+            "show_in_featured_question_report": true,
+            "url": null,
+            "type": "MwInteractive",
+            "ref_id": "27595-MwInteractive"
+          },
+          "section": "interactive_box"
+        }
+      ]
+    }
+  ],
+  "plugins": [],
+  "type": "LightweightActivity",
+  "export_site": "Lightweight Activities Runtime and Authoring"
+}

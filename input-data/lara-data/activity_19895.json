@@ -1,0 +1,168 @@
+{
+  "description": "",
+  "editor_mode": 0,
+  "external_report_url": "",
+  "layout": 0,
+  "name": "Interleaved Interactives",
+  "notes": "",
+  "project_id": null,
+  "related": "",
+  "student_report_enabled": true,
+  "thumbnail_url": "",
+  "time_to_complete": null,
+  "version": 1,
+  "theme_name": "HAS National Geographic: Water",
+  "pages": [
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-full-width",
+      "name": null,
+      "position": 1,
+      "show_info_assessment": true,
+      "show_interactive": false,
+      "show_introduction": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "text": "<p>This page has multiple interactives and they are interleaved with questions and other text.</p>",
+      "embeddables": [
+        {
+          "embeddable": {
+            "custom": false,
+            "enable_check_answer": true,
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "layout": "vertical",
+            "multi_answer": false,
+            "name": "Multiple Choice Question element",
+            "prediction_feedback": null,
+            "prompt": "why does ...",
+            "show_as_menu": false,
+            "show_in_featured_question_report": true,
+            "choices": [
+              {
+                "choice": "a",
+                "is_correct": null,
+                "prompt": null
+              },
+              {
+                "choice": "b",
+                "is_correct": null,
+                "prompt": null
+              },
+              {
+                "choice": "c",
+                "is_correct": null,
+                "prompt": null
+              }
+            ],
+            "type": "Embeddable::MultipleChoice",
+            "ref_id": "11470-Embeddable::MultipleChoice"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "content": "<p>Watch the video below.</p>",
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "3328-Embeddable::Xhtml"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "caption": "",
+            "credit": "",
+            "height": 240,
+            "is_full_width": true,
+            "is_hidden": false,
+            "poster_url": "",
+            "width": 556,
+            "sources": [
+              {
+                "format": "video/mp4",
+                "url": "http://resources.has.concord.org/resources/Shale-gas/CoalPlantTVA.mp4"
+              }
+            ],
+            "type": "VideoInteractive",
+            "ref_id": "186-VideoInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "bg_source": "Shutterbug",
+            "bg_url": "",
+            "drawing_prompt": "<p>Draw some circles.</p>",
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "",
+            "prediction_feedback": "",
+            "prompt": "<p>why does ...</p>",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::ImageQuestion",
+            "ref_id": "210795-Embeddable::ImageQuestion",
+            "interactive_ref_id": "186-VideoInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": null,
+            "give_prediction_feedback": false,
+            "hint": null,
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": null,
+            "prediction_feedback": null,
+            "prompt": "why does ...",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "442841-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "MANUAL",
+            "authored_state": null,
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "Number vs. Volume",
+            "native_height": 435,
+            "native_width": 800,
+            "show_delete_data_button": false,
+            "show_in_featured_question_report": true,
+            "url": "https://lab.concord.org/embeddable.html#interactives/sam/gas-laws/6-number-volume-relationship.json",
+            "type": "MwInteractive",
+            "ref_id": "207874-MwInteractive"
+          },
+          "section": null
+        }
+      ]
+    }
+  ],
+  "plugins": [],
+  "type": "LightweightActivity",
+  "export_site": "Lightweight Activities Runtime and Authoring"
+}

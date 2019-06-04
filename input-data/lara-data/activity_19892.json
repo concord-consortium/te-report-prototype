@@ -1,0 +1,90 @@
+{
+  "description": "",
+  "editor_mode": 0,
+  "external_report_url": "",
+  "layout": 0,
+  "name": "Scott Responsive Layout Test",
+  "notes": "",
+  "project_id": null,
+  "related": "",
+  "student_report_enabled": true,
+  "thumbnail_url": "",
+  "time_to_complete": null,
+  "version": 1,
+  "theme_name": null,
+  "pages": [
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "carousel",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-responsive",
+      "name": null,
+      "position": 1,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_introduction": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "text": "<p>Some intro.</p>",
+      "embeddables": [
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "",
+            "prediction_feedback": "",
+            "prompt": "<p>Fill in some text here!!!</p>",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "442838-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "content": "<p>Random extra text!!</p>",
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "3325-Embeddable::Xhtml"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "MANUAL",
+            "authored_state": null,
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "show_delete_data_button": false,
+            "show_in_featured_question_report": true,
+            "url": "https://concord.org",
+            "type": "MwInteractive",
+            "ref_id": "207867-MwInteractive"
+          },
+          "section": "interactive_box"
+        }
+      ]
+    }
+  ],
+  "plugins": [],
+  "type": "LightweightActivity",
+  "export_site": "Lightweight Activities Runtime and Authoring"
+}
