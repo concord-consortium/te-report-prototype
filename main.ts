@@ -1,6 +1,8 @@
 import * as fs from "fs";
 import * as _ from "lodash";
 import { convertArrayToCSV } from "convert-array-to-csv";
+import { TimeSpan } from "timespan";
+import { IAuthoredQuestionWrapper } from "./types";
 
 // Prototype for Teacher Edition research report.
 //
@@ -12,24 +14,15 @@ import { convertArrayToCSV } from "convert-array-to-csv";
 // "resource". I've tried to use "module" consistently throughout this prototype.
 //
 // Notes of things to do:
-//  [x] Find a CSV npm module.
-//  [ ] Sanitize all CSV output to handle special characters.
-//  [ ] Refactor common logic between TE-mode & preview mode.
-//  [ ] Refactor everything after all reports can be generated.
-//  [ ] Convert time/data displays to the preferred format.
-//  [ ] Make a pass to verify exact labels of columns.
-//  [ ] Sanity check the dates of the multi session launch times. Doesn't look
-//      right when there are more than 1 sessions in the reportableSessions lists.
-//  [ ] Fetch LARA data from an actual service -- something like:
-//      authoring.staging.concord.com/[activities|sequences]/45678/export => JSON response.
-//  [ ] Fetch user data from an actual service.
-//  [ ] Hook up to the launch button.
-//  [ ] Remove all the debugging/console log messages.
-//  [ ] Verify each reportable event-type generated in plug-in.
-//  [ ] Testing w/ large data (get several people to pound on it) and get a big
-//      log. (What's typical big log -- 1,000,000 events?)
-//  [ ] Unit or integration tests?
-
+//  -- To fetch LARA data from an actual service -- something like:
+//     authoring.staging.concord.com/[activities|sequences]/45678/export => JSON response.
+//  -- Don't forget to make a pass to remove all console messages, and fix all
+//     lint problems.
+//  -- Refactor everything after all reports can be generated.
+//  -- Make a pass to verify exact labels of columns.
+//  -- Sanity check the dates of the multi session launch times. Doesn't look
+//     right when there are more than 1 sessions in the reportableSessions lists.
+//  -- Verify each reportable event-type generated in plug-in.
 
 // Interfaces
 // ==========
@@ -76,13 +69,14 @@ interface IModule {
 
 interface IActivity {
   name: string;                 // The name of a particular activity.
-  plugins: IPlugin[];           // List of all TE plugins in this sequence's
-                                //  . activities, pages, and embeddables.
+  plugins: IPlugin[];           // List of all TE plugins in this.
   dirtBag: any;                 // The original activity structure from LARA.
 }
 
 interface IPlugin {
-  tipType: string;
+  tipType: string;              // Can be "questionWrapper", "windowShade", or "sideTip"
+  windowShade?: IWindowShade;
+  questionWrapper?: IQuestionWrapper;
   dirtBag: any;
 }
 
@@ -92,6 +86,19 @@ interface ISession {
   modules: IModule[];           // All the modules associated with this session.
   teachers: ITeacher[];         // All the teachers associated with this session.
 }
+
+interface IWindowShade {
+  windowShadeType: string;
+}
+
+interface IQuestionWrapper {
+  correctExplanation?: string;
+  distractorsExplanation?: string;
+  exemplar?: string;
+  teacherTip?: string;
+}
+
+// Usage Report, Session Report, Drill Down Report, Useage Modeul report
 
 // Globals
 // =======
@@ -156,10 +163,23 @@ function getEventLog() {
                 if (plugin.approved_script_label === "teacherEditionTips") {
                   const authorData = JSON.parse(plugin.author_data);
                   if (authorData.tipType === undefined) {
-                    console.warn("no tipType found in author data for plugin. Old version, maybe?")
+                    console.warn("no tipType found in author data for plugin. Old version, maybe?");
                   } else {
+                    console.log(`Plugin:\n${JSON.stringify(authorData)}`);
                     plugins.push({
+                      // questionWrapper, windowShade, or sideTip.
                       tipType: authorData.tipType,
+
+                      // null, theoryAndBackground, teacherTip, discussionPoints, 
+                      // diggingDeeper or howToUse. 
+                      windowShade: ((authorData.tipType !== "windowShade") ?
+                        null :
+                        {
+                        windowShadeType: authorData.windowShade.windowShadeType
+                        }),
+
+                      questionWrapper: authorData.questionWrapper,
+
                       dirtBag: authorData
                     });
                   }
@@ -239,66 +259,41 @@ function getEventLog() {
       dirtBag: rawEvent
     }
   });
-  // console.log(`getEventLog() - number of events processed from log: ${events.length}`);
-  // console.log(`getEventLog() - event ids:\n  ${events.map(e => e.dirtBag.id).join("\n  ")}`);
-  // console.log(`getEventLog() - teachers (${teachers.length}):\n  ${teachers.map(t => t.name).join("\n  ")}`);
-  // console.log(`getEventLog() - TE Mode events (isTEMode == true): ${events.filter(t => t.isTEMode).length}`);
-  // console.log(`getEventLog() - Preview events (isTEMode == false): ${events.filter(t => ! t.isTEMode).length}`);
-  // console.log(`getEventLog() - event dates:\n  ${events.map(e => e.eventDate.toString()).join("\n  ")}`);
-  // console.log(`getEventLog() - event types:\n  ${_.uniq(events.map(e => e.eventType)).join("\n  ")}`);
-  // console.log(`getEventLog() - number modules fetched: ${modules.length}`);
-  // console.log(`getEventLog() - modules:\n  ${modules.map(m => m.externalID).join("\n  ")}`);
 }
 
 function prepReportSourceData(): void {
 
   // We start by fetching the event log from the log-puller. As a side effect of
-  // calling getEventLog(), not only is the event[] populated with all those
+  // calling getEventLog(), not only is the event list populated with all those
   // events in the log, all modules that are referenced by those events are
   // fetched from LARA, and all the teacher's identities are resolved from the
   // Portal.
-
   getEventLog();
 
   // The list of events, at this point is potentially huge, but we can trim that
   // down by eliminating events that do not reference a module with a Teacher
   // Edition plug-in.
-
   events = events.filter( e => e.module.isTEModule );
-  // console.log(`prepReportSourceData() - number of TE only events: ${events.length}`);
 
   // We can now use, what's left, in the events list to trim down the modules
   // that are associated with our events.
-    
   modules = _.uniq(events.map( e => e.module ));
-  // console.log(`prepReportSourceData() - number of TE modules: ${modules.length}`);
-  // console.log(`prepReportSourceData() - TE modules externalID's:\n  ${modules.map(m => m.externalID).join("\n  ")}`);
 
   // At this point, we might now have some teachers that have no events
   // associated with Teacher Edition modules. So we make a pass over all the
   // remaining (that is, TE related) events to reconstruct the teachers list.
-
-  // console.log(`prepReportSourceData() - number of unfiltered teachers: ${teachers.length}`);
   teachers = _.uniq(events.map(e => e.teacher))
-  // console.log(`prepReportSourceData() - number of remaining teachers: ${teachers.length}`);
 
   // It is also possible, that now our unwanted events, modules, and teachers
   // are removed, that some of our sessions can be removed. Use the same idea
   // to regenerate our sessions list based on what's left in the events.
-
-  // console.log(`prepReportSourceData() - unfiltered sessions (${sessions.length}):\n  ${sessions.map(s=>s.sessionToken).join("\n  ")}`);
   sessions = _.uniq(events.map( e => e.session ));  
-  // console.log(`prepReportSourceData() - remaining sessions (${sessions.length}):\n  ${sessions.map(s=>s.sessionToken).join("\n  ")}`);
 
   // At this point, the teachers need to have their events, modules, and sessions
   // lists filled-in, based on what's left in the events list.
-
   teachers.forEach( (teacher) => {
-    // console.log(`Full Teacher (${teacher.name}): `);
     teacher.events = _.uniq( events.filter( e => e.teacher===teacher ));
-    // console.log(`  Events (${teacher.events.length}) types:\n    ${_.uniq(teacher.events.map(e=>e.eventType)).join("\n    ")}`);
     teacher.modules = _.uniq( teacher.events.map( e => e.module ));
-    // console.log(`  Modules (${teacher.modules.length}):\n    ${(teacher.modules.map(m=>m.name)).join("\n    ")}`);
     teacher.sessions = _.uniq( teacher.events.map( e => e.session ));
 
   });
@@ -327,13 +322,15 @@ function genUsageReport(fileName: string) {
     "Total Duration for Module"
   ];
 
-  interface columnDef {
+  interface IColumnDef {
     shortTitle: string,
     longTitle: string,
-    tipType: string
+    tipType: string,
+    tipSubType: string,
+    eventMatcher: RegExp
   }
 
-  const columnDefs: columnDef[] = [
+  const columnDefs: IColumnDef[] = [
     // {
     //   shortTitle: "QW-Correct",    
     //   longTitle: "Question Wrapper - Correct Tab",
@@ -357,23 +354,31 @@ function genUsageReport(fileName: string) {
     {
       shortTitle: "WS-Tip",        
       longTitle: "Window Shade - Teacher Tip",
-      tipType: "windowShade"
+      tipType: "windowShade",
+      tipSubType: "teacherTip",
+      eventMatcher: /TeacherEdition-windowShade-TeacherTip Tab(Opened|Closed)/
     },
-    // {
-    //   shortTitle: "WS-Theory",     
-    //   longTitle: "Window Shade - Theory & Background",
-    //   tipType: "windowShade"
-    // },
-    // {
-    //   shortTitle: "WS-Discussion", 
-    //   longTitle: "Window Shade - Discussion Points",
-    //   tipType: "windowShade"
-    // },
-    // {
-    //   shortTitle: "WS-Deeper",     
-    //   longTitle: "Window Shade - Digging Deeper",
-    //   tipType: "windowShade"
-    // },
+    {
+      shortTitle: "WS-Theory",     
+      longTitle: "Window Shade - Theory & Background",
+      tipType: "windowShade",
+      tipSubType: "theoryAndBackground",
+      eventMatcher: /TeacherEdition-windowShade-TheoryAndBackground Tab(Opened|Closed)/
+    },
+    {
+      shortTitle: "WS-Discussion", 
+      longTitle: "Window Shade - Discussion Points",
+      tipType: "windowShade",
+      tipSubType: "discussionPoints",
+      eventMatcher: /TeacherEdition-windowShade-DiscussionPoints Tab(Opened|Closed)/
+    },
+    {
+      shortTitle: "WS-Deeper",     
+      longTitle: "Window Shade - Digging Deeper",
+      tipType: "windowShade",
+      tipSubType: "diggingDeeper",
+      eventMatcher: /TeacherEdition-windowShade-DiggingDeeper Tab(Opened|Closed)/
+    },
     // {
     //   shortTitle: "ST",            
     //   longTitle: "Side Tip",
@@ -383,7 +388,7 @@ function genUsageReport(fileName: string) {
 
   const subColumns: string[] = [
     "Tabs",                // "Total number of tabs in module",
-    "Toggled",             // "Number of times tab toggled",
+    "Toggled",             // "Number of times a tab was toggled",
     "Once Toggled",        // "How many tabs toggled at least once",
     "% Once Toggled"       // "Percent of tabs toggled at least once"
   ];
@@ -436,16 +441,36 @@ function genUsageReport(fileName: string) {
     return activities.length;
   }
 
-  function durationOfModule(sessions: ISession[]): number {
+  function durationOfModule(sessions: ISession[]): TimeSpan {
     // Returns the difference between the earliest event found in all the
     // sessions, and the latest.
     const allEvents = _.flatten(sessions.map( s => s.events )).sort( (a, b) => eventDateCompare(a, b));
-    console.log(`dates: ${allEvents.map( e => e.eventDate.toString()).join("\n")}`)
-    return eventDateCompare(allEvents[0], allEvents[allEvents.length - 1]);
+    return new TimeSpan(eventDateCompare(allEvents[allEvents.length - 1], allEvents[0]));
   }
 
-  const columnHeader = buildColumnNames();
-  const modes: boolean[] = [ true, false ];
+  function durationToString(ts: TimeSpan) : string {
+    return `${ts.days}:${ts.hours}:${ts.minutes}:${ts.seconds}`;
+  }
+
+  function getWindowShadeTabs(activities: IActivity[], columnDef: IColumnDef): IWindowShade[] {
+    console.log(`>>> activities (${activities.length}):\n  ${activities.map(a=>(a.name + " (" + a.plugins.length + " plugins)")).join("\n  ")}`)
+    const plugins: IPlugin[] = _.flatten(activities.map( a => a.plugins ))
+    console.log(`>>> plugins (${plugins.length}):\n  ${plugins.map(p=>(p.tipType)).join("\n  ")}`)
+    const pertinentPlugins: IPlugin[] = plugins.filter( p => (p.tipType === columnDef.tipType) && (p.windowShade !== undefined));
+    console.log(`>>> pertinent plugins (${pertinentPlugins.length}):\n  ${pertinentPlugins.map(p=>(p.tipType + ":" + p.windowShade.windowShadeType)).join("\n  ")}`)
+
+    let foo = _.flatten(activities.map ( (activity) => {
+      activity.plugins.filter( plugin =>
+        plugin.tipType === columnDef.tipType &&
+        plugin.windowShade !== null &&
+        plugin.windowShade.windowShadeType === columnDef.tipSubType)
+    }));
+    console.log(`foo: ` + JSON.stringify(foo))
+    return [];
+  }
+
+  const modes: boolean[] = [ true, false ];  // For "TeacherEdition" & "Preview".
+
   let report: string[][] = [];
 
   teachers.forEach( (teacher) => {
@@ -455,6 +480,8 @@ function genUsageReport(fileName: string) {
         if (events.length > 0) {
           const sessions: ISession[] = getReportableSessions(teacher, module, events);
           if (sessions.length > 0) {
+
+            // These first report columns are common to all rows.
             var row: string[] = [ teacher.id, teacher.name, module.name ];
             row.push(mode ? "Teacher Edition" : "Preview");
             row.push(sessions.length.toString());
@@ -462,7 +489,37 @@ function genUsageReport(fileName: string) {
             row.push(sessions.length <= 1 ? "" :
                      sessions[sessions.length - 1].events[0].eventDate.toString());
             row.push(countActivities(sessions).toString());
-            row.push(durationOfModule(sessions).toString());
+            row.push(durationToString(durationOfModule(sessions)));
+
+            // The remaining columns of this report are only present when the
+            // events are TeacherEdition events. (That is, the mode is true.) 
+            if (mode) {
+              columnDefs.forEach( (columnDef) => {
+
+                const tabs = getWindowShadeTabs(module.activities, columnDef)
+
+                // Total number of tabs in this module.
+                const tabCount = module.activities.map( (activity) => {
+                  return activity.plugins.filter( plugin => plugin.tipType === columnDef.tipType 
+                    && plugin.dirtBag.windowShade.windowShadeType === columnDef.tipSubType).length;
+                });
+                row.push(_.sum(tabCount).toString());
+
+                // How many toggle events occurred in ths module.
+                const tabToggles = events.filter( e =>
+                  {
+                    return columnDef.eventMatcher.test(e.eventType);
+                  }).length;
+                row.push(tabToggles.toString());
+
+                // How many tabs were toggled at least once.
+                row.push(""); 
+
+                // % of tabs that were toggled at least once -- 
+                // (table-toggled-at-least-once / total-number-of-tabs-in-module)
+                row.push("");
+              });
+            }
             report.push(row);
           }
         }
@@ -470,70 +527,8 @@ function genUsageReport(fileName: string) {
     });
   });
 
-  // teachers.forEach((teacher) => {
-  //   teacher.modules.forEach((module) => {
-
-  //     // Find all the TE (non-preview) events for this particular teacher/module
-  //     // combination and use that to extract just the sessions that are pertinent.
-
-  //     let eventsTE = getReportableEvents(teacher, module, true);
-  //     let sessionsTE = getReportableSessions(teacher, module, eventsTE);
-
-  //     // Figure out the events & sessions for the preview 
-  //     const eventsPreview = getReportableEvents(teacher, module, false);
-  //     const sessionsPreview = getReportableSessions(teacher, module, eventsPreview);
-
-  //     function countActivities(sessions: ISession[]): number {
-  //       const modules: IModule[] = _.uniq(_.flatten(sessions.map( s => s.modules )));
-  //       const activities: IActivity[] = _.uniq(_.flatten(modules.map( m => m.activities)));
-  //       return activities.length;
-  //     }
-
-  //     report.push({
-  //       "Activities Used": string;
-  //       "Total Duration for Module": string;
-  //     });
-
-
-  //     // console.log(`gen: ${teacher.name} ${module.name} ${tEModeEvents.length} ${previewEvents.length}`)
-  //     if (reportableSessions.length > 0) { // look a this event list or the special one?
-  //       // console.log(`row: ${teacher.id},${teacher.name},${module.name},Teacher Edition`);
-  //       report.push(`${teacher.id},${teacher.name},${module.name}` +
-  //         `,Teacher Edition,${tEModeSessions.length}` + 
-  //         `,${reportableSessions[0].events[0].eventDate}` +
-  //         `,${reportableSessions[reportableSessions.length - 1].events[0].eventDate}` +
-  //         `,${countActivities(reportableSessions)}` +
-  //         `,${-1 * (reportableSessions[reportableSessions.length - 1].events[
-  //           reportableSessions[reportableSessions.length - 1].events.length - 1
-  //         ].eventDate.valueOf() - 
-  //           reportableSessions[0].events[0].eventDate.valueOf()) / 60000}`
-  //       );
-        
-  //     // Let's do window-shade-teacher-tip, first.
-  //       report[report.length - 1] = report[report.length - 1].concat(
-  //         `${module.activities.map( a => 
-  //           a.plugins.filter( p => p.tipType === "windowShade" ).length)``
-  //         })}`            // ${module.countWindowShades}`
-  //       );
-  //     }
-  //     if (reportablePreviewSessions.length > 0) {
-  //       // console.log(`row: ${teacher.id},${teacher.name},${module.name},Preview`);
-  //       report.push(`${teacher.id},${teacher.name},${module.name},` +
-  //         `Preview,${previewSessions.length}` + 
-  //         `,${reportablePreviewSessions[0].events[0].eventDate}` +
-  //         `,${reportablePreviewSessions[reportablePreviewSessions.length - 1].events[0].eventDate}` +
-  //         `,${countActivities(reportablePreviewSessions)}` +
-  //         `,${-1 * (reportablePreviewSessions[reportablePreviewSessions.length - 1].events[
-  //           reportablePreviewSessions[reportablePreviewSessions.length - 1].events.length - 1
-  //         ].eventDate.valueOf() - 
-  //           reportablePreviewSessions[0].events[0].eventDate.valueOf()) / 60000}`
-  //       );
-  //     }
-  //   });
-  // });
-
   const csv = convertArrayToCSV(report, {
-      header: columnHeader,
+      header: buildColumnNames(),
       separator: ','
      });
   fs.writeFileSync(fileName, csv);
@@ -546,6 +541,7 @@ const outputPath = "./output-data"
 
 function main(): void {
   prepReportSourceData();
+  console.log("\n\n\n\n")
   genUsageReport(`${outputPath}/TE-Usage-Report.csv`);
 }
 

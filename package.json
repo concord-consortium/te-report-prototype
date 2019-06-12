@@ -35,6 +35,7 @@
     "lodash": "^4.17.11",
     "moment": "^2.22.2",
     "prompt-sync": "^4.1.5",
+    "timespan": "^2.3.0",
     "xlsx": "^0.14.1"
   },
   "devDependencies": {
