@@ -13,7 +13,10 @@ import { TimeSpan } from "timespan";
 // "resource". I've tried to use "module" consistently throughout this prototype.
 //
 // Some mockups of these reports can be found at:
-//    https://docs.google.com/spreadsheets/d/1k_Gm4h_ZLXWwRkTVnLuaf7tuOVSLc5asCXJI90QU61s/edit#gid=0
+//   https://docs.google.com/spreadsheets/d/1k_Gm4h_ZLXWwRkTVnLuaf7tuOVSLc5asCXJI90QU61s/edit#gid=0
+//
+// More background and motivation can be found at:
+//   https://docs.google.com/document/d/1f-YJ8mmGVExD_zUl3KJdt2_cJgpZvZ2YGcuVVNheDpY/edit
 //
 // Notes of things to do:
 //  -- To fetch LARA data from an actual service -- something like:
