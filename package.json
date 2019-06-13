@@ -8,7 +8,8 @@
     "lint": "jsonlint --quiet events/*",
     "test": "jest",
     "watch": "jest --watch",
-    "exec": "ts-node -- "
+    "exec": "ts-node -- ",
+    "debug": "node --inspect-brk --require ts-node/register"
   },
   "repository": {
     "type": "git",
