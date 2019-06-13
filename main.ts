@@ -2,7 +2,6 @@ import * as fs from "fs";
 import * as _ from "lodash";
 import { convertArrayToCSV } from "convert-array-to-csv";
 import { TimeSpan } from "timespan";
-import { IAuthoredQuestionWrapper } from "./types";
 
 // Prototype for Teacher Edition research report.
 //
@@ -12,6 +11,9 @@ import { IAuthoredQuestionWrapper } from "./types";
 // The term "module" is used for a learning-thing that might be either an
 // activity or a sequence. Another word, sometime used for this, concept is
 // "resource". I've tried to use "module" consistently throughout this prototype.
+//
+// Some mockups of these reports can be found at:
+//    https://docs.google.com/spreadsheets/d/1k_Gm4h_ZLXWwRkTVnLuaf7tuOVSLc5asCXJI90QU61s/edit#gid=0
 //
 // Notes of things to do:
 //  -- To fetch LARA data from an actual service -- something like:
@@ -165,7 +167,7 @@ function getEventLog() {
                   if (authorData.tipType === undefined) {
                     console.warn("no tipType found in author data for plugin. Old version, maybe?");
                   } else {
-                    console.log(`Plugin:\n${JSON.stringify(authorData)}`);
+                    // console.log(`Plugin:\n${JSON.stringify(authorData)}`);
                     plugins.push({
                       // questionWrapper, windowShade, or sideTip.
                       tipType: authorData.tipType,
@@ -175,8 +177,10 @@ function getEventLog() {
                       windowShade: ((authorData.tipType !== "windowShade") ?
                         null :
                         {
-                        windowShadeType: authorData.windowShade.windowShadeType
-                        }),
+                        windowShadeType: authorData.windowShade.windowShadeType ? // In the first data feed, we seem to
+                                         authorData.windowShade.windowShadeType : // have to field names for the same
+                                         authorData.windowShade.type              // data. If we don't find "windowShadeType",
+                        }),                                                       // it prolly means we want the older "type" field name.
 
                       questionWrapper: authorData.questionWrapper,
 
@@ -331,26 +335,37 @@ function genUsageReport(fileName: string) {
   }
 
   const columnDefs: IColumnDef[] = [
-    // {
-    //   shortTitle: "QW-Correct",    
-    //   longTitle: "Question Wrapper - Correct Tab",
-    //   tipType: "windowShade"
-    // },
-    // {
-    //   shortTitle: "QW-Distractors",
-    //   longTitle: "Question Wrapper - Distractors Tab",
-    //   tipType: "windowShade"
-    // },
-    // {
-    //   shortTitle: "QW-Tip",        
-    //   longTitle: "Question Wrapper - Teacher Tip Tab",
-    //   tipType: "windowShade"
-    // },
-    // {
-    //   shortTitle: "QW-Exemplar",   
-    //   longTitle: "Question Wrapper - Exemplar Tab",
-    //   tipType: "windowShade"
-    // },
+    {
+      shortTitle: "QW-Correct",    
+      longTitle: "Question Wrapper - Correct Tab",
+      tipType: "questionWrapper",
+      tipSubType: "correctExplanation",
+      eventMatcher: /TeacherEdition-windowShade-questionWrapper Tab(Opened|Closed)/
+    },
+    {
+      shortTitle: "QW-Distractors",
+      longTitle: "Question Wrapper - Distractors Tab",
+      tipType: "questionWrapper",
+      tipSubType: "distractorsExplanation",
+      eventMatcher: /TeacherEdition-windowShade-questionWrapper Tab(Opened|Closed)/
+
+    },
+    {
+      shortTitle: "QW-Tip",        
+      longTitle: "Question Wrapper - Teacher Tip Tab",
+      tipType: "questionWrapper",
+      tipSubType: "teacherTip",
+      eventMatcher: /TeacherEdition-windowShade-questionWrapper Tab(Opened|Closed)/
+
+    },
+    {
+      shortTitle: "QW-Exemplar",   
+      longTitle: "Question Wrapper - Exemplar Tab",
+      tipType: "questionWrapper",
+      tipSubType: "exemplar",
+      eventMatcher: /TeacherEdition-windowShade-questionWrapper Tab(Opened|Closed)/
+
+    },
     {
       shortTitle: "WS-Tip",        
       longTitle: "Window Shade - Teacher Tip",
@@ -452,21 +467,54 @@ function genUsageReport(fileName: string) {
     return `${ts.days}:${ts.hours}:${ts.minutes}:${ts.seconds}`;
   }
 
-  function getWindowShadeTabs(activities: IActivity[], columnDef: IColumnDef): IWindowShade[] {
-    console.log(`>>> activities (${activities.length}):\n  ${activities.map(a=>(a.name + " (" + a.plugins.length + " plugins)")).join("\n  ")}`)
+  function getWindowShadeTabPlugins(activities: IActivity[], columnDef: IColumnDef): IPlugin[] {
     const plugins: IPlugin[] = _.flatten(activities.map( a => a.plugins ))
-    console.log(`>>> plugins (${plugins.length}):\n  ${plugins.map(p=>(p.tipType)).join("\n  ")}`)
-    const pertinentPlugins: IPlugin[] = plugins.filter( p => (p.tipType === columnDef.tipType) && (p.windowShade !== undefined));
-    console.log(`>>> pertinent plugins (${pertinentPlugins.length}):\n  ${pertinentPlugins.map(p=>(p.tipType + ":" + p.windowShade.windowShadeType)).join("\n  ")}`)
+    const pertinentPlugins: IPlugin[] = plugins.filter( p => (p.tipType === columnDef.tipType) && (p.windowShade !== undefined) &&
+    p.windowShade.windowShadeType === columnDef.tipSubType);
+    return pertinentPlugins;
+  }
 
-    let foo = _.flatten(activities.map ( (activity) => {
-      activity.plugins.filter( plugin =>
-        plugin.tipType === columnDef.tipType &&
-        plugin.windowShade !== null &&
-        plugin.windowShade.windowShadeType === columnDef.tipSubType)
-    }));
-    console.log(`foo: ` + JSON.stringify(foo))
-    return [];
+  function getQuestionWrapperTabPlugins(activities: IActivity[], columnDef: IColumnDef): IPlugin[] {
+    const plugins: IPlugin[] = _.flatten(activities.map( a => a.plugins ))
+    const pertinentPlugins: IPlugin[] = plugins.filter( p => (p.tipType === columnDef.tipType) && (p.questionWrapper !== undefined));
+    switch (columnDef.tipSubType) {
+      case "correctExplanation":
+        return pertinentPlugins.filter( p => p.questionWrapper.correctExplanation !== undefined &&
+          p.questionWrapper.correctExplanation !== ""); 
+      case "distractorsExplanation":
+        return pertinentPlugins.filter( p => p.questionWrapper.distractorsExplanation !== undefined &&
+          p.questionWrapper.distractorsExplanation !== ""); 
+      case "exemplar":
+        return pertinentPlugins.filter( p => p.questionWrapper.exemplar !== undefined &&
+          p.questionWrapper.exemplar !== ""); 
+      case "teacherTip":
+        return pertinentPlugins.filter( p => p.questionWrapper.teacherTip !== undefined &&
+          p.questionWrapper.teacherTip !== "");
+      default:
+        console.warn(`WARNING: columnDef.tipSubType of ${columnDef.tipSubType}`);
+        return [];
+    }
+  }
+
+
+  function countTabsWithAToggleEvent(tabs: IPlugin[], events: IEvent[]): number {
+    // console.log(`countTabsWithAToggleEvent() tabs(${tabs.length}): ${tabs.map(t=>t.tipType).join(", ")}`)
+    // console.log(`countTabsWithAToggleEvent() events(${events.length}): ${events.map(e=>e.eventType).join(", ")}`)
+
+    const activities: IActivity[] = _.uniq(_.flatten(events.map( e => e.module.activities )));
+    // console.log(`countTabsWithAToggleEvent() activity count: ${activities.length}`)
+
+    const eventPlugins: IPlugin[] = _.uniq(_.flatten(activities.map( a => a.plugins )));
+    // console.log(`countTabsWithAToggleEvent() eventPlugins count: ${eventPlugins.length}`)
+
+    let count = 0;
+    tabs.forEach( (tab) => {
+      // For each tab, see if it's referenced by at least one event.
+      if (eventPlugins.find( p => (p === tab))) {
+        count += 1;
+      }
+    });
+    return count;
   }
 
   const modes: boolean[] = [ true, false ];  // For "TeacherEdition" & "Preview".
@@ -476,6 +524,9 @@ function genUsageReport(fileName: string) {
   teachers.forEach( (teacher) => {
     teacher.modules.forEach( (module) => {
       modes.forEach( (mode) => {
+
+        // console.log(`\ngenUsageReport() teacher: ${teacher.name}, module: ${module.name}, isTEmode: ${mode}`);
+
         const events: IEvent[] = getReportableEvents(teacher, module, mode);
         if (events.length > 0) {
           const sessions: ISession[] = getReportableSessions(teacher, module, events);
@@ -496,28 +547,52 @@ function genUsageReport(fileName: string) {
             if (mode) {
               columnDefs.forEach( (columnDef) => {
 
-                const tabs = getWindowShadeTabs(module.activities, columnDef)
+                if (columnDef.tipType === "questionWrapper") {
+                  const tabs = getQuestionWrapperTabPlugins(module.activities, columnDef)
+                  // console.log(`genUsageReport() question wrapper tabs (${tabs.length}):\n  ${tabs.map(p=>(p.tipType + ":" + columnDef.tipSubType)).join("\n  ")}\n`)
+                  row.push(tabs.length.toString());
 
-                // Total number of tabs in this module.
-                const tabCount = module.activities.map( (activity) => {
-                  return activity.plugins.filter( plugin => plugin.tipType === columnDef.tipType 
-                    && plugin.dirtBag.windowShade.windowShadeType === columnDef.tipSubType).length;
-                });
-                row.push(_.sum(tabCount).toString());
+                  if (tabs.length <= 0) {
+                    row.push("");
+                    row.push("");
+                    row.push("");
+                  } else {
 
-                // How many toggle events occurred in ths module.
-                const tabToggles = events.filter( e =>
-                  {
-                    return columnDef.eventMatcher.test(e.eventType);
-                  }).length;
-                row.push(tabToggles.toString());
+                   // How many toggle events occurred in ths module.
+                  const tabToggleEvents = events.filter( e => columnDef.eventMatcher.test(e.eventType));
+                  row.push(tabToggleEvents.length.toString());
 
-                // How many tabs were toggled at least once.
-                row.push(""); 
+                  const tabsToggledAtLeastOnce = countTabsWithAToggleEvent(tabs, events); 
+                  row.push(tabsToggledAtLeastOnce.toString()); 
 
-                // % of tabs that were toggled at least once -- 
-                // (table-toggled-at-least-once / total-number-of-tabs-in-module)
-                row.push("");
+                  // % of tabs that were toggled at least once
+                  row.push(((tabsToggledAtLeastOnce / tabs.length) * 100.0).toFixed(2));
+                  }
+
+                } else if (columnDef.tipType === "windowShade") {
+                  const tabs = getWindowShadeTabPlugins(module.activities, columnDef)
+                  // console.log(`genUsageReport() window shade tabs (${tabs.length}):\n  ${tabs.map(p=>(p.tipType + ":" + p.windowShade.windowShadeType)).join("\n  ")}\n`)
+
+                  // Total number of tabs in this module.
+                  row.push(tabs.length.toString());
+
+                  if (tabs.length === 0) {
+                    row.push("");   // Since, no tabs, leave the next 3 columns,
+                    row.push("");   //  . number-of-toggle, number-of-tabs-toggled-
+                    row.push("");   //  . at-least-once, and %-of-tabs-toggled-at-
+                  } else {          //  . least-once, all blank.
+
+                  // How many toggle events occurred in ths module.
+                  const tabToggleEvents = events.filter( e => columnDef.eventMatcher.test(e.eventType));
+                  row.push(tabToggleEvents.length.toString());
+
+                  const tabsToggledAtLeastOnce = countTabsWithAToggleEvent(tabs, events); 
+                  row.push(tabsToggledAtLeastOnce.toString()); 
+
+                  // % of tabs that were toggled at least once
+                  row.push(((tabsToggledAtLeastOnce / tabs.length) * 100.0).toFixed(2));
+                  }
+                }
               });
             }
             report.push(row);
@@ -541,7 +616,7 @@ const outputPath = "./output-data"
 
 function main(): void {
   prepReportSourceData();
-  console.log("\n\n\n\n")
+  // console.log("\n\nUsage-Report")
   genUsageReport(`${outputPath}/TE-Usage-Report.csv`);
 }
 
