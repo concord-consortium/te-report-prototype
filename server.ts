@@ -8,7 +8,7 @@ app.use(bodyParser.urlencoded({extended: true, limit: "50mb", parameterLimit:500
 app.use(bodyParser.json({limit: "50mb"}));
 
 app.get('/', (req, res) => {
-  res.send('Teacher Edition Report');
+  res.send('Teacher Edition Report -- test 1');
 });
 
 app.post('/', (req, res) => {
