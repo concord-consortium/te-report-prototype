@@ -133,8 +133,14 @@ function getEventLog() {
   function fetchRawEvents(): any[] {
     // Fetches the raw events from the log-puller, in this prototype's case, we
     // just read from disk.
-    const fileName = './input-data/log-data/portal-report-1559068754567.json';
-    return JSON.parse(fs.readFileSync(fileName, "utf8"));
+
+    const fileName =
+      // './input-data/log-data/portal-report-1559068754567.json';
+      './input-data/log-data/portal-report-1560446265188.json';
+
+    const parsedFile = JSON.parse(fs.readFileSync(fileName, "utf8"));
+    console.log(`  fetchRawEvents() Raw events fetched from ${fileName}: ${parsedFile.length}`);
+    return parsedFile;
   }
 
   function fetchTeacher(username): ITeacher {
@@ -152,6 +158,7 @@ function getEventLog() {
         modules: [],
         sessions: []
       };
+      console.log(`  fetchTeacher() Resolving teacher identity: ${JSON.stringify(teacher)}`)
       teachers.push(teacher);
     }
     return teacher;
@@ -232,6 +239,8 @@ function getEventLog() {
           ],
         dirtBag: rawModule
       }
+      console.log(`  fetchModule() Resolving module definition:
+      module.externalID, module.name, nodule.isTEModule, module.activites-count`)
       modules.push(module);
     }
     return module;
@@ -254,7 +263,7 @@ function getEventLog() {
 
   // Here's the main loop used for data prep, driven by an iteration over the
   // raw events supplied by the log-puller.
-
+  
   events = fetchRawEvents().map( (rawEvent) => {
     return {
       session: fetchSession(rawEvent.session),
@@ -397,11 +406,13 @@ function genUsageReport(fileName: string) {
       tipSubType: "diggingDeeper",
       eventMatcher: /TeacherEdition-windowShade-DiggingDeeper Tab(Opened|Closed)/
     },
-    // {
-    //   shortTitle: "ST",            
-    //   longTitle: "Side Tip",
-    //   tipType: "windowShade"
-    // }
+    {
+      shortTitle: "ST",            
+      longTitle: "Side Tip",
+      tipType: "sideTip",
+      tipSubType: "",
+      eventMatcher: /TeacherEdition-windowShade-DiggingDeeper Tab(Opened|Closed)/
+    }
   ];
 
   const subColumns: string[] = [
@@ -595,6 +606,12 @@ function genUsageReport(fileName: string) {
                   // % of tabs that were toggled at least once
                   row.push(((tabsToggledAtLeastOnce / tabs.length) * 100.0).toFixed(2));
                   }
+                } else if (columnDef.tipType === "sideTip") {
+                  // Stub out actual report column until we have an example in a event log stream.
+                  row.push("0");
+                  row.push("");   // Since, no tabs, leave the next 3 columns,
+                  row.push("");   //  . number-of-toggle, number-of-tabs-toggled-
+                  row.push("");   //  . at-least-once, and %-of-tabs-toggled-at-
                 }
               });
             }
@@ -618,8 +635,9 @@ function genUsageReport(fileName: string) {
 const outputPath = "./output-data"
 
 function main(): void {
+  console.log("\nPrep common report data\n")
   prepReportSourceData();
-  // console.log("\n\nUsage-Report")
+  console.log("\nGenerating Usage-Report\n")
   genUsageReport(`${outputPath}/TE-Usage-Report.csv`);
 }
 
