@@ -13,13 +13,22 @@ app.get('/', (req, res) => {
 });
 
 app.post('/', (req, res) => {
-  // DAVE TODO: import report from main module and pass request parameters to it along with response (so you can stream the output)
-  // for now just output the post parameters to ensure you are getting them from the user report
-  // Might make sense to look at req.body.format === "csv" to see what format we want, but for now, we won't grab that
-  // from the form and just assume it's a csv output.
-  res.setHeader('Content-disposition', 'attachment; filename="portal-report-' + Date.now() + '.csv');
-  res.send(getCSVString());
   // res.send(`<html><body><div>POST params:</div><div><pre>${JSON.stringify(req.body, null, 2)}</pre></div></body></html>`);
+
+  // Might make sense to look at req.body.format === "csv" to see what format we want, but for now, we won't grab that
+  // from the form, for right now, and just assume it's a csv output.
+  res.setHeader('Content-disposition', 'attachment; filename="te-usage-report-' + Date.now() + '.csv');
+
+  if (req.query.report === 'no such thing') {
+    res.send("A,B\n1,2");
+  } else if (req.query.report === 'usageReport') {
+    res.send(getCSVString());
+  } else if (req.query.report === 'sessionReport') {
+    res.send("s1,t2,u3\nzyzzy,42,inconceivable");
+  } else {
+    console.log(`Teacher Edition Report unrecognized query parameter for report type ${req.query.report}.`)
+  }
+
 });
 
 app.listen(PORT, () => {
