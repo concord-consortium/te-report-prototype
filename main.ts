@@ -324,7 +324,7 @@ function eventDateCompare(e1: IEvent, e2: IEvent): number {
   return (e1.eventDate.getTime() - e2.eventDate.getTime());
 }
 
-function genUsageReport(fileName: string) {
+function genUsageReport(fileName: string): string {
 
   const columnNames: string[] = [
     "User ID",
@@ -626,7 +626,9 @@ function genUsageReport(fileName: string) {
       header: buildColumnNames(),
       separator: ','
      });
-  fs.writeFileSync(fileName, csv);
+
+  return csv;
+  // fs.writeFileSync(fileName, csv);
 }
 
 // main()
@@ -638,7 +640,13 @@ function main(): void {
   console.log("\nPrep common report data\n")
   prepReportSourceData();
   console.log("\nGenerating Usage-Report\n")
-  genUsageReport(`${outputPath}/TE-Usage-Report.csv`);
+  const csv = genUsageReport(`${outputPath}/TE-Usage-Report.csv`);
+  fs.writeFileSync(`${outputPath}/TE-Usage-Report.csv`, csv);
 }
 
 main();
+
+export function getCSVString(): string {
+  prepReportSourceData();
+  return genUsageReport("");
+}
