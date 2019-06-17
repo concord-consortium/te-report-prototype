@@ -17,7 +17,7 @@ app.post('/', (req, res) => {
   // Might make sense to look at req.body.format === "csv" to see what format we want, but for now, we won't grab that
   // from the form and just assume it's a csv output.
   res.setHeader('Content-disposition', 'attachment; filename="portal-report-' + Date.now() + '.csv');
-  res.sent("col1,col2\n43,1234");
+  res.send("col1,col2\n43,1234");
   // res.send(`<html><body><div>POST params:</div><div><pre>${JSON.stringify(req.body, null, 2)}</pre></div></body></html>`);
 });
 
