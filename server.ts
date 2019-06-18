@@ -19,7 +19,8 @@ app.post('/', (req, res) => {
   // Might make sense to look at req.body.format === "csv" to see what format
   // was requested, but for now, we won't grab that from the form (since it
   // isn't IN the form, just yet). So, for right now, we just assume it's a csv.
-  res.setHeader('Content-disposition', 'attachment; filename=te-' + fileName + '-' + Date.now() + '.csv');
+  res.setHeader('Content-disposition', 'attachment; filename=te-' +
+    fileName.toLowerCase() + '-' + Date.now() + '.csv');
   }
 
   const mapQueryToReportType = (queryString: string): ReportType => {

@@ -785,8 +785,8 @@ export function getCSVString(reportType: ReportType): string {
   switch (reportType) {
     case ReportType.usageReport:   return genUsageReport();
     case ReportType.sessionReport: return genSessionReport();
-    case ReportType.drillDownReport: return "Report Placeholder\nDrill Down Report";
-    case ReportType.moduleReport: return "Report Placeholder\nModule Report";
-    default: return "Teacher Edition Report Error\nUnrecognized report type";
+    case ReportType.drillDownReport: return `"Report Placeholder"\n"TE Drill Down Report"`;
+    case ReportType.moduleReport: return `"Report Placeholder"\n"TE Module Report"`;
+    default: return `"Teacher Edition Report Error"\n"Unrecognized report type"`;
     }
 }
