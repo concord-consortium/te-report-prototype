@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import { getCSVString } from './main';
+import { ReportType, getCSVString } from './main';
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -15,27 +15,30 @@ app.get('/', (req, res) => {
 app.post('/', (req, res) => {
   // res.send(`<html><body><div>POST params:</div><div><pre>${JSON.stringify(req.body, null, 2)}</pre></div></body></html>`);
 
+  const setHeader = (fileName: string): void => {
   // Might make sense to look at req.body.format === "csv" to see what format
-  // we want, but for now, we won't grab that from the form, for right now, and
-  // just assume it's a csv output.
+  // was requested, but for now, we won't grab that from the form (since it
+  // isn't IN the form, just yet). So, for right now, we just assume it's a csv.
+  res.setHeader('Content-disposition', 'attachment; filename=te-' + fileName + '-' + Date.now() + '.csv');
+  }
 
-  if (req.query.report === 'no such thing') {
-    res.setHeader('Content-disposition', 'attachment; filename="te-usage-report-' + Date.now() + '.csv');
-    res.send("Column-Header\nNo Such Report");
-  } else if (req.query.report === 'usageReport') {
-    res.setHeader('Content-disposition', 'attachment; filename="te-usage-report-' + Date.now() + '.csv');
-    res.send(getCSVString());
-  } else if (req.query.report === 'sessionReport') {
-    res.setHeader('Content-disposition', 'attachment; filename="te-session-report-' + Date.now() + '.csv');
-    res.send("place-holder:\n\"session report\"");
-  } else if (req.query.report === 'drillDownReport') {
-    res.setHeader('Content-disposition', 'attachment; filename="te-drill-down-report-' + Date.now() + '.csv');
-    res.send("place-holder:\n\"drill down report\"");
-  } else if (req.query.report === 'moduleReport') {
-    res.setHeader('Content-disposition', 'attachment; filename="te-module-report-' + Date.now() + '.csv');
-    res.send("place-holder:\n\"module report\"");
+  const mapQueryToReportType = (queryString: string): ReportType => {
+    switch (queryString) {
+      case 'usageReport': return ReportType.usageReport;
+      case 'sessionReport': return ReportType.sessionReport;
+      case 'drillDownReport': return ReportType.drillDownReport;
+      case 'moduleReport': return ReportType.moduleReport;
+      default: return undefined;
+    }
+  }
+
+  const reportType = mapQueryToReportType(req.query.report);
+
+  if (reportType !== undefined) {
+    setHeader(reportType.toString());
+    res.send(getCSVString(reportType));
   } else {
-    console.log(`Teacher Edition Report unrecognized query parameter for report type ${req.query.report}.`)
+    console.log(`Teacher Edition Report: Unrecognized query parameter for report type ${req.query.report}.`)
   }
 
 });
