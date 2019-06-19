@@ -13,15 +13,13 @@ app.get('/', (req, res) => {
 });
 
 app.post('/', (req, res) => {
-  // res.send(`<html><body><div>POST params:</div><div><pre>${JSON.stringify(req.body, null, 2)}</pre></div></body></html>`);
 
   const setHeader = (fileName: string): void => {
-  // Might make sense to look at req.body.format === "csv" to see what format
-  // was requested, but for now, we won't grab that from the form (since it
-  // isn't IN the form, just yet). So, for right now, we just assume it's a csv.
-  res.setHeader('Content-disposition', 'attachment; filename=te-' +
-    fileName.toLowerCase() + '-' + Date.now() + '.csv');
-  }
+    // May make sense to look at req.body.format === "csv" to see what format
+    // was requested; but for now, we just assume it's a csv file.
+    res.setHeader('Content-disposition', 'attachment; filename=te-' +
+      fileName.toLowerCase() + '-' + Date.now() + '.csv');
+  };
 
   const mapQueryToReportType = (queryString: string): ReportType => {
     switch (queryString) {
@@ -31,35 +29,32 @@ app.post('/', (req, res) => {
       case 'moduleReport': return ReportType.moduleReport;
       default: return undefined;
     }
-  }
+  };
 
-  // ensure json and signature exist in req.body
+  // Ensure json and signature exist in req.body.
   if (!req.body.json || !req.body.signature) {
     res.status(400);
-    res.send("Missing json or signature parameter!");
+    const errMessage: string = "Missing json or signature parameter!";
+    res.send(errMessage);
+    console.log(errMessage)
     return;
   }
 
   getLogs(req.body.json, req.body.signature)
     .then((logs) => {
-      // TODO: do something with the logs...
-      console.log("Got logs:");
-      console.log(logs);
-
       const reportType = mapQueryToReportType(req.query.report);
-
       if (reportType !== undefined) {
         setHeader(reportType.toString());
-        res.send(getCSVString(reportType));
+        res.send(getCSVString(reportType, logs));
       } else {
         throw `Teacher Edition Report: Unrecognized query parameter for report type ${req.query.report}.`
       }
-
     })
     .catch((err) => {
       res.status(500);
       res.send(err.toString())
-    })
+    });
+
 });
 
 app.listen(PORT, () => {

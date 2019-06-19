@@ -157,7 +157,7 @@ function getEventLog() {
         modules: [],
         sessions: []
       };
-      console.log(`  fetchTeacher() Resolving teacher identity: ${JSON.stringify(teacher)}`)
+      // console.log(`  fetchTeacher() Resolving teacher identity: ${JSON.stringify(teacher)}`)
       teachers.push(teacher);
     }
     return teacher;
@@ -769,7 +769,7 @@ function main(): void {     // Only used for development.
   fs.writeFileSync(`${outputPath}/TE-Session-Report.csv`, csv);
 }
 
-main();  // Only used for development.
+// main();  // Only used for development.
 
 
 // Interface to the outside world for requesting a report.
@@ -781,7 +781,7 @@ export enum ReportType {
   moduleReport = "moduleReport"
 }
 
-export function getCSVString(reportType: ReportType): string {
+export function getCSVString(reportType: ReportType, _: ILog[]): string {
   prepReportSourceData();
   switch (reportType) {
     case ReportType.usageReport:   return genUsageReport();
@@ -832,12 +832,18 @@ interface ILogPullerJSON {
 }
 
 export function getLogs(requestJSON: string, signature: string): Promise<ILog[]> {
+  console.log("getLogs() -- entry into getLogs()");
+  // console.log(`getLogs() -- entry requestJSON: ${requestJSON}`);
+  // console.log(`getLogs() -- entry signature: ${signature}`);
   return new Promise<ILog[]>((resolve, reject) => {
     try {
       // use log-puller staging for everything except request from learn prodution
       const parsedJSON = JSON.parse(requestJSON) as ILogPullerJSON;
       const viaProduction = ["learn.concord.org", "learn-report.concord.org"].indexOf(parsedJSON.domain) !== -1;
       const url = `https://${viaProduction ? "log-puller" : "log-puller-staging"}.herokuapp.com/portal-report`;
+
+      console.log(`  getLogs() -- ready for superagent -- url: ${url}`);
+      console.log(`  getLogs() -- ready for superagent -- request: ${requestJSON}`);
 
       superagent
         .post(url)
@@ -848,10 +854,12 @@ export function getLogs(requestJSON: string, signature: string): Promise<ILog[]>
         .send({explode: 'no'})
         .send({download: 'Download Logs'})
         .then((response) => {
+          // console.log(`    getLogs() -- in superagent.then() -- response.body: ${response.body}`)
           resolve(response.body)
         }, reject);
     }
     catch (e) {
+      // console.log(`  getLogs() -- error catch -- e: ${e}`);
       reject(e);
     }
   });
