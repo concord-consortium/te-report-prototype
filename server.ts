@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import { ReportType, getCSVString } from './main';
+import { ReportType, getCSVString, getLogs } from './main';
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -33,15 +33,33 @@ app.post('/', (req, res) => {
     }
   }
 
-  const reportType = mapQueryToReportType(req.query.report);
-
-  if (reportType !== undefined) {
-    setHeader(reportType.toString());
-    res.send(getCSVString(reportType));
-  } else {
-    console.log(`Teacher Edition Report: Unrecognized query parameter for report type ${req.query.report}.`)
+  // ensure json and signature exist in req.body
+  if (!req.body.json || !req.body.signature) {
+    res.status(400);
+    res.send("Missing json or signature parameter!");
+    return;
   }
 
+  getLogs(req.body.json, req.body.signature)
+    .then((logs) => {
+      // TODO: do something with the logs...
+      console.log("Got logs:");
+      console.log(logs);
+
+      const reportType = mapQueryToReportType(req.query.report);
+
+      if (reportType !== undefined) {
+        setHeader(reportType.toString());
+        res.send(getCSVString(reportType));
+      } else {
+        throw `Teacher Edition Report: Unrecognized query parameter for report type ${req.query.report}.`
+      }
+
+    })
+    .catch((err) => {
+      res.status(500);
+      res.send(err.toString())
+    })
 });
 
 app.listen(PORT, () => {
