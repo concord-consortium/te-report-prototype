@@ -2,6 +2,7 @@ import * as fs from "fs";
 import * as _ from "lodash";
 import { convertArrayToCSV } from "convert-array-to-csv";
 import { TimeSpan } from "timespan";
+import { WSASERVICE_NOT_FOUND } from "constants";
 
 // Prototype for Teacher Edition research report.
 //
@@ -303,13 +304,23 @@ function prepReportSourceData(): void {
   // to regenerate our sessions list based on what's left in the events.
   sessions = _.uniq(events.map( e => e.session ));  
 
+  // Now we need to flesh out all the additional session data: the events,
+  // modules, and teachers associated with each session.
+  sessions.forEach( (session) => {
+    session.events = _.uniq(events.filter( e => e.session == session));
+    console.log(`>>> for session (${session.sessionToken}) -- found ${session.events.length} events`)
+    session.modules = _.uniq(session.events.map( e => e.module));
+    console.log(`>>> for session (${session.sessionToken}) -- found ${session.modules.length} modules`)
+    session.teachers = _.uniq(session.events.map( e => e.teacher ));
+    console.log(`>>> for session (${session.sessionToken}) -- found ${session.teachers.length} teachers`)
+  });
+
   // At this point, the teachers need to have their events, modules, and sessions
   // lists filled-in, based on what's left in the events list.
   teachers.forEach( (teacher) => {
     teacher.events = _.uniq( events.filter( e => e.teacher===teacher ));
     teacher.modules = _.uniq( teacher.events.map( e => e.module ));
     teacher.sessions = _.uniq( teacher.events.map( e => e.session ));
-
   });
 
 }
@@ -438,7 +449,34 @@ function genSessionReport(): string {
     return names;
   }
 
+  const modes: boolean[] = [ true, false ]; // For "TeacherEdition" & "Preview".
   let report: string[][] = [];
+
+  sessions.forEach( (session) => {
+    console.log(`genSessionReport() -- for session: ${session.sessionToken}`);
+    // For each teacher with a session in this list...
+    const teachers: ITeacher[] = session.teachers;
+    if (teachers.length > 1) {
+      console.log("Warning -- more than one teacher found for this session");
+      // This is probably a point where anon teachers should be lumped in with
+      // the non-anon teacher's id. But, for now, we'll just drop thru to the
+      // next line that will simply select the first of the teachers we found.
+    }
+    const teacher: ITeacher = teachers[0];
+    if (teacher === undefined) {
+      console.log("  genSessionReport() -- no teacher found, skipping...");
+    } else {
+      console.log(`  genSessionReport() -- for teacher: ${teacher.name} (${teacher.id})`);
+      modes.forEach( (mode) => {
+        console.log(`  genSessionReport() -- for teacher: ${teacher.name} (${teacher.id})`);
+     
+        
+        return teacher.events.filter( e => (e.module === module) && (e.isTEMode === mode));
+
+
+      })
+    }
+  });
 
   report.push(["no","data","yet"]);
 
