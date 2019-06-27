@@ -11,6 +11,9 @@ export function sessionFirstDateCompare(s1: ISession, s2: ISession): number {
 }
 
 export async function asyncForEach(array: any, callback: any): Promise<void> {
+  // This is handy for when one would normally use a forEach to do some
+  // processing on an array of items; but, can't use forEach since it doesn't
+  // work in the case of async/await function calls to the callback function.
   for (let index = 0; index < array.length; index++) {
     await callback(array[index], index, array);
   }

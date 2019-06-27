@@ -104,7 +104,7 @@ function fetchTeacher(teachers: ITeacher[], id: string): ITeacher {
     teacher = {
       id: id,
       name: fetchUserFromPortal(id),
-      events: [],                   // These 3 lists to be Filled in later.
+      events: [],                   // These 3 lists to be filled in later.
       modules: [],
       sessions: []
     };
@@ -126,7 +126,7 @@ function extractTEPlugins(rawActivity: any): IPlugin[] {
               if (authorData.tipType === undefined) {
                 console.warn("no tipType found in author data for plugin. Old version, maybe?");
               } else {
-                plugins.push({
+                const p = ({
                   tipType: authorData.tipType,
                   windowShade: ((authorData.tipType !== "windowShade") ?
                     null :
@@ -142,6 +142,9 @@ function extractTEPlugins(rawActivity: any): IPlugin[] {
                     }),
                   questionWrapper: authorData.questionWrapper
                 });
+                plugins.push(p);
+                console.log(`>>>>>>>>>> ${JSON.stringify(p,null,' ')}`)
+
               }
             };
           };
@@ -217,76 +220,73 @@ function activityID(rawEvent: ILogPullerEvent): string {
   }
 }
 
-export function buildReportData(rawEvents: ILogPullerEvent[]): Promise<IReportData> {
-
-  return new Promise<IReportData>((resolve, reject) => {
-
-  let events: IEvent[] = [];
-  let teachers: ITeacher[] = [];
-  let modules: IModule[] = [];
-  let sessions: ISession[] = [];
-
-  // 1. Fetch all the events, sessions, and the associated teachers, and the
-  // associated modules from the raw log-puller event data.
-
-  const getEvents = async () => {
-    await asyncForEach(rawEvents, async (rawEvent) => {
-      // console.log(`buildReportData() processing event: ${rawEvent.event}`);
-      events.push({
-        session: fetchSession(sessions, rawEvent.session),
-        teacher: fetchTeacher(teachers, rawEvent.username),
-        teMode: teMode(rawEvent),
-        eventDate: new Date(rawEvent.time),
-        eventType: rawEvent.event,
-        module: await fetchModule(modules, rawEvent.activity),
-        activityID: activityID(rawEvent)
-      });
-    });
-  }
-
-  getEvents().then( () => {
-    console.log(`>>>> Events resolved with modules: events ${events.length}, modules: ${modules.length}`);
-  // 2. Filter down the results to only those associated with teacher-edition.
+function removeAllNonTeacherEditionData(reportData: IReportData) {
+  // Filter down the results to only those data associated with teacher-edition.
   //
-  // First, just eliminate all the modules that don't contain at least one
-  // teacher-edition plugin script. Then remove all the events that do not
-  // have a module in the new, restricted, list of modules. Finally, apply
-  // one more filter to remove events where the teacher-edition mode could not
-  // be identified. With the list of events filtered down, use it to rebuild
-  // the teachers & sessions for only those that are associated with teacher-
-  // edition events.
+  // First, eliminate all modules that do not contain, at least one, teacher-
+  // edition plugin script.
+  reportData.modules = reportData.modules
+    .filter( m => m.isTEModule );
 
-  modules = modules.filter( m => m.isTEModule );
-  events = events.filter( e => modules.find( m => m === e.module) !== undefined)
+  // Next, we use use this list of modules to restrict the events to only those
+  // events related to teacher-edition modules.
+  reportData.events = reportData.events
+    .filter( e => reportData.modules.find( m => m === e.module) !== undefined)
     .filter( e => e.teMode !== TEMode.unknownMode)
     .sort(eventDateCompare);
-  teachers = _.uniq(events.map(e => e.teacher));
-  sessions = _.uniq(events.map(e => e.session));
 
-  // 3. Complete the cross referencing in teachers & sessions.
+  // Finally, use the newly restricted list of events to regenerate the lists of
+  // referenced teachers and sessions.
+  reportData.teachers = _.uniq(reportData.events.map(e => e.teacher));
+  reportData.sessions = _.uniq(reportData.events.map(e => e.session));
+}
 
-  sessions.forEach((session) => {
-    session.events = _.uniq(events.filter(e => e.session == session));
+function resolveCrossReferences(reportData: IReportData) {
+  // Do all the cross-referencing and special processing for all the fields in
+  // teachers & sessions that weren't supplied when the objects were created.
+  reportData.sessions.forEach((session) => {
+    session.events = _.uniq(reportData.events.filter(e => e.session == session));
     session.modules = _.uniq(session.events.map(e => e.module));
     session.teachers = _.uniq(session.events.map(e => e.teacher));
     session.firstDate = session.events[0].eventDate;
     session.lastDate = session.events[session.events.length - 1].eventDate;
   });
-  teachers.forEach((teacher) => {
-    teacher.events = _.uniq(events.filter(e => e.teacher === teacher));
+  reportData.teachers.forEach((teacher) => {
+    teacher.events = _.uniq(reportData.events.filter(e => e.teacher === teacher));
     teacher.modules = _.uniq(teacher.events.map(e => e.module));
     teacher.sessions = _.uniq(teacher.events.map(e => e.session));
   });
+}
 
-  // 4. Package all this up into a single data structure to pass around.
+export function buildReportData(rawEvents: ILogPullerEvent[]): Promise<IReportData> {
 
-  resolve( {
-    events: events,
-    sessions: sessions,
-    modules: modules,
-    teachers: teachers
-  })
-  });
+  return new Promise<IReportData>((resolve, reject) => {
 
+    let reportData: IReportData = {events: [], teachers: [], modules: [], sessions: [] };
+
+    // Fetch all the events, sessions, and the associated teachers, and the
+    // associated modules from the raw log-puller event data.
+    const getEvents = async () => {
+      await asyncForEach(rawEvents, async (rawEvent) => {
+        reportData.events.push({
+          session: fetchSession(reportData.sessions, rawEvent.session),
+          teacher: fetchTeacher(reportData.teachers, rawEvent.username),
+          teMode: teMode(rawEvent),
+          eventDate: new Date(rawEvent.time),
+          eventType: rawEvent.event,
+          module: await fetchModule(reportData.modules, rawEvent.activity),
+          activityID: activityID(rawEvent)
+        });
+      });
+    }
+
+    getEvents().then( () => {
+      console.log(`Server::buildReportData() - ${reportData.events.length} event(s) resolved with references to ${reportData.modules.length} module(s)`);
+      removeAllNonTeacherEditionData(reportData);
+      console.log(`Server::buildReportData() - ${reportData.events.length} event(s) and ${reportData.modules.length} module(s) remain after filtering`);
+      resolveCrossReferences(reportData);
+      resolve(reportData);
+    });
   });
 }
+
