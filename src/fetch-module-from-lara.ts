@@ -1,6 +1,6 @@
 import * as superagent from "superagent";
 
-// Fetches a module (either a sequence or an activity) from Lara based on the
+// Fetches a module (either a sequence or an activity) from Lara, based on the
 // "activity ID" found in a log event.
 //
 // At the moment, this has a hard-coded URL for the server AND a hard-coded
@@ -14,7 +14,7 @@ export function fetchModuleFromLara(activityType: string, activityID: string): P
     const typeString = (activityType == 'sequence') ? 'sequences' : 'activities';
     const url = `https://authoring.staging.concord.org/${typeString}/${activityID}/export.json`;
     const apiToken = 'fa6112ea-a728-4677-ae46-23aa3c78a032';
-    console.log(`    fetchModuleFromLara(${activityType}:${activityID})`)
+    // console.log(`    fetchModuleFromLara(${activityType}:${activityID})`)
     getLaraModule(url, apiToken)
       .then( (module) => {
         resolve(module);
@@ -23,7 +23,7 @@ export function fetchModuleFromLara(activityType: string, activityID: string): P
 }
 
 function getLaraModule(url: string, apiToken: string): Promise<any> {
-  console.log(`      getLaraModule() - url: ${url}`);
+  // console.log(`      getLaraModule() - url: ${url}`);
   return new Promise<any>((resolve, reject) => {
     superagent
       .get(url)

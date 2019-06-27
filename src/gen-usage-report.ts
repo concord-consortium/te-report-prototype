@@ -3,20 +3,27 @@ import { convertArrayToCSV } from 'convert-array-to-csv';
 import { TimeSpan } from 'timespan';
 
 import { eventDateCompare, sessionFirstDateCompare } from './utilities';
-import { IReportData, IEvent, IModule, ITeacher, TEMode, ISession,
-  IActivity, IPlugin } from './build-report-data';
-import { access } from 'fs';
-
+import {
+  IReportData,
+  IEvent,
+  IModule,
+  ITeacher,
+  TEMode,
+  ISession,
+  IActivity,
+  IPlugin
+} from './build-report-data';
+  
 const columnNames: string[] = [
   "User ID",
   "Teacher Name",
   "TE Module Name",
   "Mode - TE or Preview",
   "Sessions Launched",
-  "Time of First Launch",
-  "Time of Last Launch",
+  "Time of Oldest Session's Launch",
+  "Time of Latest Session's Launch",
   "Number of Activities Used",
-  "Total Duration for Module"
+  "Total Duration for Module (d:h:m:s)"
 ];
 
 interface IColumnDef {
@@ -129,7 +136,7 @@ function getQuestionWrapperPlugins(activities: IActivity[], columnDef: IColumnDe
   const isBlank = (s: string): boolean => { return (s === undefined || s === '')};
   const plugins: IPlugin[] = _.flatten(activities.map(a => a.plugins))
     .filter(p => (p.tipType === columnDef.tipSubType) && p.questionWrapper !== undefined);
-  console.log(`getQWPs() plugins.length: ${plugins.length}`)
+  // console.log(`getQuestionWrapperPlugins() plugins.length: ${plugins.length}`)
   switch (columnDef.tipSubType) {
     case "correctExplanation":
       return plugins.filter( p => ! isBlank(p.questionWrapper.correctExplanation));
@@ -143,7 +150,7 @@ function getQuestionWrapperPlugins(activities: IActivity[], columnDef: IColumnDe
       return plugins.filter( p => p.questionWrapper.teacherTip !== undefined &&
         p.questionWrapper.teacherTip !== "");
     default:
-      console.warn(`WARNING: unrecognized columnDef.tipSubType of ${columnDef.tipSubType}`);
+      // console.warn(`WARNING: unrecognized columnDef.tipSubType of ${columnDef.tipSubType}`);
       return [];
 
   }
@@ -248,15 +255,15 @@ export function genUsageReport(reportData: IReportData): string {
 
                 case 'questionWrapper':
 
- console.log(`>> ${teacher.id}:${module.name}:${mode} event count: ${reportableEvents.length}`)
+//  console.log(`>> ${teacher.id}:${module.name}:${mode} event count: ${reportableEvents.length}`)
 
-                  console.log(`te-mode -- questionWrapper columnDef: ${JSON.stringify(columnDef,null," ")}`)
+                  // console.log(`te-mode -- questionWrapper columnDef: ${JSON.stringify(columnDef,null," ")}`)
 
-    console.log(`>>> activies:\n${JSON.stringify(module.activities,["name"],"   ")}`)
+    // console.log(`>>> activities:\n${JSON.stringify(module.activities,["name"],"   ")}`)
 
                   const tabs = getQuestionWrapperPlugins(module.activities, columnDef)
 
-                  console.log(`genUsageReport() question wrapper tabs (${tabs.length}):\n  ${tabs.map(p=>(p.tipType + ":" + columnDef.tipSubType)).join("\n  ")}\n`)
+                  // console.log(`genUsageReport() question wrapper tabs (${tabs.length}):\n  ${tabs.map(p=>(p.tipType + ":" + columnDef.tipSubType)).join("\n  ")}\n`)
   //                 row.push(tabs.length.toString());
 
   //                 if (tabs.length <= 0) {
