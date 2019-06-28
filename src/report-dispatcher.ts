@@ -2,9 +2,8 @@ import { IReportData } from './build-report-data';
 import { genUsageReport } from './gen-usage-report';
 
 enum ReportType {
-  usageReport = 'usageReport',
-  sessionReport = 'sessionReport'
-  // Additional report types may be added here...
+  UsageReport = 'usageReport',
+  SessionReport = 'sessionReport'
 }
 
 export function queryStringToReportType(queryString: string): ReportType {
@@ -12,20 +11,22 @@ export function queryStringToReportType(queryString: string): ReportType {
   // way to do this with enums, but this was easier for debugging purposes.
   switch (queryString) {
     case 'usageReport':
-      return ReportType.usageReport;
+      return ReportType.UsageReport;
     case 'sessionReport':
-      return ReportType.sessionReport;
-    // Additional report types may be added here...
+      return ReportType.SessionReport;
     default:
+      console.warn(`Warning: unrecognized query string parameter "${queryString}"`)
       return undefined;
   }
 }
 
 export function getReport(reportType: ReportType, reportData: IReportData): string {
   switch (reportType) {
-    case ReportType.usageReport: return genUsageReport(reportData);
-    case ReportType.sessionReport: return `"Report Placeholder"\n"TE Session Report"`; // genSessionReport(reportData);
-    // Additional report types may be added here...
-    default: return `"Teacher Edition Report Error"\n"Unrecognized report type"`;
+    case ReportType.UsageReport:
+      return genUsageReport(reportData);
+    case ReportType.SessionReport:
+      return `"Report Placeholder"\n"TE Session Report"`; // genSessionReport(reportData);
+    default:
+      return `"Teacher Edition Report Error"\n"Unrecognized report type"`;
     }
 }

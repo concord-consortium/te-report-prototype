@@ -18,3 +18,8 @@ export async function asyncForEach(array: any, callback: any): Promise<void> {
     await callback(array[index], index, array);
   }
 }
+
+export function isBlank(s: string): boolean {
+  // Little helper function.
+  return (s === undefined || s === '');
+}

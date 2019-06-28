@@ -11,7 +11,11 @@ import {
   TEMode,
   ISession,
   IActivity,
-  IPlugin
+  IPlugin,
+  PluginType,
+  QuestionWrapperType,
+  WindowShadeType,
+  SideTipType
 } from './build-report-data';
   
 const columnNames: string[] = [
@@ -28,64 +32,64 @@ const columnNames: string[] = [
 
 interface IColumnDef {
   title: string,
-  tipType: string,
-  tipSubType: string,
+  pluginType: PluginType,
+  pluginSubType: QuestionWrapperType | WindowShadeType | SideTipType,
   eventMatcher: RegExp
 }
 
 const columnDefs: IColumnDef[] = [
   {
     title: "Question Wrapper - Correct Tab",
-    tipType: "questionWrapper",
-    tipSubType: "correctExplanation",
+    pluginType: PluginType.QuestionWrapper,
+    pluginSubType: QuestionWrapperType.CorrectExplanation,
     eventMatcher: /TeacherEdition-windowShade-questionWrapper Tab(Opened|Closed)/
   },
   {
     title: "Question Wrapper - Distractors Tab",
-    tipType: "questionWrapper",
-    tipSubType: "distractorsExplanation",
+    pluginType: PluginType.QuestionWrapper,
+    pluginSubType: QuestionWrapperType.DistractorsExplanation,
     eventMatcher: /TeacherEdition-windowShade-questionWrapper Tab(Opened|Closed)/
   },
   {
     title: "Question Wrapper - Teacher Tip Tab",
-    tipType: "questionWrapper",
-    tipSubType: "teacherTip",
+    pluginType: PluginType.QuestionWrapper,
+    pluginSubType: QuestionWrapperType.TeacherTip,
     eventMatcher: /TeacherEdition-windowShade-questionWrapper Tab(Opened|Closed)/
   },
   {
     title: "Question Wrapper - Exemplar Tab",
-    tipType: "questionWrapper",
-    tipSubType: "exemplar",
+    pluginType: PluginType.QuestionWrapper,
+    pluginSubType: QuestionWrapperType.Exemplar,
     eventMatcher: /TeacherEdition-windowShade-questionWrapper Tab(Opened|Closed)/
   },
   {
     title: "Window Shade - Teacher Tip",
-    tipType: "windowShade",
-    tipSubType: "teacherTip",
+    pluginType: PluginType.WindowShade,
+    pluginSubType: WindowShadeType.TeacherTip,
     eventMatcher: /TeacherEdition-windowShade-TeacherTip Tab(Opened|Closed)/
   },
   {
     title: "Window Shade - Theory & Background",
-    tipType: "windowShade",
-    tipSubType: "theoryAndBackground",
+    pluginType: PluginType.WindowShade,
+    pluginSubType: WindowShadeType.TheoryAndBackground,
     eventMatcher: /TeacherEdition-windowShade-TheoryAndBackground Tab(Opened|Closed)/
   },
   {
     title: "Window Shade - Discussion Points",
-    tipType: "windowShade",
-    tipSubType: "discussionPoints",
+    pluginType: PluginType.WindowShade,
+    pluginSubType: WindowShadeType.DiscussionPoints,
     eventMatcher: /TeacherEdition-windowShade-DiscussionPoints Tab(Opened|Closed)/
   },
   {
     title: "Window Shade - Digging Deeper",
-    tipType: "windowShade",
-    tipSubType: "diggingDeeper",
+    pluginType: PluginType.WindowShade,
+    pluginSubType: WindowShadeType.DiggingDeeper,
     eventMatcher: /TeacherEdition-windowShade-DiggingDeeper Tab(Opened|Closed)/
   },
   {
     title: "Side Tip",
-    tipType: "sideTip",
-    tipSubType: "",
+    pluginType: PluginType.SideTip,
+    pluginSubType: SideTipType.Default,
     eventMatcher: /TeacherEdition-windowShade-DiggingDeeper Tab(Opened|Closed)/
   }
 ];
@@ -135,25 +139,28 @@ function totalDuration(sessions: ISession[]): string {
 function getQuestionWrapperPlugins(activities: IActivity[], columnDef: IColumnDef): IPlugin[] {
   const isBlank = (s: string): boolean => { return (s === undefined || s === '')};
   const plugins: IPlugin[] = _.flatten(activities.map(a => a.plugins))
-    .filter(p => (p.tipType === columnDef.tipSubType) && p.questionWrapper !== undefined);
-  // console.log(`getQuestionWrapperPlugins() plugins.length: ${plugins.length}`)
-  switch (columnDef.tipSubType) {
-    case "correctExplanation":
-      return plugins.filter( p => ! isBlank(p.questionWrapper.correctExplanation));
-    case "distractorsExplanation":
-      return plugins.filter( p => p.questionWrapper.distractorsExplanation !== undefined &&
-        p.questionWrapper.distractorsExplanation !== "");
-    case "exemplar":
-      return plugins.filter( p => p.questionWrapper.exemplar !== undefined &&
-        p.questionWrapper.exemplar !== "");
-    case "teacherTip":
-      return plugins.filter( p => p.questionWrapper.teacherTip !== undefined &&
-        p.questionWrapper.teacherTip !== "");
-    default:
-      // console.warn(`WARNING: unrecognized columnDef.tipSubType of ${columnDef.tipSubType}`);
-      return [];
+    .filter(p => p.pluginType == PluginType.QuestionWrapper && p.pluginSubType == columnDef.pluginSubType)
 
-  }
+
+  // .filter(p => (p.pluginType === PluginType.QuestionWrapper) && p.pluginSubType !== undefined);
+  // // console.log(`getQuestionWrapperPlugins() plugins.length: ${plugins.length}`)
+  // switch (columnDef.tipSubType) {
+  //   case "correctExplanation":
+  //     return plugins.filter( p => ! isBlank(p.questionWrapper.correctExplanation));
+  //   case "distractorsExplanation":
+  //     return plugins.filter( p => p.questionWrapper.distractorsExplanation !== undefined &&
+  //       p.questionWrapper.distractorsExplanation !== "");
+  //   case "exemplar":
+  //     return plugins.filter( p => p.questionWrapper.exemplar !== undefined &&
+  //       p.questionWrapper.exemplar !== "");
+  //   case "teacherTip":
+  //     return plugins.filter( p => p.questionWrapper.teacherTip !== undefined &&
+  //       p.questionWrapper.teacherTip !== "");
+  //   default:
+  //     // console.warn(`WARNING: unrecognized columnDef.tipSubType of ${columnDef.tipSubType}`);
+  //     return [];
+return plugins;
+  // }
 }
 
 export function genUsageReport(reportData: IReportData): string {
@@ -216,7 +223,7 @@ export function genUsageReport(reportData: IReportData): string {
   // with that triple.
   reportData.teachers.forEach( (teacher) => {
     teacher.modules.forEach( (module) => {
-      [TEMode.teacherEditionMode, TEMode.previewMode].forEach( (mode) => {
+      [TEMode.TeacherEditionMode, TEMode.PreviewMode].forEach( (mode) => {
         const reportableEvents: IEvent[] = getReportableEvents(teacher, module, mode);
         // console.log(`${teacher.id}:${module.name}:${mode} event count: ${reportableEvents.length}`)
         if (reportableEvents.length > 0) {  // Include this row, only if there are events.
@@ -249,11 +256,11 @@ export function genUsageReport(reportData: IReportData): string {
 
           // The remaining columns of this report are only present when the
           // events are TeacherEdition events.
-          if (mode === TEMode.teacherEditionMode) {
+          if (mode === TEMode.TeacherEditionMode) {
             columnDefs.forEach( (columnDef) => {
-              switch (columnDef.tipType) {
+              switch (columnDef.pluginType) {
 
-                case 'questionWrapper':
+                case PluginType.QuestionWrapper:
 
 //  console.log(`>> ${teacher.id}:${module.name}:${mode} event count: ${reportableEvents.length}`)
 
@@ -289,7 +296,7 @@ export function genUsageReport(reportData: IReportData): string {
                 // case 'sideTip':
                 //   break;
                 default:
-                  console.warn(`Unknown columnDef.tipType "${columnDef.tipType}"`);
+                  console.warn(`Unknown columnDef.tipType "${columnDef.pluginType}"`);
                   break;
                 }
             });
