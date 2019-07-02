@@ -156,10 +156,10 @@ const subColumns: ColumnName[] = [
 ];
 
 function buildColumnNames(): string[] {
-  let names: string[] = columnNames.map(colName => colName.shortTitle);
+  let names: string[] = columnNames.map(colName => colName.title);
   columnDefs.forEach( (column) => {
     subColumns.forEach( (subColumn) => {
-      names.push(`${column.shortTitle}: ${subColumn.shortTitle}`);
+      names.push(`${column.shortTitle}: ${subColumn.title}`);
     });
   });
   return names;
