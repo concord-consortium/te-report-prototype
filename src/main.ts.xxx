@@ -1,8 +1,9 @@
-import * as fs from "fs";
-import * as _ from "lodash";
-import { convertArrayToCSV } from "convert-array-to-csv";
-import { TimeSpan } from "timespan";
-import * as superagent from "superagent";
+import * as fs from 'fs';
+import * as _ from 'lodash';
+import { convertArrayToCSV } from 'convert-array-to-csv';
+import { TimeSpan } from 'timespan';
+import { ILogPullerEvent } from './log-puller';
+import { buildReportData } from './build-report-data';
 
 // Prototype for Teacher Edition research report.
 //
@@ -30,290 +31,300 @@ import * as superagent from "superagent";
 //     right when there are more than 1 sessions in the reportableSessions lists.
 //  -- Verify each reportable event-type generated in plug-in.
 
-// Interfaces
-// ==========
-//
-// For the moment, all data structures are defined as interfaces, to make it
-// easier for the time when this file is decomposed into separate code-modules.
+// // Interfaces
+// // ==========
+// //
+// // For the moment, all data structures are defined as interfaces, to make it
+// // easier for the time when this file is decomposed into separate code-modules.
 
-interface IEvent {
-  // Events are sanitized version of the raw events we get from the log-puller.
-  // Sanitized means that only the pertinent information has been extracted from
-  // the raw log events and copied into the IEvent.
-  //
-  // Please note that a copy of the original raw event is saved for debugging
-  // purposes and the initial development process -- it's turned out to be
-  // very handy. This copy is in a field called the "dirtBag". Once the code
-  // has become a bit more stable, it should be removed.
-  session: ISession;            // The session this event belongs too.
-  teacher: ITeacher;            // The teacher-user that caused this event.
-  isTEMode: boolean;            // True means this is an event from a running
-                                // . teacher-edition mode; false means a preview.
-  eventDate: Date;              // The date-time stamp for this event.
-  eventType: string;            // Something like "submit question", "focus in", etc.
-  module: IModule;              // The module this event references.
-  dirtBag: any;                 // The original raw event from the log puller.
-}
+// interface IEvent {
+//   // Events are sanitized version of the raw events we get from the log-puller.
+//   // Sanitized means that only the pertinent information has been extracted from
+//   // the raw log events and copied into the IEvent.
+//   //
+//   // Please note that a copy of the original raw event is saved for debugging
+//   // purposes and the initial development process -- it's turned out to be
+//   // very handy. This copy is in a field called the "dirtBag". Once the code
+//   // has become a bit more stable, it should be removed.
+//   session: ISession;            // The session this event belongs too.
+//   teacher: ITeacher;            // The teacher-user that caused this event.
+//   isTEMode: boolean;            // True means this is an event from a running
+//                                 // . teacher-edition mode; false means a preview.
+//   eventDate: Date;              // The date-time stamp for this event.
+//   eventType: string;            // Something like "submit question", "focus in", etc.
+//   module: IModule;              // The module this event references.
+//   dirtBag: any;                 // The original raw event from the log puller.
+// }
 
-interface ITeacher {
-  usernameFromEvent: string;    // The username field from the log-puller event.
-  id: string;                   // User ID number, as returned by Portal.
-  name: string;                 // User name, As returned by Portal.
-  events: IEvent[];             // All events in the log, caused by this user.
-  modules: IModule[];           // All the modules associated with this user's events.
-  sessions: ISession[]          // All the sessions associated with this user's events.
-}
+// interface ITeacher {
+//   usernameFromEvent: string;    // The username field from the log-puller event.
+//   id: string;                   // User ID number, as returned by Portal.
+//   name: string;                 // User name, As returned by Portal.
+//   events: IEvent[];             // All events in the log, caused by this user.
+//   modules: IModule[];           // All the modules associated with this user's events.
+//   sessions: ISession[]          // All the sessions associated with this user's events.
+// }
 
-interface IModule {
-  externalID: string;           // The "activity" field from the log event that
-                                // . identifies the module fo fetch from LARA.
-  name: string;                 // The module's name (for in the reports).
-  isTEModule: boolean;          // Is true if module uses the TE plugin.
-  activities: IActivity[];      // One or more activity structures of the module.
-  dirtBag: any                  // The actual thing we got back from LARA.
-}
+// interface IModule {
+//   externalID: string;           // The "activity" field from the log event that
+//                                 // . identifies the module fo fetch from LARA.
+//   name: string;                 // The module's name (for in the reports).
+//   isTEModule: boolean;          // Is true if module uses the TE plugin.
+//   activities: IActivity[];      // One or more activity structures of the module.
+//   dirtBag: any                  // The actual thing we got back from LARA.
+// }
 
-interface IActivity {
-  name: string;                 // The name of a particular activity.
-  plugins: IPlugin[];           // List of all TE plugins in this.
-  dirtBag: any;                 // The original activity structure from LARA.
-}
+// interface IActivity {
+//   name: string;                 // The name of a particular activity.
+//   plugins: IPlugin[];           // List of all TE plugins in this.
+//   dirtBag: any;                 // The original activity structure from LARA.
+// }
 
-interface IPlugin {
-  tipType: string;              // Can be "questionWrapper", "windowShade", or "sideTip"
-  windowShade?: IWindowShade;
-  questionWrapper?: IQuestionWrapper;
-  dirtBag: any;
-}
+// interface IPlugin {
+//   tipType: string;              // Can be "questionWrapper", "windowShade", or "sideTip"
+//   windowShade?: IWindowShade;
+//   questionWrapper?: IQuestionWrapper;
+//   dirtBag: any;
+// }
 
-interface ISession {
-  sessionToken: string;         // The "session" token from the events.
-  events: IEvent[];             // All the events associated with this session.
-  modules: IModule[];           // All the modules associated with this session.
-  teachers: ITeacher[];         // All the teachers associated with this session.
-}
+// interface ISession {
+//   sessionToken: string;         // The "session" token from the events.
+//   events: IEvent[];             // All the events associated with this session.
+//   modules: IModule[];           // All the modules associated with this session.
+//   teachers: ITeacher[];         // All the teachers associated with this session.
+// }
 
-interface IWindowShade {
-  windowShadeType: string;
-}
+// interface IWindowShade {
+//   windowShadeType: string;
+// }
 
-interface IQuestionWrapper {
-  correctExplanation?: string;
-  distractorsExplanation?: string;
-  exemplar?: string;
-  teacherTip?: string;
-}
+// interface IQuestionWrapper {
+//   correctExplanation?: string;
+//   distractorsExplanation?: string;
+//   exemplar?: string;
+//   teacherTip?: string;
+// }
 
-// Globals
-// =======
-//
-// These lists are eventually populated with all the source data we need for
-// producing the reports.
+// // Globals
+// // =======
+// //
+// // These lists are eventually populated with all the source data we need for
+// // producing the reports.
 
-let events: IEvent[] = [];
-let teachers: ITeacher[] = [];
-let modules: IModule[] = [];
-let sessions: ISession[] = [];
+// let events: IEvent[] = [];
+// let teachers: ITeacher[] = [];
+// let modules: IModule[] = [];
+// let sessions: ISession[] = [];
 
-// Prepare Source Data
-// ===================
-//
-// Builds up all the data we need for the various reports, in the global data
-// structures defined above.
+// // Prepare Source Data
+// // ===================
+// //
+// // Builds up all the data we need for the various reports, in the global data
+// // structures defined above.
 
-function getEventLog() {
+// function getEventLog() {
 
-  // Looks at each rawEvent and translates it into an IEvent object. As this
-  // is done, other objects are fetched, like user information (from Portal)
-  // and module definitions (from LARA). It may well be better to gang all
-  // the requests to other services into some sort of single ping of the Portal
-  // or LARA to speed up the processing -- worry about that later.
+//   // Looks at each rawEvent and translates it into an IEvent object. As this
+//   // is done, other objects are fetched, like user information (from Portal)
+//   // and module definitions (from LARA). It may well be better to gang all
+//   // the requests to other services into some sort of single ping of the Portal
+//   // or LARA to speed up the processing -- worry about that later.
 
-  function fetchRawEvents(): any[] {
-    // Fetches the raw events from the log-puller, in this prototype's case, we
-    // just read from disk.
+//   function fetchRawEvents(): any[] {
+//     // Fetches the raw events from the log-puller, in this prototype's case, we
+//     // just read from disk.
 
-    const fileName =
-      // './input-data/log-data/portal-report-1559068754567.json';
-      './input-data/log-data/portal-report-1560446265188.json';
+//     const fileName =
+//       // './input-data/log-data/portal-report-1559068754567.json';
+//       './input-data/log-data/portal-report-1560446265188.json';
 
-    const parsedFile = JSON.parse(fs.readFileSync(fileName, "utf8"));
-    console.log(`  fetchRawEvents() Raw events fetched from ${fileName}: ${parsedFile.length}`);
-    return parsedFile;
-  }
+//     const parsedFile = JSON.parse(fs.readFileSync(fileName, "utf8"));
+//     console.log(`  fetchRawEvents() Raw events fetched from ${fileName}: ${parsedFile.length}`);
+//     return parsedFile;
+//   }
 
-  function fetchTeacher(username): ITeacher {
-    // If this user has already been fetched from the Portal, just return it.
-    // Otherwise we create a new one.
-    let teacher = teachers.find( t => t.usernameFromEvent === username );
-    if (teacher === undefined) {
-      const fileName = `./input-data/portal-data/user_${username}.json`;
-      const rawTeacher = JSON.parse(fs.readFileSync(fileName, "utf8"));
-      teacher = {
-        usernameFromEvent: username,
-        id: rawTeacher.id,
-        name: rawTeacher.username,
-        events: [],                   // These 3 lists to be Filled in later.
-        modules: [],
-        sessions: []
-      };
-      console.log(`  fetchTeacher() Resolving teacher identity: ${JSON.stringify(teacher)}`)
-      teachers.push(teacher);
-    }
-    return teacher;
-  }
+//   function fetchTeacher(username): ITeacher {
+//     // If this user has already been fetched from the Portal, just return it.
+//     // Otherwise we create a new one.
+//     let teacher = teachers.find( t => t.usernameFromEvent === username );
+//     if (teacher === undefined) {
+//       const fileName = `./input-data/portal-data/user_${username}.json`;
+//       const rawTeacher = JSON.parse(fs.readFileSync(fileName, "utf8"));
+//       teacher = {
+//         usernameFromEvent: username,
+//         id: rawTeacher.id,
+//         name: rawTeacher.username,
+//         events: [],                   // These 3 lists to be Filled in later.
+//         modules: [],
+//         sessions: []
+//       };
+//       // console.log(`  fetchTeacher() Resolving teacher identity: ${JSON.stringify(teacher)}`)
+//       teachers.push(teacher);
+//     }
+//     return teacher;
+//   }
 
-  function extractTEPlugins(rawActivity: any): IPlugin[] {
-    let plugins: IPlugin[] = [];
-    if (rawActivity !== undefined && rawActivity.pages !== undefined) {
-      rawActivity.pages.forEach( (page) => {
-        if (page.embeddables !== undefined) {
-          page.embeddables.forEach ( (embeddable) => {
-              if (embeddable.embeddable !== undefined && embeddable.embeddable.plugin !== undefined) {
-                const plugin = embeddable.embeddable.plugin;
-                if (plugin.approved_script_label === "teacherEditionTips") {
-                  const authorData = JSON.parse(plugin.author_data);
-                  if (authorData.tipType === undefined) {
-                    console.warn("no tipType found in author data for plugin. Old version, maybe?");
-                  } else {
-                    // console.log(`Plugin:\n${JSON.stringify(authorData)}`);
-                    plugins.push({
-                      // questionWrapper, windowShade, or sideTip.
-                      tipType: authorData.tipType,
+//   function extractTEPlugins(rawActivity: any): IPlugin[] {
+//     let plugins: IPlugin[] = [];
+//     if (rawActivity !== undefined && rawActivity.pages !== undefined) {
+//       rawActivity.pages.forEach( (page) => {
+//         if (page.embeddables !== undefined) {
+//           page.embeddables.forEach ( (embeddable) => {
+//               if (embeddable.embeddable !== undefined && embeddable.embeddable.plugin !== undefined) {
+//                 const plugin = embeddable.embeddable.plugin;
+//                 if (plugin.approved_script_label === "teacherEditionTips") {
+//                   const authorData = JSON.parse(plugin.author_data);
+//                   if (authorData.tipType === undefined) {
+//                     console.warn("no tipType found in author data for plugin. Old version, maybe?");
+//                   } else {
+//                     // console.log(`Plugin:\n${JSON.stringify(authorData)}`);
+//                     plugins.push({
+//                       // questionWrapper, windowShade, or sideTip.
+//                       tipType: authorData.tipType,
 
-                      // null, theoryAndBackground, teacherTip, discussionPoints,
-                      // diggingDeeper or howToUse.
-                      windowShade: ((authorData.tipType !== "windowShade") ?
-                        null :
-                        {
-                        windowShadeType: authorData.windowShade.windowShadeType ? // In the first data feed, we seem to
-                                         authorData.windowShade.windowShadeType : // have to field names for the same
-                                         authorData.windowShade.type              // data. If we don't find "windowShadeType",
-                        }),                                                       // it prolly means we want the older "type" field name.
+//                       // null, theoryAndBackground, teacherTip, discussionPoints,
+//                       // diggingDeeper or howToUse.
+//                       windowShade: ((authorData.tipType !== "windowShade") ?
+//                         null :
+//                         {
+//                         windowShadeType: authorData.windowShade.windowShadeType ? // In the first data feed, we seem to
+//                                          authorData.windowShade.windowShadeType : // have to field names for the same
+//                                          authorData.windowShade.type              // data. If we don't find "windowShadeType",
+//                         }),                                                       // it prolly means we want the older "type" field name.
 
-                      questionWrapper: authorData.questionWrapper,
+//                       questionWrapper: authorData.questionWrapper,
 
-                      dirtBag: authorData
-                    });
-                  }
-                };
-              };
-            });
-          };
-        });
-      };
-    return plugins;
-  }
+//                       dirtBag: authorData
+//                     });
+//                   }
+//                 };
+//               };
+//             });
+//           };
+//         });
+//       };
+//     return plugins;
+//   }
 
-  function fetchModule(externalID: string): IModule {
-    // If this module has already been fetched from LARA, just return it. Else,
-    // we fetch it.
-    let module = modules.find( m => m.externalID === externalID );
-    if (module === undefined) {
-      const [_, activityType, activityID] = /(.+): (.+)/.exec(externalID);
-      const fileName = `./input-data/lara-data/${activityType}_${activityID}.json`;
-      const rawModuleJSON = fs.readFileSync(fileName, "utf8");
-      const rawModule = JSON.parse(rawModuleJSON);
-      const isSequence = /sequence.*/.exec(externalID) !== null;
-      const re = /"approved_script_label": "teacherEditionTips"/;
-      const containsAtLeastOneTEScript = (re.exec(rawModuleJSON) !== null);
-      module = {
-        externalID: externalID,
-        name: (isSequence) ? rawModule.display_title : rawModule.name,
-        isTEModule: containsAtLeastOneTEScript,
-        activities: (isSequence) ?
-          rawModule.activities.map((activity) => {
-            return {
-              name: activity.name,
-              plugins: extractTEPlugins(activity),
-              dirtBag: activity
-            }}) :
-          [ // If this isn't a sequence, then it's just a single activity in
-            // the array of activities.
-            {
-              name: rawModule.name,
-              plugins: extractTEPlugins(rawModule.activity),
-              dirtBag: rawModule
-            }
-          ],
-        dirtBag: rawModule
-      }
-      console.log(`  fetchModule() Resolving module definition:
-      module.externalID, module.name, nodule.isTEModule, module.activites-count`)
-      modules.push(module);
-    }
-    return module;
-  }
+//   function fetchModule(externalID: string): IModule {
+//     // If this module has already been fetched from LARA, just return it. Else,
+//     // we fetch it.
+//     let module = modules.find( m => m.externalID === externalID );
+//     if (module === undefined) {
+//       const [_, activityType, activityID] = /(.+): (.+)/.exec(externalID);
+//       const fileName = `./input-data/lara-data/${activityType}_${activityID}.json`;
+//       const rawModuleJSON = fs.readFileSync(fileName, "utf8");
+//       const rawModule = JSON.parse(rawModuleJSON);
+//       const isSequence = /sequence.*/.exec(externalID) !== null;
+//       const re = /"approved_script_label": "teacherEditionTips"/;
+//       const containsAtLeastOneTEScript = (re.exec(rawModuleJSON) !== null);
+//       module = {
+//         externalID: externalID,
+//         name: (isSequence) ? rawModule.display_title : rawModule.name,
+//         isTEModule: containsAtLeastOneTEScript,
+//         activities: (isSequence) ?
+//           rawModule.activities.map((activity) => {
+//             return {
+//               name: activity.name,
+//               plugins: extractTEPlugins(activity),
+//               dirtBag: activity
+//             }}) :
+//           [ // If this isn't a sequence, then it's just a single activity in
+//             // the array of activities.
+//             {
+//               name: rawModule.name,
+//               plugins: extractTEPlugins(rawModule.activity),
+//               dirtBag: rawModule
+//             }
+//           ],
+//         dirtBag: rawModule
+//       }
+//       console.log(`  fetchModule() Resolving module definition:
+//       module.externalID, module.name, nodule.isTEModule, module.activites-count`)
+//       modules.push(module);
+//     }
+//     return module;
+//   }
 
-  function fetchSession(sessionToken: string) : ISession {
-    // If a session is defined, return it; otherwise, create a new one.
-    let session = sessions.find( s => s.sessionToken === sessionToken);
-    if (session === undefined) {
-      session = {
-        sessionToken: sessionToken,
-        events: [],                   // To be filled in, later.
-        modules: [],
-        teachers: []
-      }
-      sessions.push(session);
-    }
-    return session;
-  }
+//   function fetchSession(sessionToken: string) : ISession {
+//     // If a session is defined, return it; otherwise, create a new one.
+//     let session = sessions.find( s => s.sessionToken === sessionToken);
+//     if (session === undefined) {
+//       session = {
+//         sessionToken: sessionToken,
+//         events: [],                   // To be filled in, later.
+//         modules: [],
+//         teachers: []
+//       }
+//       sessions.push(session);
+//     }
+//     return session;
+//   }
 
-  // Here's the main loop used for data prep, driven by an iteration over the
-  // raw events supplied by the log-puller.
+//   // Here's the main loop used for data prep, driven by an iteration over the
+//   // raw events supplied by the log-puller.
 
-  events = fetchRawEvents().map( (rawEvent) => {
-    return {
-      session: fetchSession(rawEvent.session),
-      teacher: fetchTeacher(rawEvent.username),
-      isTEMode: /.*\?.*mode=teacher-edition/.exec(rawEvent.extras.url) !== null,
-      eventDate: new Date(rawEvent.time),
-      eventType: rawEvent.event,
-      module: fetchModule(rawEvent.activity),
-      dirtBag: rawEvent
-    }
-  });
-}
+//   events = fetchRawEvents().map( (rawEvent) => {
+//     return {
+//       session: fetchSession(rawEvent.session),
+//       teacher: fetchTeacher(rawEvent.username),
+//       isTEMode: /.*\?.*mode=teacher-edition/.exec(rawEvent.extras.url) !== null,
+//       eventDate: new Date(rawEvent.time),
+//       eventType: rawEvent.event,
+//       module: fetchModule(rawEvent.activity),
+//       dirtBag: rawEvent
+//     }
+//   });
+// }
 
-function prepReportSourceData(): void {
+// function prepReportSourceData(): void {
 
-  // We start by fetching the event log from the log-puller. As a side effect of
-  // calling getEventLog(), not only is the event list populated with all those
-  // events in the log, all modules that are referenced by those events are
-  // fetched from LARA, and all the teacher's identities are resolved from the
-  // Portal.
-  getEventLog();
+//   // We start by fetching the event log from the log-puller. As a side effect of
+//   // calling getEventLog(), not only is the event list populated with all those
+//   // events in the log, all modules that are referenced by those events are
+//   // fetched from LARA, and all the teacher's identities are resolved from the
+//   // Portal.
+//   getEventLog();
 
-  // The list of events, at this point is potentially huge, but we can trim that
-  // down by eliminating events that do not reference a module with a Teacher
-  // Edition plug-in.
-  events = events.filter( e => e.module.isTEModule );
+//   // The list of events, at this point is potentially huge, but we can trim that
+//   // down by eliminating events that do not reference a module with a Teacher
+//   // Edition plug-in.
+//   events = events.filter( e => e.module.isTEModule );
 
-  // We can now use, what's left, in the events list to trim down the modules
-  // that are associated with our events.
-  modules = _.uniq(events.map( e => e.module ));
+//   // We can now use, what's left, in the events list to trim down the modules
+//   // that are associated with our events.
+//   modules = _.uniq(events.map( e => e.module ));
 
-  // At this point, we might now have some teachers that have no events
-  // associated with Teacher Edition modules. So we make a pass over all the
-  // remaining (that is, TE related) events to reconstruct the teachers list.
-  teachers = _.uniq(events.map(e => e.teacher))
+//   // At this point, we might now have some teachers that have no events
+//   // associated with Teacher Edition modules. So we make a pass over all the
+//   // remaining (that is, TE related) events to reconstruct the teachers list.
+//   teachers = _.uniq(events.map(e => e.teacher))
 
-  // It is also possible, that now our unwanted events, modules, and teachers
-  // are removed, that some of our sessions can be removed. Use the same idea
-  // to regenerate our sessions list based on what's left in the events.
-  sessions = _.uniq(events.map( e => e.session ));
+//   // It is also possible, that now our unwanted events, modules, and teachers
+//   // are removed, that some of our sessions can be removed. Use the same idea
+//   // to regenerate our sessions list based on what's left in the events.
+//   sessions = _.uniq(events.map( e => e.session ));
 
-  // At this point, the teachers need to have their events, modules, and sessions
-  // lists filled-in, based on what's left in the events list.
-  teachers.forEach( (teacher) => {
-    teacher.events = _.uniq( events.filter( e => e.teacher===teacher ));
-    teacher.modules = _.uniq( teacher.events.map( e => e.module ));
-    teacher.sessions = _.uniq( teacher.events.map( e => e.session ));
+//   // Now we need to flesh out all the additional session data: the events,
+//   // modules, and teachers associated with each session.
+//   sessions.forEach( (session) => {
+//     session.events = _.uniq(events.filter( e => e.session == session));
+//     console.log(`>>> for session (${session.sessionToken}) -- found ${session.events.length} events`)
+//     session.modules = _.uniq(session.events.map( e => e.module));
+//     console.log(`>>> for session (${session.sessionToken}) -- found ${session.modules.length} modules`)
+//     session.teachers = _.uniq(session.events.map( e => e.teacher ));
+//     console.log(`>>> for session (${session.sessionToken}) -- found ${session.teachers.length} teachers`)
+//   });
 
-  });
+//   // At this point, the teachers need to have their events, modules, and sessions
+//   // lists filled-in, based on what's left in the events list.
+//   teachers.forEach( (teacher) => {
+//     teacher.events = _.uniq( events.filter( e => e.teacher===teacher ));
+//     teacher.modules = _.uniq( teacher.events.map( e => e.module ));
+//     teacher.sessions = _.uniq( teacher.events.map( e => e.session ));
+//   });
 
-}
+// }
 
 // Utility & Helpers
 // =================
@@ -439,7 +450,34 @@ function genSessionReport(): string {
     return names;
   }
 
+  const modes: boolean[] = [ true, false ]; // For "TeacherEdition" & "Preview".
   let report: string[][] = [];
+
+  sessions.forEach( (session) => {
+    console.log(`genSessionReport() -- for session: ${session.sessionToken}`);
+    // For each teacher with a session in this list...
+    const teachers: ITeacher[] = session.teachers;
+    if (teachers.length > 1) {
+      console.log("Warning -- more than one teacher found for this session");
+      // This is probably a point where anon teachers should be lumped in with
+      // the non-anon teacher's id. But, for now, we'll just drop thru to the
+      // next line that will simply select the first of the teachers we found.
+    }
+    const teacher: ITeacher = teachers[0];
+    if (teacher === undefined) {
+      console.log("  genSessionReport() -- no teacher found, skipping...");
+    } else {
+      console.log(`  genSessionReport() -- for teacher: ${teacher.name} (${teacher.id})`);
+      modes.forEach( (mode) => {
+        console.log(`  genSessionReport() -- for teacher: ${teacher.name} (${teacher.id})`);
+     
+        
+        // return teacher.events.filter( e => (e.module === module) && (e.isTEMode === mode));
+
+
+      })
+    }
+  });
 
   report.push(["no","data","yet"]);
 
@@ -758,7 +796,7 @@ const outputPath = "./output-data"
 function main(): void {     // Only used for development.
   console.log("\nPrep common report data\n")
 
-  prepReportSourceData();
+  prepareReportSourceData();
 
   console.log("\nGenerating Usage-Report\n")
   let csv = genUsageReport();
@@ -769,7 +807,7 @@ function main(): void {     // Only used for development.
   fs.writeFileSync(`${outputPath}/TE-Session-Report.csv`, csv);
 }
 
-main();  // Only used for development.
+// main();  // Only used for development.
 
 
 // Interface to the outside world for requesting a report.
@@ -781,8 +819,18 @@ export enum ReportType {
   moduleReport = "moduleReport"
 }
 
-export function getCSVString(reportType: ReportType): string {
-  prepReportSourceData();
+export const queryStringToReportType = (queryString: string): ReportType => {
+  switch (queryString) {
+    case 'usageReport': return ReportType.usageReport;
+    case 'sessionReport': return ReportType.sessionReport;
+    case 'drillDownReport': return ReportType.drillDownReport;
+    case 'moduleReport': return ReportType.moduleReport;
+    default: return undefined;
+  }
+};
+
+export function getCSVString(reportType: ReportType, _: ILogPullerLog[]): string {
+  prepareReportSourceData();
   switch (reportType) {
     case ReportType.usageReport:   return genUsageReport();
     case ReportType.sessionReport: return genSessionReport();
@@ -791,69 +839,3 @@ export function getCSVString(reportType: ReportType): string {
     default: return `"Teacher Edition Report Error"\n"Unrecognized report type"`;
     }
 }
-
-export interface ILog {
-  id: number;
-  session: string;
-  username: string;
-  application: string;
-  activity: string;
-  event: string;
-  time: string;
-  parameters: object;
-  extras: object;
-  event_value: string|null;
-  run_remote_endpoint: string|null;
-}
-
-interface ILogPullerUser {
-  id: number;
-  username: string;
-  first_name: string;
-  last_name: string;
-}
-
-interface ILogPullerRunnable {
-  id: number;
-  url: string;
-  browse_url: string;
-  name: string;
-  source_type: string;
-}
-
-interface ILogPullerJSON {
-  type: "users";
-  version: "1.0";
-  domain: string; // eg learn.staging.concord.org
-  users: ILogPullerUser[];
-  runnables: ILogPullerRunnable[],
-  start_date: string; // eg 06/01/2019
-  end_date: string; // eg 06/07/2019
-}
-
-export function getLogs(requestJSON: string, signature: string): Promise<ILog[]> {
-  return new Promise<ILog[]>((resolve, reject) => {
-    try {
-      // use log-puller staging for everything except request from learn prodution
-      const parsedJSON = JSON.parse(requestJSON) as ILogPullerJSON;
-      const viaProduction = ["learn.concord.org", "learn-report.concord.org"].indexOf(parsedJSON.domain) !== -1;
-      const url = `https://${viaProduction ? "log-puller" : "log-puller-staging"}.herokuapp.com/portal-report`;
-
-      superagent
-        .post(url)
-        .type('form')
-        .send({json: requestJSON})
-        .send({signature})
-        .send({format: 'json'})
-        .send({explode: 'no'})
-        .send({download: 'Download Logs'})
-        .then((response) => {
-          resolve(response.body)
-        }, reject);
-    }
-    catch (e) {
-      reject(e);
-    }
-  });
-}
-
