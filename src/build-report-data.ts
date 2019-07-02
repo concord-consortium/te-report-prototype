@@ -119,25 +119,28 @@ function fetchTeacher(teachers: ITeacher[], id: string): ITeacher {
 function extractTeacherEditionPlugins(rawActivity: any): IPlugin[] {
 
   // This particular bit of ugly logic descends through the rawActivity data
-  // structure and returns an array of IPlugin objects.
+  // structure (as fetched from LARA) and returns an array of IPlugin objects.
   //
   // This descent into madness begins with an activity, which contains an array
   // of pages which contain... well, something like this:
   // 
   //    activity
-  //     .pages[]                     -- iterate over each page to...
-  //     .embeddables[]               -- iterate over each embeddable...
-  //     .embeddable                  -- find an actual embeddable...
-  //     .embeddable                  -- yes, 2 levels named embeddable.
-  //     .plugin                      -- eureka, a actual plugin.
+  //     .pages[]                   -- iterate over each page to...
+  //     .embeddables[]             -- iterate over each embeddable tp...
+  //     .embeddable                -- find an actual embeddable...
+  //     .embeddable                -- (yes, 2 levels named embeddable) till...
+  //     .plugin                    -- eureka, a actual plugin.
   //
   // If that last thing is a plugin with
   //
   //     plugin.approved_script_label === "teacherEditionTips"
   //
-  // then the plugin.authorData is a JSON string. This JSON is parsed and the
-  // resulting teacher-edition-plugin specific definition is inspected and used
-  // to create an IPlugin with the appropriate plugin type and sub-type.
+  // then the plugin.authorData ought to be a JSON string. This JSON is parsed
+  // and the resulting teacher-edition-plugin specific definition is inspected
+  // and used to create an IPlugin with the appropriate plugin type and sub-type.
+  //
+  // All such IPlugin objects from the activity are collected together returned
+  // as an array.
   
   let plugins: IPlugin[] = [];
 
@@ -322,14 +325,16 @@ function resolveCrossReferences(reportData: IReportData) {
   // Do all the cross-referencing and special processing for all the fields in
   // teachers & sessions that weren't supplied when the objects were created.
   reportData.sessions.forEach((session) => {
-    session.events = _.uniq(reportData.events.filter(e => e.session == session));
+    session.events = _.uniq(reportData.events.filter(e => e.session == session))
+      .sort(eventDateCompare);
     session.modules = _.uniq(session.events.map(e => e.module));
     session.teachers = _.uniq(session.events.map(e => e.teacher));
     session.firstDate = session.events[0].eventDate;
     session.lastDate = session.events[session.events.length - 1].eventDate;
   });
   reportData.teachers.forEach((teacher) => {
-    teacher.events = _.uniq(reportData.events.filter(e => e.teacher === teacher));
+    teacher.events = _.uniq(reportData.events.filter(e => e.teacher === teacher))
+      .sort(eventDateCompare);
     teacher.modules = _.uniq(teacher.events.map(e => e.module));
     teacher.sessions = _.uniq(teacher.events.map(e => e.session));
   });

@@ -14,12 +14,13 @@ interface IName {
 }
 
 const map: IName[] = [
-  { id: "28@learn.staging.concord.org",  name: "Michigan J. Frog" },
-  { id: "29@learn.staging.concord.org",  name: "Betty Rubble" },
-  { id: "272@learn.staging.concord.org", name: "Scott Teacher" },
-  { id: "anonymous",                     name: "Anonymous" },
-  { id: "217@learn.staging.concord.org", name: "Martha P. LeStatosphere" },
-  { id: "337@learn.staging.concord.org", name: "Martin Martian"}
+  { id: "28@learn.staging.concord.org",   name: "Michigan J. Frog" },
+  { id: "29@learn.staging.concord.org",   name: "Betty Rubble" },
+  { id: "272@learn.staging.concord.org",  name: "Scott Teacher" },
+  { id: "anonymous",                      name: "Anonymous" },
+  { id: "217@learn.staging.concord.org",  name: "Martha P. LeStatosphere" },
+  { id: "337@learn.staging.concord.org",  name: "Martin Martian"},
+  { id: "4792@learn.staging.concord.org", name: "Dave Love (DLoveT)"}
 ];
 
 export function fetchUserFromPortal(id: string) {
