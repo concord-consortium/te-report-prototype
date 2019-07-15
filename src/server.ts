@@ -1,25 +1,29 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+
+import { serverShortName, verbose, port } from './globals';
+import { announce, info } from './utilities';
+
 import { getLog } from './log-puller';
 import { buildReportData } from './build-report-data';
 import { queryStringToReportType, getReport } from './report-dispatcher';
 
-// This server application listens for a POST request for a particular report;
-// fetches the indicated log-puller supplied event-log from the log-puller; and
-// sends the resulting report as a CSV formatted response.
+// The server application listens for a POST request for a particular report;
+// fetches the indicated log-puller supplied event-log from the log-puller; uses
+// this fetched data to build the report objects; and, returns the resulting
+// report as a CSV formatted response.
 
-const PORT = process.env.PORT || 3000;
 const app = express();
 
-app.use(bodyParser.urlencoded({extended: true, limit: "50mb", parameterLimit:50000}));
-app.use(bodyParser.json({limit: "50mb"}));
+app.use(bodyParser.urlencoded({ extended: true, limit: "50mb", parameterLimit: 50000 }));
+app.use(bodyParser.json({ limit: "50mb" }));
 
-app.listen(PORT, () => {
-  console.log(`Server - listening on port ${PORT}.`)
+app.listen(port, () => {
+  announce(`listening on port ${port}, verbose = ${verbose}`);
 });
 
 app.get('/', (req, res) => {
-  res.send('Teacher Edition Report Server');
+  res.send('Teacher Edition Report Server, Ver 0.23');
 });
 
 app.post('/', (req, res) => {
@@ -34,12 +38,11 @@ app.post('/', (req, res) => {
 
   getLog(req.body.json, req.body.signature)
     .then((log) => {
-      console.log(`Server - ${log.length} events fetched from log-puller`)
       const reportType = queryStringToReportType(req.query.report);
+      info('event log', `${log.length} events fetched for  "${reportType.toString()}"`);
       if (reportType === undefined) {
-        throw `Server ERROR - Undefined query parameter for reportType ${req.query.report}.`;
+        throw `${serverShortName} ERROR - Undefined query parameter for reportType ${req.query.report}.`;
       } else {
-        console.log(`Server - ${reportType.toString()} report requested`);
         setHeader(res, reportType.toString());
         buildReportData(log)
           .then((reportData) => {
@@ -54,7 +57,7 @@ app.post('/', (req, res) => {
 
 });
 
-function setHeader(res:any, fileName: string) {
+function setHeader(res: any, fileName: string) {
   // Always respond with a csv file.
   res.setHeader('Content-disposition', 'attachment; filename=te-' +
     fileName.toLowerCase() + '-' + Date.now() + '.csv');

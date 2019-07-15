@@ -1,5 +1,8 @@
-import { IReportData } from './build-report-data';
+import { warn } from './utilities';
+
+import { IReportData } from './report-data-types';
 import { genUsageReport } from './gen-usage-report';
+import { genSessionReport } from './gen-session-report';
 
 enum ReportType {
   UsageReport = 'usageReport',
@@ -15,7 +18,7 @@ export function queryStringToReportType(queryString: string): ReportType {
     case 'sessionReport':
       return ReportType.SessionReport;
     default:
-      console.warn(`Warning: unrecognized query string parameter "${queryString}"`)
+      warn(`Unrecognized query string parameter "${queryString}"`)
       return undefined;
   }
 }
@@ -25,8 +28,8 @@ export function getReport(reportType: ReportType, reportData: IReportData): stri
     case ReportType.UsageReport:
       return genUsageReport(reportData);
     case ReportType.SessionReport:
-      return `"Report Placeholder"\n"TE Session Report"`; // genSessionReport(reportData);
+      return genSessionReport(reportData);
     default:
-      return `"Teacher Edition Report Error"\n"Unrecognized report type"`;
+      throw `"Teacher Edition Report Error"\n"Unrecognized report type"`;
     }
 }
