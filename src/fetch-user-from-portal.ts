@@ -4,7 +4,7 @@
 // name and return it. If we don't recognize the input, we return a string of
 // "Not available" as the user's name.
 //
-// This will be replaced with a function fetches the user information with
+// This will be replaced with a function that fetches the user information with
 // something like: "learn.staging.concord.org/users/${id}.xml", with the
 // appropriate credentials, of course.
 
@@ -18,7 +18,7 @@ const map: IName[] = [
   { id: "29@learn.staging.concord.org",   name: "Betty Rubble" },
   { id: "272@learn.staging.concord.org",  name: "Scott Teacher" },
   { id: "anonymous",                      name: "Anonymous" },
-  { id: "217@learn.staging.concord.org",  name: "Martha P. LeStatosphere" },
+  { id: "217@learn.staging.concord.org",  name: "Martha P. LeStrand" },
   { id: "337@learn.staging.concord.org",  name: "Martin Martian"},
   { id: "4792@learn.staging.concord.org", name: "Dave Love (DLoveT)"}
 ];

@@ -42,11 +42,10 @@ interface ILogPullerJSON {
 export function getLog(requestJSON: string, signature: string): Promise<ILogPullerEvent[]> {
   return new Promise<ILogPullerEvent[]>((resolve, reject) => {
     try {
-      // Use log-puller staging for everything except request a from learn production.
+      // Use log-puller staging for everything except requests from learn production.
       const parsedJSON = JSON.parse(requestJSON) as ILogPullerJSON;
       const viaProduction = ["learn.concord.org", "learn-report.concord.org"].indexOf(parsedJSON.domain) !== -1;
       const url = `https://${viaProduction ? "log-puller" : "log-puller-staging"}.herokuapp.com/portal-report`;
-  
       superagent
         .post(url)
         .type('form')
