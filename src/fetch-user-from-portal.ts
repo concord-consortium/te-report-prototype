@@ -13,6 +13,30 @@ interface IName {
   name: string
 }
 
+const sampleUserXML =
+'<user> \
+  <asked-age type="boolean">false</asked-age> \
+  <created-at type="datetime">2018-12-03T18:08:18Z</created-at> \
+  <default-user type="boolean">false</default-user> \
+  <deleted-at type="datetime" nil="true"/> \
+  <email>dlove@concord.org</email> \
+  <email-subscribed type="boolean">true</email-subscribed> \
+  <external-id nil="true"/> \
+  <first-name>Dave</first-name> \
+  <have-consent type="boolean">false</have-consent> \
+  <id type="integer">4792</id> \
+  <last-name>Love</last-name> \
+  <login>DLoveT</login> \
+  <of-consenting-age type="boolean">false</of-consenting-age> \
+  <require-password-reset type="boolean">false</require-password-reset> \
+  <require-portal-user-type type="boolean">true</require-portal-user-type> \
+  <sign-up-path>/</sign-up-path> \
+  <site-admin type="boolean">false</site-admin> \
+  <state>active</state> \
+  <updated-at type="datetime">2019-07-19T14:31:55Z</updated-at> \
+  <uuid>69337d92-f726-11e8-9e0e-0242ac110003</uuid> \
+</user>';
+
 const map: IName[] = [
   { id: "28@learn.staging.concord.org",   name: "Michigan J. Frog" },
   { id: "29@learn.staging.concord.org",   name: "Betty Rubble" },
