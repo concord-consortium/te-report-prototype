@@ -30,8 +30,8 @@ export function isBlank(s: string): boolean {
   return (s === null || s === undefined || s === '');
 }
 
-// Status reporting, debugging messages and dump-file methods.
-// ===========================================================
+// Status reporting, debugging messages.
+// =====================================
 
 export function announce(s: string): void {
   // Always write to the console, with the long name of the server.

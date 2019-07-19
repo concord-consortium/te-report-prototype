@@ -34,43 +34,17 @@ function fetchTeacher(teachers: ITeacher[], id: string): ITeacher {
 }
 
 function extractTeacherEditionPlugins(rawActivity: any): IPlugin[] {
-  // Descend through a rawActivity, as fetched from LARA, and return an array of
-  // teacher-edition IPlugin objects. The descent goes something like this:
-  // 
-  // activity                               -- contains an array of pages...
-  //    .pages[]                            -- which contains an array of embeddables...
-  //      .embeddables[]                    -- which contains an array of...
-  //        .embeddable.plugin       -- things relating to a plugin.
-  //
-  // If that last thing is a plugin with the following property/value:
-  //
-  //     plugin.approved_script_label === "teacherEditionTips"
-  //
-  // then the plugin.authorData ought to be a JSON string. This JSON is parsed
-  // and the resulting teacher-edition-plugin specific definition is inspected
-  // and used to create an IPlugin with the appropriate plugin type and sub-type.
-  //
-  // All such IPlugin objects from the activity are collected together returned
-  // as an array.
-
-  // First, find all the blocks of author_data that are part of the definition
-  // of a TE plugin.
-
   let plugins: IPlugin[] = [];          // Return list.
-
-  // Find all the embeddable objects that have a teacher edition plugin.
   const rawTeEmbeddables =
+    // Find all the embeddable objects that have a teacher edition plugin.
     _.flatten(rawActivity.pages.map( page => page.embeddables ))
-    .filter( (e:any) => (
-      e.embeddable.plugin !== undefined &&
-      e.embeddable.plugin.approved_script_label === 'teacherEditionTips')
-    )
-    .map( (e: any) => e.embeddable);
-    
-  // For each teacher-edition embeddable, construct an IPlugin object.
-
+      .filter( (e:any) => (
+        e.embeddable.plugin !== undefined &&
+        e.embeddable.plugin.approved_script_label === 'teacherEditionTips')
+      )
+      .map( (e: any) => e.embeddable);
   rawTeEmbeddables.forEach( (re:any) => {
-
+    // For each teacher-edition embeddable, construct an IPlugin object.
     const authorData = JSON.parse(re.plugin.author_data);
     const pluginType = resolvePluginType(authorData.tipType);
     const pluginDef = resolvePluginDef(pluginType, authorData);
@@ -85,6 +59,7 @@ function extractTeacherEditionPlugins(rawActivity: any): IPlugin[] {
 }
 
 function isSignificant(s: string): boolean {
+  // Significant means, s is defined and contains some non-whitespace characters.
   return ((s !== undefined) && ! /^\s*$/.test(s))
 }
 
@@ -113,7 +88,7 @@ function resolvePluginDef(pluginType: PluginType, authorData: any): IQuestionWra
           return undefined;
       }
     case PluginType.SideTip:
-      return undefined;
+      return undefined;  // This doesn't make sense for a SideTip, so it's undefined.
    }
 }
 
