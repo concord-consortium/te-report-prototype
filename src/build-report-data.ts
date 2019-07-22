@@ -36,6 +36,14 @@ async function fetchTeacher(portalToken: string, teachers: ITeacher[], id: strin
 
 function extractTeacherEditionPlugins(rawActivity: any): IPlugin[] {
   let plugins: IPlugin[] = [];          // Return list.
+
+  if (rawActivity === undefined || rawActivity.pages === undefined) {
+    // There are situations, particularly on staging, where the the activity
+    // is empty or has no array of pages. In this case, since there can not be
+    // any plugins defined, we simply return an empty list.
+    return [];
+  }
+
   const rawTeEmbeddables =
     // Find all the embeddable objects that have a teacher edition plugin.
     _.flatten(rawActivity.pages.map( page => page.embeddables ))

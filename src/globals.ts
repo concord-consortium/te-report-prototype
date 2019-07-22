@@ -1,11 +1,7 @@
 // Server names -- used in console output.
 
-export const serverName = 'TeacherEdition Report Server';
+export const serverName = 'Teacher Edition Report Server';
 export const serverShortName = 'TE Server';
-
-// Logging controls.
-
-export const verbose = process.env.VERBOSE || false;
 
 // Communication controls.
 

@@ -1,4 +1,4 @@
-import { serverName, serverShortName, verbose } from './globals';
+import { serverName, serverShortName } from './globals';
 import { IEvent, ISession } from './report-data-types';
 
 // Handy date comparators.
@@ -34,18 +34,11 @@ export function isBlank(s: string): boolean {
 // =====================================
 
 export function announce(s: string): void {
-  // Always write to the console, with the long name of the server.
+  // Write to the console, with the long name of the server.
   console.log(`${serverName} - ${s}`);
 }
 
 export function warn(s: string): void {
-  // Always write to the console, using short server name and "WARNING" preamble.
+  // Write to the console, using short server name and "WARNING" preamble.
   console.log(`${serverShortName} - WARNING: ${s}`);
-}
-
-export function info(label: string, s: string): void {
-  // Only writes to the console if enabled with the verbose flag.
-  if (verbose) {
-    console.log(`${serverShortName}::${label} - ${s}`);
-  }
 }
