@@ -1,7 +1,7 @@
 import * as superagent from "superagent";
 
 import { laraServer, apiToken } from './globals';
-import { info, warn } from './utilities';
+import { warn } from './utilities';
 
 // Fetches a module (either a sequence or an activity) from Lara, based on the
 // "activity ID" found in a log event.
@@ -13,7 +13,6 @@ export function fetchModuleFromLara(activityType: string, activityID: string): P
     }
     const typeString = (activityType == 'sequence') ? 'sequences' : 'activities';
     const url = `https://${laraServer}/${typeString}/${activityID}/export.json`;
-    info('fetching', `module from "${url}"`)
     getLaraModule(url, apiToken)
       .then((module) => {
         resolve(module);

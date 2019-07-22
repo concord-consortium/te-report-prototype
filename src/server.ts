@@ -44,7 +44,7 @@ app.post('/', (req, res) => {
         throw `${serverShortName} ERROR - Undefined query parameter for reportType ${req.query.report}.`;
       } else {
         setHeader(res, reportType.toString());
-        buildReportData(log)
+        buildReportData(req.body.portal_token, log)
           .then((reportData) => {
             res.send(getReport(reportType, reportData));
           })

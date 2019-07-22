@@ -1,53 +1,60 @@
-// This is a temporary mock service that simulates fetching the user name info
-// from the portal, given a particular user identifier, as provided by an event
-// from the log-puller. What we do here is simply map the incoming ID to a user
-// name and return it. If we don't recognize the input, we return a string of
-// "Not available" as the user's name.
-//
-// This will be replaced with a function that fetches the user information with
-// something like: "learn.staging.concord.org/users/${id}.xml", with the
-// appropriate credentials, of course.
+import * as superagent from 'superagent';
+import { parseString } from 'xml2js';
 
-interface IName {
-  id: string,
-  name: string
+import { portalServer } from './globals';
+import { warn } from './utilities';
+
+// Fetches a user name from the Portal given an id-string, as supplied in a
+// log event.
+
+const notAllowedUserName = 'Not allowed';
+
+export function fetchUserFromPortal(portalToken: string, id: string): Promise<string> {
+  const userId = /(^.+)@/.exec(id);
+  if (userId === null || userId === undefined) {
+    return Promise.resolve('');  // Unrecognized user-id format? Return empty string.
+  }
+  return new Promise<string>((resolve, reject) => {
+    const url = `https://${portalServer}/users/${userId[1]}.xml`;
+    getPortalUser(portalToken, url)
+      .then((userXML) => {
+        resolve(parseName(userXML));
+      })
+      .catch((err) => {
+        warn(`Error from getPortal User: ${JSON.stringify(err)}`);
+        Promise.resolve(notAllowedUserName);
+      });
+  });
 }
 
-const sampleUserXML =
-'<user> \
-  <asked-age type="boolean">false</asked-age> \
-  <created-at type="datetime">2018-12-03T18:08:18Z</created-at> \
-  <default-user type="boolean">false</default-user> \
-  <deleted-at type="datetime" nil="true"/> \
-  <email>dlove@concord.org</email> \
-  <email-subscribed type="boolean">true</email-subscribed> \
-  <external-id nil="true"/> \
-  <first-name>Dave</first-name> \
-  <have-consent type="boolean">false</have-consent> \
-  <id type="integer">4792</id> \
-  <last-name>Love</last-name> \
-  <login>DLoveT</login> \
-  <of-consenting-age type="boolean">false</of-consenting-age> \
-  <require-password-reset type="boolean">false</require-password-reset> \
-  <require-portal-user-type type="boolean">true</require-portal-user-type> \
-  <sign-up-path>/</sign-up-path> \
-  <site-admin type="boolean">false</site-admin> \
-  <state>active</state> \
-  <updated-at type="datetime">2019-07-19T14:31:55Z</updated-at> \
-  <uuid>69337d92-f726-11e8-9e0e-0242ac110003</uuid> \
-</user>';
+function getPortalUser(portalToken: string, url: string): Promise<any> {
+  return new Promise<string>((resolve, reject) => {
+    superagent
+      .get(url)
+      .set("Authorization", `Bearer/JWT ${portalToken}`)
+      .then((response) => {
+        const xml = (response.body as Buffer).toString();
+        resolve(xml)
+      })
+      .catch((err) => {
+        warn(`Error from getPortal, err: ${JSON.stringify(err)}`);
+        throw(err);
+      });
+  });
+}
 
-const map: IName[] = [
-  { id: "28@learn.staging.concord.org",   name: "Michigan J. Frog" },
-  { id: "29@learn.staging.concord.org",   name: "Betty Rubble" },
-  { id: "272@learn.staging.concord.org",  name: "Scott Teacher" },
-  { id: "anonymous",                      name: "Anonymous" },
-  { id: "217@learn.staging.concord.org",  name: "Martha P. LeStrand" },
-  { id: "337@learn.staging.concord.org",  name: "Martin Martian"},
-  { id: "4792@learn.staging.concord.org", name: "Dave Love (DLoveT)"}
-];
-
-export function fetchUserFromPortal(id: string) {
-  const mapResult: IName = map.find( name => name.id === id );
-  return (mapResult ? mapResult.name : 'hidden');
+function parseName(xml): string {
+  var userName = '';
+  parseString(xml, (err, res) => {
+    if (err !== null) {
+      // Here, if we had a problem parsing the XML. Let's issue a warning to
+      // the console, but we will carry on as if the user didn't have permission
+      // to see the name.
+      warn(`Error parsing XML for user, not allowed returned. err = ${err}`)
+      userName = notAllowedUserName;
+    } else {
+      userName = `${res.user['first-name'][0]} ${res.user['last-name'][0]}`;
+    }
+  });
+  return userName;
 }

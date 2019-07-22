@@ -19,14 +19,15 @@ function fetchSession(sessions: ISession[], sessionToken: string): ISession {
   return session;
 }
 
-function fetchTeacher(teachers: ITeacher[], id: string): ITeacher {
+async function fetchTeacher(portalToken: string, teachers: ITeacher[], id: string) {
   // If this user has already been fetched from the Portal, just return it;
   // otherwise, create a new one.
   let teacher = teachers.find(t => t.id === id);
   if (teacher === undefined) {
+    const teacherName = await fetchUserFromPortal(portalToken, id);
     teacher = {
       id: id,
-      name: fetchUserFromPortal(id)
+      name: teacherName
     };
     teachers.push(teacher);
   }
@@ -233,7 +234,7 @@ function decodeEventSubType(rawEvent: ILogPullerEvent): EventSubType {
   }
 }
 
-export function buildReportData(rawEvents: ILogPullerEvent[]): Promise<IReportData> {
+export function buildReportData(portalToken: string, rawEvents: ILogPullerEvent[]): Promise<IReportData> {
   return new Promise<IReportData>( (resolve) => {
     let reportData: IReportData = { events: [], teachers: [], modules: [], sessions: [] };
     const getEvents = async () => {
@@ -244,7 +245,7 @@ export function buildReportData(rawEvents: ILogPullerEvent[]): Promise<IReportDa
           findEventPlugin(module, rawEvent.extras.embeddable_plugin_id);
         const newEvent: IEvent = {
           session: fetchSession(reportData.sessions, rawEvent.session),
-          teacher: fetchTeacher(reportData.teachers, rawEvent.username),
+          teacher: await fetchTeacher(portalToken, reportData.teachers, rawEvent.username),
           teMode: decodeTeMode(rawEvent),
           eventDate: new Date(rawEvent.time),
           eventType: rawEvent.event,
