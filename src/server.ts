@@ -1,8 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 
-import { serverShortName, verbose, port } from './globals';
-import { announce, info } from './utilities';
+import { serverName, serverShortName, port } from './globals';
+import { announce } from './utilities';
 
 import { getLog } from './log-puller';
 import { buildReportData } from './build-report-data';
@@ -19,19 +19,19 @@ app.use(bodyParser.urlencoded({ extended: true, limit: "50mb", parameterLimit: 5
 app.use(bodyParser.json({ limit: "50mb" }));
 
 app.listen(port, () => {
-  announce(`listening on port ${port}, verbose = ${verbose}`);
+  announce(`listening on port ${port}`);
 });
 
 app.get('/', (req, res) => {
-  res.send('Teacher Edition Report Server, Ver 0.23');
+  res.send(serverName);
 });
 
 app.post('/', (req, res) => {
 
-  if (!req.body.json || !req.body.signature) {
+  if (!req.body.json || !req.body.signature || !req.body.portal_token) {
     // Ensure json and signature exist in req.body.
     res.status(400);
-    const errMessage: string = 'Server - Missing json or signature parameter';
+    const errMessage: string = 'Server - Missing json, signature, or token';
     res.send(errMessage);
     return;
   }
@@ -39,12 +39,11 @@ app.post('/', (req, res) => {
   getLog(req.body.json, req.body.signature)
     .then((log) => {
       const reportType = queryStringToReportType(req.query.report);
-      info('event log', `${log.length} events fetched for  "${reportType.toString()}"`);
       if (reportType === undefined) {
         throw `${serverShortName} ERROR - Undefined query parameter for reportType ${req.query.report}.`;
       } else {
         setHeader(res, reportType.toString());
-        buildReportData(log)
+        buildReportData(req.body.portal_token, log)
           .then((reportData) => {
             res.send(getReport(reportType, reportData));
           })

@@ -19,14 +19,15 @@ function fetchSession(sessions: ISession[], sessionToken: string): ISession {
   return session;
 }
 
-function fetchTeacher(teachers: ITeacher[], id: string): ITeacher {
+async function fetchTeacher(portalToken: string, teachers: ITeacher[], id: string) {
   // If this user has already been fetched from the Portal, just return it;
   // otherwise, create a new one.
   let teacher = teachers.find(t => t.id === id);
   if (teacher === undefined) {
+    const teacherName = await fetchUserFromPortal(portalToken, id);
     teacher = {
       id: id,
-      name: fetchUserFromPortal(id)
+      name: teacherName
     };
     teachers.push(teacher);
   }
@@ -34,43 +35,25 @@ function fetchTeacher(teachers: ITeacher[], id: string): ITeacher {
 }
 
 function extractTeacherEditionPlugins(rawActivity: any): IPlugin[] {
-  // Descend through a rawActivity, as fetched from LARA, and return an array of
-  // teacher-edition IPlugin objects. The descent goes something like this:
-  // 
-  // activity                               -- contains an array of pages...
-  //    .pages[]                            -- which contains an array of embeddables...
-  //      .embeddables[]                    -- which contains an array of...
-  //        .embeddable.plugin       -- things relating to a plugin.
-  //
-  // If that last thing is a plugin with the following property/value:
-  //
-  //     plugin.approved_script_label === "teacherEditionTips"
-  //
-  // then the plugin.authorData ought to be a JSON string. This JSON is parsed
-  // and the resulting teacher-edition-plugin specific definition is inspected
-  // and used to create an IPlugin with the appropriate plugin type and sub-type.
-  //
-  // All such IPlugin objects from the activity are collected together returned
-  // as an array.
-
-  // First, find all the blocks of author_data that are part of the definition
-  // of a TE plugin.
-
   let plugins: IPlugin[] = [];          // Return list.
 
-  // Find all the embeddable objects that have a teacher edition plugin.
+  if (rawActivity === undefined || rawActivity.pages === undefined) {
+    // There are situations, particularly on staging, where the the activity
+    // is empty or has no array of pages. In this case, since there can not be
+    // any plugins defined, we simply return an empty list.
+    return [];
+  }
+
   const rawTeEmbeddables =
+    // Find all the embeddable objects that have a teacher edition plugin.
     _.flatten(rawActivity.pages.map( page => page.embeddables ))
-    .filter( (e:any) => (
-      e.embeddable.plugin !== undefined &&
-      e.embeddable.plugin.approved_script_label === 'teacherEditionTips')
-    )
-    .map( (e: any) => e.embeddable);
-    
-  // For each teacher-edition embeddable, construct an IPlugin object.
-
+      .filter( (e:any) => (
+        e.embeddable.plugin !== undefined &&
+        e.embeddable.plugin.approved_script_label === 'teacherEditionTips')
+      )
+      .map( (e: any) => e.embeddable);
   rawTeEmbeddables.forEach( (re:any) => {
-
+    // For each teacher-edition embeddable, construct an IPlugin object.
     const authorData = JSON.parse(re.plugin.author_data);
     const pluginType = resolvePluginType(authorData.tipType);
     const pluginDef = resolvePluginDef(pluginType, authorData);
@@ -85,6 +68,7 @@ function extractTeacherEditionPlugins(rawActivity: any): IPlugin[] {
 }
 
 function isSignificant(s: string): boolean {
+  // Significant means, s is defined and contains some non-whitespace characters.
   return ((s !== undefined) && ! /^\s*$/.test(s))
 }
 
@@ -113,7 +97,7 @@ function resolvePluginDef(pluginType: PluginType, authorData: any): IQuestionWra
           return undefined;
       }
     case PluginType.SideTip:
-      return undefined;
+      return undefined;  // This doesn't make sense for a SideTip, so it's undefined.
    }
 }
 
@@ -258,7 +242,7 @@ function decodeEventSubType(rawEvent: ILogPullerEvent): EventSubType {
   }
 }
 
-export function buildReportData(rawEvents: ILogPullerEvent[]): Promise<IReportData> {
+export function buildReportData(portalToken: string, rawEvents: ILogPullerEvent[]): Promise<IReportData> {
   return new Promise<IReportData>( (resolve) => {
     let reportData: IReportData = { events: [], teachers: [], modules: [], sessions: [] };
     const getEvents = async () => {
@@ -269,7 +253,7 @@ export function buildReportData(rawEvents: ILogPullerEvent[]): Promise<IReportDa
           findEventPlugin(module, rawEvent.extras.embeddable_plugin_id);
         const newEvent: IEvent = {
           session: fetchSession(reportData.sessions, rawEvent.session),
-          teacher: fetchTeacher(reportData.teachers, rawEvent.username),
+          teacher: await fetchTeacher(portalToken, reportData.teachers, rawEvent.username),
           teMode: decodeTeMode(rawEvent),
           eventDate: new Date(rawEvent.time),
           eventType: rawEvent.event,

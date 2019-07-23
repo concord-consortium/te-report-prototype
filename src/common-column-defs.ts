@@ -14,7 +14,6 @@ export interface IColumnDef {
   eventSubType: EventSubType
 }
 
-// Eventually, I think this could be replaced with EventSubType.
 export enum QuestionWrapperDiscriminator {
   correctExplanation,
   distractorsExplanation,

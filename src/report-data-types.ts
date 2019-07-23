@@ -29,9 +29,9 @@ export enum TEMode {            // Determined by the mode query parameter at the
   PreviewMode = 'Preview'
 }
 
-export enum EventSubType {
-  CorrectExplanation,
-  DistractorsExplanation,
+export enum EventSubType {      // At the moment, the event sub type is used to
+  CorrectExplanation,           // distinguish between the different types of
+  DistractorsExplanation,       // question wrappers.
   Exemplar,
   TeacherTip
 }
@@ -56,8 +56,6 @@ export interface ISession {
   events?: IEvent[];            // All the events associated with this session.
   modules?: IModule[];          // All the modules associated with this session.
   teachers?: ITeacher[];        // All the teachers associated with this session.
-  // TODO: Decide if we need to keep these around, now. Used to use them in the
-  // usage report, but may be that useful.
   firstDate?: Date;             // ??  Date of first event related to this session.
   lastDate?: Date;              // ??  Date of last event related to this session.
 }
