@@ -60,7 +60,7 @@ export const columnDefs: IColumnDef[] = [
     pluginType: PluginType.WindowShade,
     pluginSubType: WindowShadeType.TeacherTip,
     eventMatcher: /TeacherEdition-windowShade-TeacherTip Tab(Opened|Closed)/,
-    eventSubType: undefined
+    eventSubType: EventSubType.WindowShadeTeacherTip
   },
   {
     title: "Window Shade - Theory & Background",
@@ -68,7 +68,7 @@ export const columnDefs: IColumnDef[] = [
     pluginType: PluginType.WindowShade,
     pluginSubType: WindowShadeType.TheoryAndBackground,
     eventMatcher: /TeacherEdition-windowShade-TheoryAndBackground Tab(Opened|Closed)/,
-    eventSubType: undefined
+    eventSubType: EventSubType.WindowShadeTheoryAndBackground
   },
   {
     title: "Window Shade - Discussion Points",
@@ -76,7 +76,7 @@ export const columnDefs: IColumnDef[] = [
     pluginType: PluginType.WindowShade,
     pluginSubType: WindowShadeType.DiscussionPoints,
     eventMatcher: /TeacherEdition-windowShade-DiscussionPoints Tab(Opened|Closed)/,
-    eventSubType: undefined
+    eventSubType: EventSubType.WindowShadeDiscussionPoints
   },
   {
     title: "Window Shade - Digging Deeper",
@@ -84,7 +84,7 @@ export const columnDefs: IColumnDef[] = [
     pluginType: PluginType.WindowShade,
     pluginSubType: WindowShadeType.DiggingDeeper,
     eventMatcher: /TeacherEdition-windowShade-DiggingDeeper Tab(Opened|Closed)/,
-    eventSubType: undefined
+    eventSubType: EventSubType.WindowShadeDiggingDeeper
   },
   {
     title: "Side Tip",

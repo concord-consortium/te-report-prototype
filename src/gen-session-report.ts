@@ -68,7 +68,7 @@ interface IRowDataSessionReport {
   teMode: TEMode,
   session: ISession,
   events: IEvent[]
-} 
+}
 
 function extractSessionReportData(data: IReportData): IRowDataSessionReport[] {
   let rows: IRowDataSessionReport[] = [];
@@ -112,7 +112,7 @@ export function genSessionReport(reportData: IReportData): string {
     // Add the row's session information.
     const first = rd.events[0];
     const last = rd.events[rd.events.length - 1];
-    const ts  = new TimeSpan(eventDateCompare(last, first)); 
+    const ts  = new TimeSpan(eventDateCompare(last, first));
     const sessionTimes = [
       first.eventDate.toString(),
       last.eventDate.toString(),
@@ -146,7 +146,7 @@ export function genSessionReport(reportData: IReportData): string {
             if (p.pluginType !== columnDef.pluginType) {
               return false;
             }
-            
+
             switch (columnDef.pluginType) {
               case PluginType.QuestionWrapper:
                 if (p.pluginDef === undefined) {

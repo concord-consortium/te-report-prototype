@@ -31,9 +31,14 @@ export enum TEMode {            // Determined by the mode query parameter at the
 
 export enum EventSubType {      // At the moment, the event sub type is used to
   CorrectExplanation,           // distinguish between the different types of
-  DistractorsExplanation,       // question wrappers.
+  DistractorsExplanation,       // question wrappers and window shades.
   Exemplar,
-  TeacherTip
+  TeacherTip,
+  WindowShadeTheoryAndBackground,
+  WindowShadeTeacherTip,
+  WindowShadeDiscussionPoints,
+  WindowShadeDiggingDeeper,
+  WindowShadeHowToUse
 }
 
 export interface ITeacher {
