@@ -59,7 +59,7 @@ export const columnDefs: IColumnDef[] = [
     shortTitle: "WS-TT",
     pluginType: PluginType.WindowShade,
     pluginSubType: WindowShadeType.TeacherTip,
-    eventMatcher: /TeacherEdition-windowShade-TeacherTip Tab(Opened|Closed)/,
+    eventMatcher: /TeacherEdition-windowShade-.* Tab(Opened|Closed)/,
     eventSubType: EventSubType.WindowShadeTeacherTip
   },
   {
@@ -67,7 +67,7 @@ export const columnDefs: IColumnDef[] = [
     shortTitle: "WS-TB",
     pluginType: PluginType.WindowShade,
     pluginSubType: WindowShadeType.TheoryAndBackground,
-    eventMatcher: /TeacherEdition-windowShade-TheoryAndBackground Tab(Opened|Closed)/,
+    eventMatcher: /TeacherEdition-windowShade-.* Tab(Opened|Closed)/,
     eventSubType: EventSubType.WindowShadeTheoryAndBackground
   },
   {
@@ -75,7 +75,7 @@ export const columnDefs: IColumnDef[] = [
     shortTitle: "WS-DP",
     pluginType: PluginType.WindowShade,
     pluginSubType: WindowShadeType.DiscussionPoints,
-    eventMatcher: /TeacherEdition-windowShade-DiscussionPoints Tab(Opened|Closed)/,
+    eventMatcher: /TeacherEdition-windowShade-.* Tab(Opened|Closed)/,
     eventSubType: EventSubType.WindowShadeDiscussionPoints
   },
   {
@@ -83,7 +83,7 @@ export const columnDefs: IColumnDef[] = [
     shortTitle: "WS-DD",
     pluginType: PluginType.WindowShade,
     pluginSubType: WindowShadeType.DiggingDeeper,
-    eventMatcher: /TeacherEdition-windowShade-DiggingDeeper Tab(Opened|Closed)/,
+    eventMatcher: /TeacherEdition-windowShade-.* Tab(Opened|Closed)/,
     eventSubType: EventSubType.WindowShadeDiggingDeeper
   },
   {
