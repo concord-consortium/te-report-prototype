@@ -59,32 +59,32 @@ export const columnDefs: IColumnDef[] = [
     shortTitle: "WS-TT",
     pluginType: PluginType.WindowShade,
     pluginSubType: WindowShadeType.TeacherTip,
-    eventMatcher: /TeacherEdition-windowShade-TeacherTip Tab(Opened|Closed)/,
-    eventSubType: undefined
+    eventMatcher: /TeacherEdition-windowShade-.* Tab(Opened|Closed)/,
+    eventSubType: EventSubType.WindowShadeTeacherTip
   },
   {
     title: "Window Shade - Theory & Background",
     shortTitle: "WS-TB",
     pluginType: PluginType.WindowShade,
     pluginSubType: WindowShadeType.TheoryAndBackground,
-    eventMatcher: /TeacherEdition-windowShade-TheoryAndBackground Tab(Opened|Closed)/,
-    eventSubType: undefined
+    eventMatcher: /TeacherEdition-windowShade-.* Tab(Opened|Closed)/,
+    eventSubType: EventSubType.WindowShadeTheoryAndBackground
   },
   {
     title: "Window Shade - Discussion Points",
     shortTitle: "WS-DP",
     pluginType: PluginType.WindowShade,
     pluginSubType: WindowShadeType.DiscussionPoints,
-    eventMatcher: /TeacherEdition-windowShade-DiscussionPoints Tab(Opened|Closed)/,
-    eventSubType: undefined
+    eventMatcher: /TeacherEdition-windowShade-.* Tab(Opened|Closed)/,
+    eventSubType: EventSubType.WindowShadeDiscussionPoints
   },
   {
     title: "Window Shade - Digging Deeper",
     shortTitle: "WS-DD",
     pluginType: PluginType.WindowShade,
     pluginSubType: WindowShadeType.DiggingDeeper,
-    eventMatcher: /TeacherEdition-windowShade-DiggingDeeper Tab(Opened|Closed)/,
-    eventSubType: undefined
+    eventMatcher: /TeacherEdition-windowShade-.* Tab(Opened|Closed)/,
+    eventSubType: EventSubType.WindowShadeDiggingDeeper
   },
   {
     title: "Side Tip",

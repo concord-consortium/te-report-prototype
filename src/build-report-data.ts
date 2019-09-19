@@ -237,6 +237,16 @@ function decodeEventSubType(rawEvent: ILogPullerEvent): EventSubType {
     return EventSubType.Exemplar;
   } else if (val === 'TeacherTip') {
     return EventSubType.TeacherTip;
+  } else if (val === 'theoryAndBackground') {
+    return EventSubType.WindowShadeTheoryAndBackground;
+  } else if (val === 'teacherTip') {
+    return EventSubType.WindowShadeTeacherTip;
+  } else if (val === 'discussionPoints') {
+    return EventSubType.WindowShadeDiscussionPoints;
+  } else if (val === 'diggingDeeper') {
+    return EventSubType.WindowShadeDiggingDeeper;
+  } else if (val === 'howToUse') {
+    return EventSubType.WindowShadeHowToUse;
   } else {
     return undefined;
   }
