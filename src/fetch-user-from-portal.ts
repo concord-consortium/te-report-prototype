@@ -2,7 +2,7 @@ import * as superagent from 'superagent';
 import { parseString } from 'xml2js';
 
 import { portalServer } from './globals';
-import { warn } from './utilities';
+import { warn, announce } from './utilities';
 
 // Fetches a user name from the Portal given an id-string, as supplied in a
 // log event.
@@ -29,16 +29,22 @@ export function fetchUserFromPortal(portalToken: string, id: string): Promise<st
 
 function getPortalUser(portalToken: string, url: string): Promise<any> {
   return new Promise<string>((resolve, reject) => {
+    announce(`getPortalUser: GET ${url}`)
     superagent
       .get(url)
       .set("Authorization", `Bearer/JWT ${portalToken}`)
       .then((response) => {
-        const xml = (response.body as Buffer).toString();
-        resolve(xml)
+        announce(`getPortalUser: GOT ${url} (status: ${response.status})`)
+        if (response.status === 200) {
+          const xml = (response.body as Buffer).toString();
+          resolve(xml)
+        } else {
+          reject(new Error(`Unable to get portal user: GET ${url} returned ${response.status}`));
+        }
       })
       .catch((err) => {
-        warn(`Error from getPortal, err: ${JSON.stringify(err)}`);
-        throw(err);
+        warn(`Error from getPortalUser, err: ${JSON.stringify(err)}`);
+        reject(err);
       });
   });
 }

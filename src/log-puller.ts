@@ -1,4 +1,5 @@
 import * as superagent from "superagent";
+import { announce, warn } from './utilities';
 
 export interface ILogPullerEvent {
   id: number;
@@ -41,25 +42,30 @@ interface ILogPullerJSON {
 
 export function getLog(requestJSON: string, signature: string): Promise<ILogPullerEvent[]> {
   return new Promise<ILogPullerEvent[]>((resolve, reject) => {
-    try {
-      // Use log-puller staging for everything except requests from learn production.
-      const parsedJSON = JSON.parse(requestJSON) as ILogPullerJSON;
-      const viaProduction = ["learn.concord.org", "learn-report.concord.org"].indexOf(parsedJSON.domain) !== -1;
-      const url = `https://${viaProduction ? "log-puller" : "log-puller-staging"}.herokuapp.com/portal-report`;
-      superagent
-        .post(url)
-        .type('form')
-        .send({json: requestJSON})
-        .send({signature})
-        .send({format: 'json'})
-        .send({explode: 'no'})
-        .send({download: 'Download Logs'})
-        .then((response) => {
+    // Use log-puller staging for everything except requests from learn production.
+    const parsedJSON = JSON.parse(requestJSON) as ILogPullerJSON;
+    const viaProduction = ["learn.concord.org", "learn-report.concord.org"].indexOf(parsedJSON.domain) !== -1;
+    const url = `https://${viaProduction ? "log-puller" : "log-puller-staging"}.herokuapp.com/portal-report`;
+    announce(`getLog: GET ${url}`)
+    superagent
+      .post(url)
+      .type('form')
+      .send({json: requestJSON})
+      .send({signature})
+      .send({format: 'json'})
+      .send({explode: 'no'})
+      .send({download: 'Download Logs'})
+      .then((response) => {
+        announce(`getLog: GOT ${url} (status: ${response.status})`)
+        if (response.status === 200) {
           resolve(response.body)
-        }, reject);
-    }
-    catch (e) {
-      reject(e);
-    }
-  });
+        } else {
+          reject(new Error(`Unable to get logs: GET ${url} returned ${response.status}`));
+        }
+      })
+      .catch(err => {
+        warn(`Error from getLog, err: ${JSON.stringify(err)}`);
+        reject(err);
+      });
+    });
 }

@@ -18,10 +18,6 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb", parameterLimit: 50000 }));
 app.use(bodyParser.json({ limit: "50mb" }));
 
-app.listen(port, () => {
-  announce(`listening on port ${port}`);
-});
-
 app.get('/', (req, res) => {
   res.send(serverName);
 });
@@ -54,6 +50,11 @@ app.post('/', (req, res) => {
       res.send(err.toString())
     });
 
+
+});
+
+app.listen(port, () => {
+  announce(`listening on port ${port}`);
 });
 
 function setHeader(res: any, fileName: string) {
