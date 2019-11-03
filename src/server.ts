@@ -6,7 +6,7 @@ import { announce } from './utilities';
 
 import { getLog } from './log-puller';
 import { buildReportData } from './build-report-data';
-import { queryStringToReportType, getReport } from './report-dispatcher';
+import { queryStringToReportType, sendReport } from './report-dispatcher';
 
 // The server application listens for a POST request for a particular report;
 // fetches the indicated log-puller supplied event-log from the log-puller; uses
@@ -41,7 +41,7 @@ app.post('/', (req, res) => {
         setHeader(res, reportType.toString());
         buildReportData(req.body.portal_token, log)
           .then((reportData) => {
-            res.send(getReport(reportType, reportData));
+            sendReport(res, reportType, reportData);
           })
       }
     })

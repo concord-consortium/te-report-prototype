@@ -1,5 +1,6 @@
+import express from 'express';
 import * as _ from 'lodash';
-import { convertArrayToCSV } from 'convert-array-to-csv';
+import { unparse } from "papaparse";
 import { TimeSpan } from 'timespan';
 
 import { eventDateCompare } from './utilities';
@@ -71,7 +72,7 @@ interface IRowDataModuleReport {
   module: IModule,
   teMode: TEMode,
   events: IEvent[]
-} 
+}
 
 function extractModuleReportData(data: IReportData): IRowDataModuleReport[] {
   let rows: IRowDataModuleReport[] = [];
@@ -113,9 +114,10 @@ function totalDuration(sessions: ISession[]): string {
   return `${ts.days}:${ts.hours}:${ts.minutes}:${ts.seconds}`;
 }
 
-export function genUsageReport(reportData: IReportData): string {
+export function sendUsageReport(res: express.Response, reportData: IReportData) {
 
-  let report: string[][] = [];
+  res.send(unparse(buildColumnNames()));
+
   const rowData = extractModuleReportData(reportData);
 
   rowData.forEach( (rd) => {
@@ -158,7 +160,7 @@ export function genUsageReport(reportData: IReportData): string {
             if (p.pluginType !== columnDef.pluginType) {
               return false;
             }
-            
+
             switch (columnDef.pluginType) {
               case PluginType.QuestionWrapper:
                 if (p.pluginDef === undefined) {
@@ -203,10 +205,8 @@ export function genUsageReport(reportData: IReportData): string {
           const percent = Math.round((pluginsToggled.length / tePluginsInModule.length) * 100);
           row.push(percent.toString());
         }
-       });
-      }
-    report.push(row);
+      });
+    }
+    res.send(unparse(row));
   });
-
-  return convertArrayToCSV(report, {header: buildColumnNames(), separator: ','});
 }

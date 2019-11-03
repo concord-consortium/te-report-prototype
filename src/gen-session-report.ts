@@ -1,6 +1,7 @@
+import express from 'express';
 import * as _ from 'lodash';
-import { convertArrayToCSV } from 'convert-array-to-csv';
 import { TimeSpan } from 'timespan';
+import { unparse } from "papaparse";
 
 import { eventDateCompare } from './utilities';
 
@@ -97,9 +98,10 @@ function extractSessionReportData(data: IReportData): IRowDataSessionReport[] {
   return rows;
 }
 
-export function genSessionReport(reportData: IReportData): string {
+export function sendSessionReport(res: express.Response, reportData: IReportData) {
 
-  let report: string[][] = [];
+  res.send(unparse(buildColumnNames()));
+
   const rowData = extractSessionReportData(reportData);
 
   rowData.forEach( (rd) => {
@@ -191,10 +193,9 @@ export function genSessionReport(reportData: IReportData): string {
           const percent = Math.round((pluginsToggled.length / tePluginsInModule.length) * 100);
           row.push(percent.toString());
         }
-       });
-      }
-    report.push(row);
-  });
+      });
+    }
 
-  return convertArrayToCSV(report, {header: buildColumnNames(), separator: ','});
+    res.send(unparse(row));
+  });
 }
