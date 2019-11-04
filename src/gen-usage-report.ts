@@ -57,7 +57,7 @@ const columnNames: IColumnName[] = [
   }
 ];
 
-function buildColumnNames(): string[] {
+export function usageReportColumnNames(): string[] {
   let names: string[] = columnNames.map(colName => colName.title);
   columnDefs.forEach( (column) => {
     subColumns.forEach( (subColumn) => {
@@ -115,8 +115,6 @@ function totalDuration(sessions: ISession[]): string {
 }
 
 export function sendUsageReport(res: express.Response, reportData: IReportData) {
-
-  res.send(unparse(buildColumnNames()));
 
   const rowData = extractModuleReportData(reportData);
 
@@ -207,6 +205,8 @@ export function sendUsageReport(res: express.Response, reportData: IReportData) 
         }
       });
     }
-    res.send(unparse(row));
+    res.write(unparse([row]) + "\n");
   });
+
+  res.end();
 }

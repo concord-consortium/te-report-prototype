@@ -45,7 +45,7 @@ export function getLog(requestJSON: string, signature: string): Promise<ILogPull
     // Use log-puller staging for everything except requests from learn production.
     const parsedJSON = JSON.parse(requestJSON) as ILogPullerJSON;
     const viaProduction = ["learn.concord.org", "learn-report.concord.org"].indexOf(parsedJSON.domain) !== -1;
-    const url = `https://apps.${viaProduction ? "concord" : "concordqa"}.org/log-puller/portal-report`;
+    const url = process.env.PORTAL_REPORT_URL || `https://apps.${viaProduction ? "concord" : "concordqa"}.org/log-puller/portal-report`;
     announce(`getLog: GET ${url}`)
     console.log({requestJSON, signature})
     superagent
@@ -57,6 +57,7 @@ export function getLog(requestJSON: string, signature: string): Promise<ILogPull
       .send({format: 'json'})
       .send({explode: 'no'})
       .send({download: 'Download Logs'})
+      .send({filterTEEvents: 'yes'})
       .then((response) => {
         announce(`getLog: GOT ${url} (status: ${response.status})`)
         if (response.status === 200) {

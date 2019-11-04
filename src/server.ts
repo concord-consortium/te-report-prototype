@@ -6,7 +6,7 @@ import { announce } from './utilities';
 
 import { getLog } from './log-puller';
 import { buildReportData } from './build-report-data';
-import { queryStringToReportType, sendReport } from './report-dispatcher';
+import { queryStringToReportType, sendReport, getCVSHeader } from './report-dispatcher';
 
 // The server application listens for a POST request for a particular report;
 // fetches the indicated log-puller supplied event-log from the log-puller; uses
@@ -32,33 +32,39 @@ app.post('/', (req, res) => {
     return;
   }
 
+  // immediately write the headers and flush them so that Chrome starts receiving data
+  const reportType = queryStringToReportType(req.query.report);
+  const filename = `te-${reportType.toString().toLowerCase()}-${Date.now()}.csv`;
+  res.setHeader('Content-disposition', `attachment; filename=${filename}`);
+  res.flushHeaders();
+
+  // dribble out the csv header so that Chrome doesn't timeout the download for long running queries
+  const csvHeaderChars = getCVSHeader(reportType).split("");
+  const dribbleCsvHeaderInterval = setInterval(() => {
+    res.write(csvHeaderChars.shift() || " ");
+  }, 5000);
+
   getLog(req.body.json, req.body.signature)
     .then((log) => {
-      const reportType = queryStringToReportType(req.query.report);
       if (reportType === undefined) {
         throw `${serverShortName} ERROR - Undefined query parameter for reportType ${req.query.report}.`;
       } else {
-        setHeader(res, reportType.toString());
         buildReportData(req.body.portal_token, log)
           .then((reportData) => {
+            // write out the remaining parts of the csv header
+            clearInterval(dribbleCsvHeaderInterval);
+            res.write(csvHeaderChars.join("") + "\n");
             sendReport(res, reportType, reportData);
           })
       }
     })
     .catch((err) => {
-      res.status(500);
-      res.send(err.toString())
+      // can't set error code since we've flushed the headers already
+      res.write(`\n\nERROR: ${err.toString()}`)
+      res.end();
     });
-
-
 });
 
 app.listen(port, () => {
   announce(`listening on port ${port}`);
 });
-
-function setHeader(res: any, fileName: string) {
-  // Always respond with a csv file.
-  res.setHeader('Content-disposition', 'attachment; filename=te-' +
-    fileName.toLowerCase() + '-' + Date.now() + '.csv');
-};

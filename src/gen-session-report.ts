@@ -53,7 +53,7 @@ const columnNames: IColumnName[] = [
   },
 ];
 
-function buildColumnNames(): string[] {
+export function sessionReportColumnNames(): string[] {
   let names: string[] = columnNames.map(colName => colName.title);
   columnDefs.forEach( (column) => {
     subColumns.forEach( (subColumn) => {
@@ -99,8 +99,6 @@ function extractSessionReportData(data: IReportData): IRowDataSessionReport[] {
 }
 
 export function sendSessionReport(res: express.Response, reportData: IReportData) {
-
-  res.send(unparse(buildColumnNames()));
 
   const rowData = extractSessionReportData(reportData);
 
@@ -196,6 +194,8 @@ export function sendSessionReport(res: express.Response, reportData: IReportData
       });
     }
 
-    res.send(unparse(row));
+    res.write(unparse([row]) + "\n");
   });
+
+  res.end();
 }
