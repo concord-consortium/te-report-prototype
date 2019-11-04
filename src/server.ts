@@ -18,11 +18,17 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb", parameterLimit: 50000 }));
 app.use(bodyParser.json({ limit: "50mb" }));
 
-app.get('/', (req, res) => {
+
+// allow routes at both the root and /te-report levels for generic Fargate app deployment
+const route = (path) => {
+  return [path, `/te-report${path}`];
+}
+
+app.get(route('/'), (req, res) => {
   res.send(serverName);
 });
 
-app.post('/', (req, res) => {
+app.post(route('/'), (req, res) => {
 
   if (!req.body.json || !req.body.signature || !req.body.portal_token) {
     // Ensure json and signature exist in req.body.
