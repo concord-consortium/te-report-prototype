@@ -1,8 +1,10 @@
+import express from 'express';
 import { warn } from './utilities';
 
 import { IReportData } from './report-data-types';
-import { genUsageReport } from './gen-usage-report';
-import { genSessionReport } from './gen-session-report';
+import { sendUsageReport, usageReportColumnNames } from './gen-usage-report';
+import { sendSessionReport, sessionReportColumnNames } from './gen-session-report';
+import { unparse } from 'papaparse';
 
 enum ReportType {
   UsageReport = 'usageReport',
@@ -23,13 +25,28 @@ export function queryStringToReportType(queryString: string): ReportType {
   }
 }
 
-export function getReport(reportType: ReportType, reportData: IReportData): string {
+export function sendReport(res: express.Response, reportType: ReportType, reportData: IReportData) {
   switch (reportType) {
     case ReportType.UsageReport:
-      return genUsageReport(reportData);
+      return sendUsageReport(res, reportData);
     case ReportType.SessionReport:
-      return genSessionReport(reportData);
+      return sendSessionReport(res, reportData);
     default:
       throw `"Teacher Edition Report Error"\n"Unrecognized report type"`;
     }
+}
+
+export function getCVSHeader(reportType: ReportType) {
+  let columnNames: string[] = [];
+  switch (reportType) {
+    case ReportType.UsageReport:
+      columnNames = usageReportColumnNames();
+      break;
+    case ReportType.SessionReport:
+      columnNames = sessionReportColumnNames();
+      break;
+    default:
+      throw `"Teacher Edition Report Error"\n"Unrecognized report type"`;
+  }
+  return unparse({fields: columnNames, data: []}).replace("\n", "");
 }

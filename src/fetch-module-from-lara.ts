@@ -1,7 +1,7 @@
 import * as superagent from "superagent";
 
 import { laraServer, apiToken } from './globals';
-import { warn } from './utilities';
+import { warn, announce } from './utilities';
 
 // Fetches a module (either a sequence or an activity) from Lara, based on the
 // "activity ID" found in a log event.
@@ -22,11 +22,21 @@ export function fetchModuleFromLara(activityType: string, activityID: string): P
 
 function getLaraModule(url: string, apiToken: string): Promise<any> {
   return new Promise<any>((resolve, reject) => {
+    announce(`getLaraModule: GET ${url}`)
     superagent
       .get(url)
       .set('Authorization', 'Bearer ' + apiToken)
       .then((response) => {
-        resolve(response.body)
-      }, reject)
+        announce(`getLaraModule: GOT ${url} (status: ${response.status})`)
+        if (response.status === 200) {
+          resolve(response.body)
+        } else {
+          reject(`Unable to get Lara module: GET ${url} returned ${response.status}`);
+        }
+      })
+      .catch(err => {
+        warn(`Error from getLaraModule, err: ${JSON.stringify(err)}`);
+        reject(err);
+      })
   });
 }
