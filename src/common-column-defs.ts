@@ -87,6 +87,38 @@ export const columnDefs: IColumnDef[] = [
     eventSubType: EventSubType.WindowShadeDiggingDeeper
   },
   {
+    title: "Window Shade - How To Use",
+    shortTitle: "WS-HTU",
+    pluginType: PluginType.WindowShade,
+    pluginSubType: WindowShadeType.HowToUse,
+    eventMatcher: /TeacherEdition-windowShade-.* Tab(Opened|Closed)/,
+    eventSubType: EventSubType.WindowShadeHowToUse
+  },
+  {
+    title: "Window Shade - Framing The Activity",
+    shortTitle: "WS-FTA",
+    pluginType: PluginType.WindowShade,
+    pluginSubType: WindowShadeType.FramingTheActivity,
+    eventMatcher: /TeacherEdition-windowShade-.* Tab(Opened|Closed)/,
+    eventSubType: EventSubType.WindowShadeFramingTheActivity
+  },
+  {
+    title: "Window Shade - Demo",
+    shortTitle: "WS-DEMO",
+    pluginType: PluginType.WindowShade,
+    pluginSubType: WindowShadeType.Demo,
+    eventMatcher: /TeacherEdition-windowShade-.* Tab(Opened|Closed)/,
+    eventSubType: EventSubType.WindowShadeDemo
+  },
+  {
+    title: "Window Shade - Offline Activity",
+    shortTitle: "WS-OA",
+    pluginType: PluginType.WindowShade,
+    pluginSubType: WindowShadeType.OfflineActivity,
+    eventMatcher: /TeacherEdition-windowShade-.* Tab(Opened|Closed)/,
+    eventSubType: EventSubType.WindowShadeOfflineActivity
+  },
+  {
     title: "Side Tip",
     shortTitle: "ST",
     pluginType: PluginType.SideTip,

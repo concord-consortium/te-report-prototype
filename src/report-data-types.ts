@@ -38,7 +38,10 @@ export enum EventSubType {      // At the moment, the event sub type is used to
   WindowShadeTeacherTip,
   WindowShadeDiscussionPoints,
   WindowShadeDiggingDeeper,
-  WindowShadeHowToUse
+  WindowShadeHowToUse,
+  WindowShadeFramingTheActivity,
+  WindowShadeDemo,
+  WindowShadeOfflineActivity
 }
 
 export interface ITeacher {
@@ -80,7 +83,11 @@ export enum WindowShadeType {
   TeacherTip = 'Teacher Tip',
   TheoryAndBackground = 'Theory & Background',
   DiscussionPoints = 'Discussion Points',
-  DiggingDeeper = 'Digging Deeper'
+  DiggingDeeper = 'Digging Deeper',
+  HowToUse = "How To Use",
+  FramingTheActivity = "Framing The Activity",
+  Demo = "Demo",
+  OfflineActivity = "Offline Activity"
 }
 
 export interface IPlugin {

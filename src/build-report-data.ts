@@ -92,6 +92,14 @@ function resolvePluginDef(pluginType: PluginType, authorData: any): IQuestionWra
           return WindowShadeType.DiscussionPoints;
         case 'diggingDeeper':
           return WindowShadeType.DiggingDeeper;
+        case 'howToUse':
+          return WindowShadeType.HowToUse;
+        case 'framing':
+          return WindowShadeType.FramingTheActivity;
+        case 'demo':
+          return WindowShadeType.Demo;
+        case 'offline':
+          return WindowShadeType.OfflineActivity;
         default:
           warn(`Unrecognized windowShadeType ${authorData.windowShade.windowShadeType}`);
           return undefined;
@@ -247,6 +255,12 @@ function decodeEventSubType(rawEvent: ILogPullerEvent): EventSubType {
     return EventSubType.WindowShadeDiggingDeeper;
   } else if (val === 'howToUse') {
     return EventSubType.WindowShadeHowToUse;
+  } else if (val === 'framing') {
+    return EventSubType.WindowShadeFramingTheActivity;
+  } else if (val === 'demo') {
+    return EventSubType.WindowShadeDemo;
+  } else if (val === 'offline') {
+    return EventSubType.WindowShadeOfflineActivity;
   } else {
     return undefined;
   }
